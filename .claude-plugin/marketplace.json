@@ -194,7 +194,15 @@
         "./scientific-skills/postgresql",
         "./scientific-skills/oracle-db",
         "./scientific-skills/elasticsearch",
-        "./scientific-skills/s3"
+        "./scientific-skills/s3",
+        "./scientific-skills/log-parsing",
+        "./scientific-skills/json-processing",
+        "./scientific-skills/python2-migration",
+        "./scientific-skills/refactoring",
+        "./scientific-skills/regex",
+        "./scientific-skills/sqlalchemy",
+        "./scientific-skills/plotly-dash",
+        "./scientific-skills/data-validation"
       ]
     }
   ]

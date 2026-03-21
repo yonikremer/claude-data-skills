@@ -188,7 +188,13 @@
         "./scientific-skills/usfiscaldata",
         "./scientific-skills/hedgefundmonitor",
         "./scientific-skills/alpha-vantage",
-        "./scientific-skills/binary-data-parsing"
+        "./scientific-skills/binary-data-parsing",
+        "./scientific-skills/pandas",
+        "./scientific-skills/sqlite",
+        "./scientific-skills/postgresql",
+        "./scientific-skills/oracle-db",
+        "./scientific-skills/elasticsearch",
+        "./scientific-skills/s3"
       ]
     }
   ]

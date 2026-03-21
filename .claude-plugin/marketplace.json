@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Professional Data Science & Research toolkit optimized for Open-Source LLMs, featuring resource-aware skills and idiomatic Python best practices.",
-    "version": "1.5.0"
+    "version": "1.6.0"
   },
   "plugins": [
     {
@@ -77,7 +77,8 @@
         "./skills/pytest",
         "./skills/python-best-practices",
         "./skills/data-validation",
-        "./skills/statistical-analysis"
+        "./skills/statistical-analysis",
+        "./skills/ffmpeg"
       ]
     }
   ]

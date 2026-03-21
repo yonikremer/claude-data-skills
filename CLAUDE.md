@@ -41,6 +41,7 @@ When a user provides a prompt, route to these specialized skills based on intent
 | **Build a UI/Dashboard**  | `build-dashboard`, `plotly-dash`                           |
 | **Verify code quality**   | `pytest`, `pydantic`, `python-best-practices`              |
 | **Manage version control** | `git`                                                      |
+| **Process audio/video**   | `ffmpeg`                                                   |
 | **Handle specific files** | `pdf`, `docx`, `pptx`, `xlsx`, `binary-data-parsing`       |
 
 ## Gold Standard Requirements

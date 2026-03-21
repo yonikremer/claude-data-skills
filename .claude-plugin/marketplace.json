@@ -187,7 +187,8 @@
         "./scientific-skills/edgartools",
         "./scientific-skills/usfiscaldata",
         "./scientific-skills/hedgefundmonitor",
-        "./scientific-skills/alpha-vantage"
+        "./scientific-skills/alpha-vantage",
+        "./scientific-skills/binary-data-parsing"
       ]
     }
   ]

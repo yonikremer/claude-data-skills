@@ -43,10 +43,15 @@ fig.write_image("output.pdf", width=800, height=500, scale=2)
 
 ## Design Principles
 
+- **Descriptive & Specific Titles (MANDATORY)**: Never use generic titles like "Job Distribution" or "Revenue Over Time". Titles must describe the **subset, filters, and core insight**.
+  - *Bad*: "Job Distribution"
+  - *Good*: "Top 10 Job Categories for American Adults (2023 Survey)"
+  - *Bad*: "Monthly Revenue"
+  - *Good*: "Monthly Revenue ($) for Enterprise Customers in North America"
+- **Technically Correct Axis Labels**: Always include units in parentheses (e.g., "Revenue ($)", "Temperature (°C)", "Time (ms)").
+- **Contextual Annotations**: If the data is filtered (e.g., `df[df['age'] > 18]`), the title or a subtitle MUST reflect this (e.g., "Adult Population only").
 - **No Chart Junk**: Remove unnecessary gridlines and borders.
 - **Hierarchy**: Use color to highlight the most important series; use grey for others.
-- **Accessibility**: Use line styles (dashed/dotted) in addition to color to distinguish series.
-- **Honesty**: Avoid 3D charts or dual-axes that imply false correlation.
 
 ## References (Load on demand)
 - `skills/scientific-visualization/references/plotly_examples.md` — Complex subplots and error bands.

@@ -4,36 +4,51 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-This repository is **claude-data-analytics-skills**, a personalized Claude Code plugin containing high-quality skills for data science, machine learning, research, and engineering. It is specifically optimized for use with **Open-Source LLMs**, emphasizing resource-aware execution, idiomatic Python best practices, and robust visualization via Plotly.
+This repository is **claude-data-analytics-skills**, a personalized Claude Code plugin containing high-quality skills
+for data science, machine learning, research, and engineering. It is specifically optimized for use with **Open-Source
+LLMs**, emphasizing resource-aware execution, idiomatic Python best practices, and robust visualization via Plotly.
 
 ## Releasing
 
 To release a new version:
+
 1. Bump the `version` field in `.claude-plugin/marketplace.json`
 2. Commit and push to `main`
 
-## Architecture
+## Global Agent Guardrails
 
-### Plugin Entry Point
+### 1. Foundation Skills (MANDATORY)
 
-`.claude-plugin/marketplace.json` — registers the plugin and lists all skill paths.
+The following skills are **Foundation Skills**. They must be consulted and applied to **EVERY** relevant task,
+regardless of whether the user explicitly asks for them:
 
-### Skill Structure
+- **`python-best-practices`**: Must be applied to all Python code generation, formatting, and refactoring.
+- **`get-available-resources`**: Must be run before any task involving data loading (>100MB) or model training.
+- **`data-validation`**: Must be applied to all data processing and analytical reporting.
+- **`git`**: Must be used for tracking all code and skill modifications.
 
-Each skill lives under `skills/` and follows this pattern:
+### 2. Skill Routing Table
 
-```
-skills/<skill-name>/
-├── SKILL.md              # Required: entry point loaded by Claude Code
-├── references/           # Optional: supplementary reference docs loaded on demand
-│   └── *.md
-└── scripts/              # Optional: executable Python/shell scripts
-```
+When a user provides a prompt, route to these specialized skills based on intent:
 
-### Gold Standard Requirements
+| If user wants to...       | Use these Primary Skills                                   |
+|:--------------------------|:-----------------------------------------------------------|
+| **Explore a new dataset** | `exploratory-data-analysis`                                |
+| **Clean/Transform data**  | `pandas`, `polars`, `numpy`                                |
+| **Visualize data**        | `data-visualization`, `scientific-visualization`           |
+| **Train/Evaluate ML**     | `scikit-learn`, `anomaly-detection`, `timesfm-forecasting` |
+| **Write/Optimize SQL**    | `sql-queries`                                              |
+| **Build a UI/Dashboard**  | `build-dashboard`, `plotly-dash`                           |
+| **Verify code quality**   | `pytest`, `pydantic`, `python-best-practices`              |
+| **Manage version control** | `git`                                                      |
+| **Handle specific files** | `pdf`, `docx`, `pptx`, `xlsx`, `binary-data-parsing`       |
+
+## Gold Standard Requirements
 
 Every skill in this repository should adhere to the "Gold Standard":
-1. **Data Integrity & Safety**: **NEVER** delete, overwrite, or drop data (files, columns, or rows) without explicit user permission. Prefer creating new columns or files (e.g., `_processed.csv`) to preserve original data.
+
+1. **Data Integrity & Safety**: **NEVER** delete, overwrite, or drop data (files, columns, or rows) without explicit
+   user permission. Prefer creating new columns or files (e.g., `_processed.csv`) to preserve original data.
 2. **Resource Awareness**: Call `get-available-resources` for data-intensive tasks.
 3. **Strict Idioms**: Enforce PEP-8 and modern library syntax (e.g., Pandas 2.0+, Pydantic V2).
 4. **Reference Tiering**: Keep `SKILL.md` focused; move deep documentation to `references/`.

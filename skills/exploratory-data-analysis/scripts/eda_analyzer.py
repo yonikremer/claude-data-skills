@@ -575,8 +575,32 @@ def main():
 
     print(f"\nGenerating report...")
     generate_markdown_report(analysis, output_path)
+    
+    # Update Data Discovery Log (Memory)
+    update_data_dictionary(analysis, filepath)
 
     print(f"\n✓ Analysis complete!")
+
+def update_data_dictionary(analysis, filepath):
+    import json
+    dict_path = Path(".claude_data_dictionary.json")
+    data_dict = {}
+    if dict_path.exists():
+        try:
+            with open(dict_path, 'r') as f:
+                data_dict = json.load(f)
+        except:
+            pass
+    
+    data_dict[str(filepath)] = {
+        "last_analyzed": datetime.now().isoformat(),
+        "columns": analysis.get('columns', []),
+        "hierarchies": analysis.get('categorical_hierarchies', []),
+        "constant_columns": analysis.get('constant_columns', [])
+    }
+    
+    with open(dict_path, 'w') as f:
+        json.dump(data_dict, f, indent=2)
 
 
 if __name__ == '__main__':

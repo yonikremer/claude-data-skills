@@ -1,8 +1,36 @@
 ---
 name: numpy
-description: Performs numerical computing and vectorized math using arrays. Use for fast array manipulation, binary data buffers, and linear algebra. Do NOT use for tabular data analysis (use pandas) or for symbolic math (use scipy).
+description: Performs numerical computing and vectorized math using arrays. Use for fast array manipulation, binary data buffers, and linear algebra. CRITICAL: Run `get-available-resources` for arrays > 10^7 elements to prevent OOM.
 ---
 # NumPy
+
+## ⚠️ Mandatory Pre-flight: Resource Check
+
+Numerical arrays can consume significant RAM (e.g., a `float64` array of 10^9 elements uses ~8GB).
+
+1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
+2. **Strategy**:
+   - **Large Arrays**: If array size > 25% of available RAM, prefer `memmap` or switch to `dask.array`.
+   - **Dtype Optimization**: Use `float32` instead of `float64` to halve memory if extreme precision is not required.
+
+## Reproducibility & Randomness (MANDATORY)
+
+Never use the legacy `np.random.*` functions. Always use the modern `Generator` API with a fixed seed.
+
+```python
+import numpy as np
+RANDOM_STATE = 42
+
+# Modern API (Thread-safe and reproducible)
+rng = np.random.default_rng(seed=RANDOM_STATE)
+arr = rng.standard_normal((100, 100))
+```
+
+## Common Pitfalls (The "Wall of Shame")
+
+1. **Python Loops**: Using `for x in arr:` is 100x slower than vectorized `np.sin(arr)`.
+2. **Implicit Copies**: Functions like `flatten()` or "fancy indexing" (`arr[[1, 2]]`) create copies. Use `ravel()` or slicing for views.
+3. **Array Concatenation in Loops**: `np.append` or `np.concatenate` in a loop is $O(N^2)$. Pre-allocate with `np.empty()` and fill.
 
 ## Array Creation
 

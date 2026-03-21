@@ -1,8 +1,39 @@
 ---
 name: scipy
-description: Performs scientific computing tasks like statistics, signal processing, and optimization. Use for hypothesis testing, curve fitting, and solving differential equations. Do NOT use for basic array operations (use numpy) or for tabular data (use pandas).
+description: Performs scientific computing tasks like statistics, signal processing, and optimization. Use for hypothesis testing, curve fitting, and solving differential equations. CRITICAL: Run `get-available-resources` for large-scale optimization or ODE integration.
 ---
 # SciPy
+
+## ⚠️ Mandatory Pre-flight: Resource Check
+
+Optimization (`scipy.optimize`) and Integration (`scipy.integrate`) can be CPU intensive and create large intermediate memory buffers.
+
+1. **CPU Cores**: Check logical cores for parallel backends (if available).
+2. **Memory**: Large sparse matrices or high-dimensional interpolations can exceed RAM. Verify limits before fitting.
+
+## Reproducibility (MANDATORY)
+
+For any function involving stochasticity (e.g., `differential_evolution`, `rvs` sampling), always pass a fixed `seed` or a NumPy `Generator`.
+
+```python
+from scipy import stats, optimize
+import numpy as np
+
+# Use the global seed
+rng = np.random.default_rng(42)
+
+# Distributions
+samples = stats.norm.rvs(size=1000, random_state=rng)
+
+# Optimization with stochastic components
+res = optimize.differential_evolution(func, bounds, seed=42)
+```
+
+## Common Pitfalls (The "Wall of Shame")
+
+1. **Incorrect Test Assumptions**: Running a `ttest_ind` without checking for normality (`shapiro`).
+2. **Slow Optimization**: Using `minimize` with `Nelder-Mead` (derivative-free) when gradients are available. Always prefer `L-BFGS-B` or `SLSQP` if possible.
+3. **Interpolation Extrapolation**: `interp1d` will throw an error or produce nonsense outside bounds. Always specify `fill_value` or check range.
 
 ## Overview
 

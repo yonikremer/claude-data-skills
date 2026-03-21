@@ -75,7 +75,27 @@ Avoid using names like `id`, `list`, `dict`, `str`, `input` for your variables.
 ### ❌ `type()` vs `isinstance()`
 Use `isinstance(obj, Class)` because it respects inheritance. `type(obj) == Class` does not.
 
-## 4. Data Safety & Integrity (CRITICAL)
+## 4. Structured Logging (MANDATORY for Invocable Scripts)
+
+Stop using `print()` for debugging or status updates. Use the standard `logging` library or `structlog`. This ensures logs are machine-readable and easy to filter.
+
+```python
+import logging
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+)
+logger = logging.getLogger(__name__)
+
+# Use appropriate levels
+logger.info("Starting data ingestion...")
+logger.warning("Subset of data contains nulls in non-nullable column.")
+logger.error("Failed to connect to database.", exc_info=True)
+```
+
+## 5. Data Safety & Integrity (CRITICAL)
 
 To prevent irreversible data loss, especially during autonomous execution:
 

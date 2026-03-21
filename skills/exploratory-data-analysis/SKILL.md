@@ -59,8 +59,9 @@ Use `scripts/eda_analyzer.py` for automated file analysis or run custom profilin
 ### Step 3: Deep Logic Checks
 Apply the hierarchical and nullity checks defined above to uncover hidden data rules.
 
-### Step 4: Generate Report
+### Step 4: Generate Report & Memory
 Create a `{filename}_eda_report.md` with Findings, Data Quality Issues, and Downstream Recommendations.
+- **MANDATORY**: Update `.claude_data_dictionary.json` in the project root. This file acts as the agent's long-term memory for dataset schemas, column meanings, and discovered hierarchies.
 
 ## References (Load on demand)
 - `references/advanced_eda_questions.md` — Detailed logic for hierarchy and nullity checks.

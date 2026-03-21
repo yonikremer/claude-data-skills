@@ -20,6 +20,12 @@ ruff format .
 ruff check --fix .
 ```
 
+### Auto-Formatting (MANDATORY ACTION)
+Before delivering or committing any Python code, you MUST run auto-formatting tools. This ensures the code is clean, consistent, and follows project standards without manual effort.
+
+- **Action**: Execute `ruff format .` and `ruff check --fix .` in the project root or on specific files.
+- **Benefit**: Fixes common PEP-8 issues, sorts imports, and removes unused variables automatically.
+
 ### PEP-8 Essentials
 - **Naming**: 
   - `snake_case` for functions, variables, and modules.

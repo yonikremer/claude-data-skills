@@ -1,62 +1,88 @@
-# CLAUDE.md
+# claude-data-skills
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+A personal collection of Claude Code skills for commercial data research and analysis.
+Maintained by @yonikremer. Public but personal — no bio, med, physics, or public dataset skills.
 
-## Overview
+## What's in This Repo
 
-This repository is **claude-scientific-skills**, a Claude Code plugin by K-Dense Inc. containing 150+ skills for scientific computing, data analysis, bioinformatics, cheminformatics, machine learning, and research workflows. It is distributed via the Claude Code plugin marketplace.
+Skills are organized under `skills/`. Each skill is a folder with a `SKILL.md` and optional
+`scripts/` and `references/` subdirectories.
+
+### Data Analysis & Querying
+- **analyze** — Ad-hoc data questions, statistical analysis, EDA on private datasets
+- **explore-data** — Profile a dataset's shape, types, nulls, distributions, and anomalies
+- **write-query** — Optimized SQL with dialect-specific best practices
+- **build-dashboard** — Interactive HTML dashboards with filters and charts
+- **create-viz** — Python visualizations (matplotlib/seaborn/plotly), publication-quality
+- **validate** — Pre-delivery QA: catch survivorship bias, incorrect aggregations, type errors
+- **sqlite** — SQLite-specific queries, indexing, and optimization
+- **postgresql** — PostgreSQL best practices, window functions, EXPLAIN plans, indexing
+- **oracle** — Oracle SQL conventions: ROWNUM, CONNECT BY, bind variables, hints
+- **elasticsearch** — Elasticsearch query DSL, aggregations, index mapping, search optimization
+
+### File Formats
+- **csv** — Parse, clean, and analyze CSV/TSV files including malformed inputs
+- **excel** (xlsx) — Spreadsheet manipulation: formulas, charts, data transformations
+- **pdf** — Extract text, tables, and metadata from PDFs
+- **json** — Parse, validate, and transform JSON/JSONL with schema enforcement
+- **audio** — Audio metadata extraction, waveform analysis, feature extraction
+
+### ML & Modeling
+- **scikit-learn** — Classification, regression, clustering, preprocessing pipelines
+- **timeseries** — Time series forecasting, decomposition, anomaly detection
+- **xgboost** — Gradient boosting for tabular data, hyperparameter tuning
+- **error-analysis** — Systematically identify and categorize model failure modes
+
+### Utilities
+- **generate-synthetic-data** — Create realistic synthetic data for testing pipelines
+- **pptx** — Generate data-driven slide decks programmatically
 
 ## Releasing
 
-Releases are fully automated via GitHub Actions (`.github/workflows/release.yml`). To release a new version:
-1. Bump the `version` field in `.claude-plugin/marketplace.json`
-2. Commit and push to `main` — the workflow auto-creates a GitHub Release with a changelog
+Releases are automated via GitHub Actions (`.github/workflows/release.yml`).
+To release: bump `version` in `.claude-plugin/marketplace.json`, commit to `main`.
+No build step, test suite, or linting.
 
-There is no build step, test suite, or linting configuration in this repository.
+## Plugin Entry Point
 
-## Architecture
+`.claude-plugin/marketplace.json` registers the plugin and lists all skill paths.
+Every new skill must be added here to be distributed.
 
-### Plugin Entry Point
-
-`.claude-plugin/marketplace.json` — registers the plugin and lists all skill paths. Every new skill must be added here to be distributed.
-
-### Skill Structure
-
-Each skill lives under `scientific-skills/<skill-name>/` and follows this pattern:
+## Skill Structure
 
 ```
-scientific-skills/<skill-name>/
-├── SKILL.md              # Required: entry point loaded by Claude Code
-├── references/           # Optional: supplementary reference docs loaded on demand
+skills/<skill-name>/
+├── SKILL.md              # Required: YAML frontmatter + instructions
+├── references/           # Optional: loaded on demand, no context cost until read
 │   └── *.md
-└── scripts/              # Optional: executable Python/shell scripts
+└── scripts/              # Optional: Python/shell scripts executed via bash
 ```
 
-### SKILL.md Format
-
-Every `SKILL.md` must have YAML frontmatter:
+## SKILL.md Frontmatter Template
 
 ```yaml
 ---
 name: skill-name
-description: One-liner used for skill matching/routing — be precise about when to use vs. alternatives
-license: https://...
+description: >
+  One precise sentence on what this skill does. Then: "Use when [trigger conditions].
+  Do NOT use when [anti-cases — name the correct alternative skill instead]."
+license: MIT
 metadata:
-    skill-author: K-Dense Inc.
+    skill-author: yonikremer
 ---
 ```
 
-The `description` field is critical — it determines when Claude activates the skill. Reference documentation in `references/` is loaded on demand within the skill (e.g., "For details, load `references/core_concepts.md`").
+The `description` is the only field Claude reads at startup (~100 tokens per skill).
+Make it unambiguous — Claude picks from all installed skills based on this alone.
 
-### Skill Categories
+## Hard Rules
 
-- **Library skills**: Wrap a Python package (polars, dask, matplotlib, scikit-learn, etc.)
-- **Database skills**: Provide access patterns for scientific databases (PubMed, ChEMBL, UniProt, etc.)
-- **Workflow skills**: Orchestrate multi-step scientific processes (EDA, peer-review, scientific-writing, etc.)
-- **Integration skills**: Connect to external platforms (Benchling, DNAnexus, Opentrons, etc.)
-- **Output skills**: Generate documents (docx, pdf, pptx, xlsx, latex-posters, etc.)
-
-### Special Skills
-
-- **`get-available-resources`**: Should be triggered at the start of any computationally intensive task. Runs `scripts/detect_resources.py` → writes `.claude_resources.json` with CPU/GPU/memory/disk info and recommendations.
-- **`exploratory-data-analysis`**: General-purpose EDA entry point.
+- All data is private and commercial — never suggest public datasets or external APIs
+- Always use `polars` over `pandas` for dataframe work
+- Always use `orjson` for JSON serialization
+- Use `uv` for package management — never raw `pip`
+- Use `logger.error` not `print` for error reporting
+- Never ingest more than 10 rows of a dataframe into context at once
+- Use `pathlib.Path` everywhere — no hardcoded string paths
+- Type hints on all function signatures
+- Line length: 88 chars (ruff standard)

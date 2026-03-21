@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Professional Data Science & Research toolkit optimized for Open-Source LLMs, featuring resource-aware skills and idiomatic Python best practices.",
-    "version": "1.1.0"
+    "version": "1.2.0"
   },
   "plugins": [
     {
@@ -68,22 +68,16 @@
         "./skills/pathlib",
         "./skills/git",
         "./skills/windows-cli",
-        "./skills/data-validation-technical",
-        "./skills/statistical-analysis-academic",
-        "./skills/data-validation-methodology",
-        "./skills/analyze",
         "./skills/build-dashboard",
-        "./skills/create-viz",
         "./skills/data-context-extractor",
         "./skills/data-visualization",
-        "./explore-data",
         "./skills/sql-queries",
-        "./skills/write-query",
-        "./skills/statistical-analysis-business",
         "./skills/anomaly-detection",
         "./skills/pydantic",
         "./skills/pytest",
-        "./skills/python-best-practices"
+        "./skills/python-best-practices",
+        "./skills/data-validation",
+        "./skills/statistical-analysis"
       ]
     }
   ]

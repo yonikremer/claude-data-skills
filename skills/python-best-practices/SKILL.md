@@ -101,7 +101,18 @@ We recognize that not all code requires 100% coverage.
 - **Lazy Loading**: Use `yield` generators or Polars lazy mode for data that doesn't fit in memory.
 - **Pre-allocation**: If you must use a loop and know the size, pre-allocate the list/array instead of repeatedly appending.
 
-## 6. Documentation
+## 6. Reproducibility & Randomness (MANDATORY)
+
+To ensure research results are replicable, every script involving randomness MUST use a fixed seed.
+
+- **Global Constant**: Standardize on `RANDOM_STATE = 42`.
+- **Implementation**: 
+  - NumPy: `np.random.seed(RANDOM_STATE)`
+  - Scikit-Learn: `train_test_split(..., random_state=RANDOM_STATE)`
+  - PyTorch: `torch.manual_seed(RANDOM_STATE)`
+- **Rule**: Never leave `random_state` or `seed` as `None` in an invocable script.
+
+## 7. Documentation
 
 - **Docstrings**: Use Google or NumPy style for public-facing functions.
 - **Type Hints**: Highly encouraged for all function signatures to enable better IDE support and catch bugs early.

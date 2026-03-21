@@ -16,9 +16,21 @@ Model training can be CPU and RAM intensive.
 
 ## Strict Workflow Rigor
 
-1. **Always Split**: Use `train_test_split` before any exploration.
-2. **Pipelines**: Use `Pipeline` or `make_pipeline` to prevent data leakage during scaling/imputation.
+1. **Always Split**: Use `train_test_split(..., random_state=42)` before any exploration.
+2. **Pipelines**: Use `Pipeline` or `make_pipeline`. Stateful transformers (Scalers, Encoders) MUST be fit on train data only.
 3. **Cross-Validation**: Never rely on a single split. Use `cross_val_score` or `GridSearchCV`.
+4. **No `get_dummies`**: Avoid `pd.get_dummies` for ML. Use `OneHotEncoder` within a Pipeline to handle unseen categories gracefully.
+
+## Post-Training Diagnostics (MANDATORY)
+
+A model is not finished until these diagnostics are reported:
+- **Regression**:
+  - **Residual Plot**: Check for heteroscedasticity (patterns in errors).
+  - **Metrics**: Report MAE, RMSE, and R².
+- **Classification**:
+  - **Confusion Matrix**: Visualize with `ConfusionMatrixDisplay`.
+  - **Calibration**: Check `calibration_curve` if probabilities are used for decision making.
+  - **Precision-Recall**: Use for imbalanced datasets instead of ROC-AUC.
 
 ## Common Pitfalls (The "Wall of Shame")
 

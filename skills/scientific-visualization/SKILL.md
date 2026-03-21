@@ -53,7 +53,19 @@ save_publication_figure(fig, 'figure1', formats=['pdf', 'png'], dpi=300)
 
 ## Core Principles and Best Practices
 
-### 1. Resolution and File Format
+### 1. Descriptive & Technically Correct Labeling (MANDATORY)
+
+Every figure must clearly state **what** is being shown, **which subset** of data it represents, and **any filters** applied.
+
+- **Specific Titles**: Move from generic to descriptive.
+  - *Generic*: "Protein Expression"
+  - *Scientific*: "Relative Protein Expression in HepG2 Cells after 24h Treatment (n=3)"
+- **Axis Labels with Units**: Always include the metric and the unit in parentheses.
+  - *Bad*: "Weight"
+  - *Good*: "Body Mass (kg)"
+- **Filter Transparency**: If the analysis is performed on a subset (e.g., only "Wild Type" or "Male mice"), this must be explicitly stated in the title or a prominent legend title.
+
+### 2. Resolution and File Format
 
 **Critical requirements** (detailed in `references/publication_guidelines.md`):
 - **Vector formats** (preferred): PDF, EPS, SVG. Use these for all plots.
@@ -148,7 +160,19 @@ save_publication_figure(fig, 'treatment_comparison', formats=['pdf', 'png'], dpi
 
 ## Core Principles and Best Practices
 
-### 1. Resolution and File Format
+### 1. Descriptive & Technically Correct Labeling (MANDATORY)
+
+Every figure must clearly state **what** is being shown, **which subset** of data it represents, and **any filters** applied.
+
+- **Specific Titles**: Move from generic to descriptive.
+  - *Generic*: "Protein Expression"
+  - *Scientific*: "Relative Protein Expression in HepG2 Cells after 24h Treatment (n=3)"
+- **Axis Labels with Units**: Always include the metric and the unit in parentheses.
+  - *Bad*: "Weight"
+  - *Good*: "Body Mass (kg)"
+- **Filter Transparency**: If the analysis is performed on a subset (e.g., only "Wild Type" or "Male mice"), this must be explicitly stated in the title or a prominent legend title.
+
+### 2. Resolution and File Format
 
 **Critical requirements** (detailed in `references/publication_guidelines.md`):
 - **Raster images** (photos, microscopy): 300-600 DPI

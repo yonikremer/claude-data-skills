@@ -38,7 +38,16 @@ Before sharing results, run this checklist:
 - **Average of Averages**: Always aggregate from raw data.
 - **Simpson's Paradox**: Check if trends reverse when segmented.
 
-## 3. Statistical Sanity
+## 3. Leakage & Bias Audit (MANDATORY)
+
+Before finalizing any predictive analysis, audit for:
+- **Target Leakage**: Are any features derived from the target variable? (e.g., using "total_spent" to predict "customer_churn").
+- **Future Look-ahead**: In time-series, are you using future data to predict the past? 
+  - *Fix*: Always use `TimeSeriesSplit` for temporal data.
+- **Categorical State Leakage**: Did you run `get_dummies` or `fit_transform` on the *entire* dataset before splitting?
+  - *Fix*: Always fit transformers on **Train Only** and use a Pipeline.
+
+## 4. Statistical Sanity
 - **Magnitude**: Are the numbers plausible? (e.g., conversion between 0-100%).
 - **Cross-Validation**: Calculate the same metric two different ways to see if they match.
 - **Red Flags**: Any metric that changed >50% WoW without an obvious cause.

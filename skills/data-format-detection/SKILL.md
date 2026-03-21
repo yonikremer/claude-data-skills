@@ -1,405 +1,99 @@
 ---
 name: data-format-detection
-description: Identifies the format and encoding of unknown raw bytes or files. Use when receiving unlabelled binary blobs or data from legacy systems. Do NOT use for parsing known formats (use json-processing) or for data validation (use data-validation-technical).
+description: Identifies the format and encoding of unknown binary files or raw bytes. Use for deep forensic inspection of unlabelled data using magic bytes, ffprobe, and bitwise similarity.
 ---
-# Data Format Detection
+# Data Format Detection (Forensic Grade)
 
-## Quick Identification Workflow
+This skill provides a professional framework for identifying unknown data formats and character encodings.
 
-```python
-from pathlib import Path
+## 1. Magic Byte Identification (MANDATORY TOOLS)
 
-def identify_file(path: str) -> dict:
-    """Run all detectors and return a summary."""
-    p = Path(path)
-    with open(path, 'rb') as f:
-        header = f.read(512)
-        f.seek(0, 2)
-        size = f.tell()
+NEVER rely on manual dictionaries. Use industry-standard libraries that wrap the `libmagic` database.
 
-    return {
-        'size_bytes': size,
-        'magic':      detect_magic(header),
-        'encoding':   detect_text_encoding(header),
-        'structure':  detect_structure(header),
-    }
-```
-
-## Magic Bytes — Known File Signatures
-
-The first few bytes of a file uniquely identify most formats:
-
-```python
-MAGIC_SIGNATURES = {
-    # Archives / compression
-    b'\x1f\x8b':                     'gzip',
-    b'BZh':                          'bzip2',
-    b'\xfd7zXZ\x00':                 'xz',
-    b'PK\x03\x04':                   'zip',
-    b'Rar!\x1a\x07':                 'rar',
-    b'\x28\xb5\x2f\xfd':             'zstd',
-    b'\x04\x22\x4d\x18':             'lz4',
-    # Documents / data formats
-    b'PAR1':                         'parquet',
-    b'ORC':                          'orc',
-    b'\x89HDF':                      'hdf5',
-    b'SIMPLE  =':                    'fits',           # astronomy
-    b'CDF\x01' or b'\xcd\xf0\x01':  'netcdf3',
-    # Structured text
-    b'\xef\xbb\xbf':                 'utf-8-bom',
-    b'\xff\xfe':                     'utf-16-le-bom',
-    b'\xfe\xff':                     'utf-16-be-bom',
-    # Images
-    b'\x89PNG\r\n\x1a\n':            'png',
-    b'\xff\xd8\xff':                 'jpeg',
-    b'GIF87a' or b'GIF89a':         'gif',
-    b'RIFF':                         'wav/avi',
-    b'II*\x00' or b'MM\x00*':       'tiff',
-    # Binary data
-    b'MATLAB 5.0':                   'matlab-mat',
-    b'\x93NUMPY':                    'numpy-npy',
-    b'PK':                           'npz (zip)',      # .npz is a zip file
-    b'\x80\x02':                     'python-pickle2',
-    b'\x80\x03':                     'python-pickle3',
-    b'\x80\x04':                     'python-pickle4',
-    b'\x80\x05':                     'python-pickle5',
-    # Database
-    b'SQLite format 3':              'sqlite3',
-}
-
-def detect_magic(header: bytes) -> str:
-    for magic, fmt in MAGIC_SIGNATURES.items():
-        if header.startswith(magic):
-            return fmt
-    # Check longer patterns
-    if header[0:4] == b'\x00\x00\x00\x0c' and header[4:8] in (b'ftyp', b'mdat'):
-        return 'mp4/mov'
-    return 'unknown'
-```
-
-## python-magic Library (libmagic bindings)
-
-The most complete magic-byte database:
-
-```bash
-pip install python-magic
-# Windows: pip install python-magic-bin
-```
-
+### python-magic (Primary)
 ```python
 import magic
 
-# MIME type
-mime = magic.from_file('unknown_file', mime=True)
-# e.g. 'application/gzip', 'text/csv', 'application/x-hdf'
-
-# Human-readable description
-desc = magic.from_file('unknown_file')
-# e.g. 'gzip compressed data, last modified: ...'
-
-# From bytes (no file needed)
-mime = magic.from_buffer(raw_bytes[:1024], mime=True)
-desc = magic.from_buffer(raw_bytes[:1024])
+# Detect MIME type
+mime = magic.from_file('unknown_blob', mime=True)
+# Detect human description
+desc = magic.from_file('unknown_blob')
+print(f"MIME: {mime} ({desc})")
 ```
 
-## filetype Library (no libmagic dependency)
-
-```bash
-pip install filetype
-```
-
+### filetype (Zero-dependency fallback)
+Use for common file types (images, video, archives) if `libmagic` is unavailable.
 ```python
 import filetype
-
-kind = filetype.guess('unknown_file')
+kind = filetype.guess('unknown_blob')
 if kind:
-    print(kind.mime)       # 'image/png'
-    print(kind.extension)  # 'png'
-
-# From bytes
-kind = filetype.guess(raw_bytes[:261])   # needs at most 261 bytes
-
-# Type checks
-filetype.is_image('file.xyz')
-filetype.is_archive('file.xyz')
-filetype.is_video('file.xyz')
+    print(f"Extension: {kind.extension}, MIME: {kind.mime}")
 ```
 
-## Compression Detection and Decompression
-
-```python
-import gzip, bz2, lzma, zipfile, io
-from pathlib import Path
-
-def decompress(data: bytes) -> bytes:
-    """Try common compression formats and return decompressed bytes."""
-    # gzip
-    if data[:2] == b'\x1f\x8b':
-        return gzip.decompress(data)
-    # bzip2
-    if data[:3] == b'BZh':
-        return bz2.decompress(data)
-    # xz / lzma
-    if data[:6] == b'\xfd7zXZ\x00':
-        return lzma.decompress(data)
-    # zlib (no header — try and see)
-    try:
-        import zlib
-        return zlib.decompress(data)
-    except Exception:
-        pass
-    # zstd
-    try:
-        import zstandard
-        return zstandard.ZstdDecompressor().decompress(data)
-    except Exception:
-        pass
-    return data   # not compressed
-
-def open_any(path: str) -> io.IOBase:
-    """Open a file transparently, handling common compressions."""
-    p = Path(path)
-    if p.suffix == '.gz':
-        return gzip.open(path, 'rb')
-    if p.suffix == '.bz2':
-        return bz2.open(path, 'rb')
-    if p.suffix in ('.xz', '.lzma'):
-        return lzma.open(path, 'rb')
-    if p.suffix == '.zip':
-        zf = zipfile.ZipFile(path)
-        return zf.open(zf.namelist()[0])
-    return open(path, 'rb')
-```
-
-## Text Encoding Detection
-
-```python
-# chardet: most popular
-# pip install chardet
-import chardet
-
-with open('unknown.txt', 'rb') as f:
-    raw = f.read(10_000)   # read a sample
-
-result = chardet.detect(raw)
-# {'encoding': 'UTF-8', 'confidence': 0.99, 'language': ''}
-
-encoding   = result['encoding']    # 'UTF-8', 'ISO-8859-1', 'windows-1252', etc.
-confidence = result['confidence']  # 0.0 – 1.0
-
-# charset-normalizer: more accurate alternative
-# pip install charset-normalizer
-from charset_normalizer import from_bytes, from_path
-
-results = from_bytes(raw)
-best = results.best()
-print(best.encoding)    # detected encoding
-print(str(best))        # decoded string
-
-# Open with detected encoding
-with open('unknown.txt', 'rb') as f:
-    raw = f.read()
-enc = chardet.detect(raw)['encoding'] or 'utf-8'
-text = raw.decode(enc, errors='replace')
-```
-
-## Structured Format Sniffing
-
-```python
-import csv, json, io
-
-def sniff_text_format(text: str) -> str:
-    """Try to identify the structure of a text file."""
-    stripped = text.strip()
-
-    # JSON
-    if stripped.startswith(('{', '[')):
-        try:
-            json.loads(stripped)
-            return 'json'
-        except json.JSONDecodeError:
-            pass
-
-    # NDJSON
-    lines = stripped.splitlines()
-    if lines:
-        try:
-            json.loads(lines[0])
-            return 'ndjson'
-        except json.JSONDecodeError:
-            pass
-
-    # XML / HTML
-    if stripped.startswith('<'):
-        if '<!DOCTYPE html' in stripped[:200].lower() or '<html' in stripped[:200].lower():
-            return 'html'
-        return 'xml'
-
-    # CSV / TSV — use csv.Sniffer
-    try:
-        dialect = csv.Sniffer().sniff(stripped[:2048])
-        has_header = csv.Sniffer().has_header(stripped[:2048])
-        return f'csv (delimiter={repr(dialect.delimiter)}, header={has_header})'
-    except csv.Error:
-        pass
-
-    return 'plain text'
-
-
-def sniff_binary_format(data: bytes) -> str:
-    """Try to identify binary format."""
-    h = data[:16]
-
-    if h[:4] == b'PAR1':               return 'parquet'
-    if h[:3] == b'ORC':                return 'orc'
-    if h[:8] == b'\x89HDF\r\n\x1a\n': return 'hdf5'
-    if h[:2] == b'\x1f\x8b':          return 'gzip'
-    if h[:3] == b'BZh':               return 'bzip2'
-    if h[:4] == b'PK\x03\x04':        return 'zip'
-    if h[:8] == b'\x93NUMPY':         return 'numpy-npy'
-    if h[:1] in (b'\x80',) and h[1:2] in (b'\x02',b'\x03',b'\x04',b'\x05'):
-        return f'python-pickle-v{data[1]}'
-    if b'MATLAB 5.0' in data[:128]:   return 'matlab-mat'
-    if h[:16] == b'SQLite format 3\x00': return 'sqlite3'
-
-    # Try to detect if it's text with non-UTF8 encoding
-    try:
-        data[:512].decode('utf-8')
-        return sniff_text_format(data[:4096].decode('utf-8', errors='replace'))
-    except UnicodeDecodeError:
-        pass
-
-    return 'unknown binary'
-```
-
-## Hexdump and Manual Inspection
-
-```python
-def hexdump(data: bytes, width: int = 16, max_rows: int = 32) -> None:
-    """Print a hex+ASCII dump for manual inspection."""
-    for i in range(0, min(len(data), width * max_rows), width):
-        chunk = data[i:i + width]
-        hex_part = ' '.join(f'{b:02x}' for b in chunk)
-        asc_part = ''.join(chr(b) if 32 <= b < 127 else '.' for b in chunk)
-        print(f'{i:08x}  {hex_part:<{width * 3}}  |{asc_part}|')
-
-def byte_frequency(data: bytes) -> dict:
-    """Show byte value distribution — helps distinguish text from binary."""
-    from collections import Counter
-    freq = Counter(data)
-    printable = sum(freq[b] for b in range(32, 127))
-    null_bytes = freq[0]
-    high_bytes = sum(freq[b] for b in range(128, 256))
-    return {
-        'total':     len(data),
-        'printable': printable,
-        'printable_pct': printable / len(data),
-        'null_bytes': null_bytes,
-        'high_bytes': high_bytes,
-        'unique_values': len(freq),
-        'likely_text': printable / len(data) > 0.9 and null_bytes < len(data) * 0.01,
-    }
-
-# Usage
-with open('unknown_file', 'rb') as f:
-    raw = f.read(1024)
-
-hexdump(raw)
-print(byte_frequency(raw))
-print(sniff_binary_format(raw))
-```
-
-## Advanced Tools and Techniques
-
-Beyond magic bytes, use these professional tools for deep inspection of unknown data.
-
-### 1. Media Discovery with FFprobe
-If you suspect a file is a media stream (audio, video, or container) that lacks a standard extension, use `ffprobe`.
+## 2. Media Discovery with FFprobe
+If a file lacks headers but is suspected to be a media stream (raw PCM, H.264, etc.), use FFprobe.
 
 ```bash
-# Check if ffprobe can decode any streams
+# Force probe all streams
 ffprobe -v error -show_format -show_streams unknown_file
 
-# Check for specific data at the start of the file
+# Check for specific metadata
 ffprobe -i unknown_file -show_entries format=format_name,duration -of default=noprint_wrappers=1
 ```
 
-### 2. CyberChef Patterns (Multi-step Transformations)
-CyberChef is the "Swiss Army Knife" for data. Use these mental models for common patterns:
-- **Base64 + Gzip**: Common for web payloads.
-- **Hex to Char**: For raw logs.
-- **XOR Brute Force**: If you see high entropy but repetitive small byte variations.
-- **Bit Flip**: For corrupted binary streams.
+## 3. Encoding Detection (MANDATORY)
 
-### 3. Periodic Structure Analysis (The "Frame Size" Trick)
-For raw sensor data, telemetry, or unaligned binary streams, use self-similarity to find the "period" or "record size".
-
-**Logic**: Divide the file into candidate frame sizes (e.g., 1 to 1024 bytes) and find the size where adjacent frames are most similar.
+For text-like data, use `charset-normalizer` (the modern successor to `chardet`).
 
 ```python
-# Use the included script for automated detection:
+from charset_normalizer import from_path
+
+results = from_path('unknown.txt')
+best_guess = results.best()
+
+if best_guess:
+    print(f"Encoding: {best_guess.encoding} (Confidence: {best_guess.ratio})")
+    # Open with the detected encoding
+    content = str(best_guess)
+```
+
+## 4. Bitwise Periodic Structure (The "Frame Size" Trick)
+
+For raw telemetry, sensor data, or unaligned binary streams, use bit-level self-similarity to find the record size.
+
+**Logic**: Convert the file to a bitstream and search for the bit-period (1 to file size) where adjacent bit-frames are most similar (lowest XOR difference).
+
+```python
+# Use the optimized bitwise detector:
 # python skills/data-format-detection/scripts/periodic_structure_detector.py <file>
 ```
 
-### 4. Entropy Analysis
-Entropy (bits per byte) tells you if data is structured, compressed, or encrypted.
-- **0.0 - 4.0**: Highly structured (sparse arrays, zeros, repetitive text).
-- **4.0 - 6.0**: Normal structured data (JSON, CSV, Source Code).
-- **6.0 - 7.5**: Compressed data (Gzip, PNG, etc.).
-- **7.5 - 8.0**: Encrypted data or high-quality random noise.
+## 5. Entropy & Forensic Analysis
 
-### 5. Strings Analysis
-Always check for human-readable ASCII/UTF-16 strings buried in binary blobs.
+- **Entropy**: High entropy (>7.5 bits/byte) indicates compression or encryption. Low entropy (<4.0) indicates highly structured/sparse data.
+- **CyberChef Patterns**:
+  - **Base64 + Gzip**: Web/API payloads.
+  - **XOR Brute Force**: Simple obfuscation.
+  - **Bit Flip**: Corrupted streams.
+- **Strings**: Always check for human-readable content.
+  ```bash
+  strings -n 6 unknown_file | head -n 20
+  ```
 
-```bash
-# Find strings of at least 4 characters
-strings -n 4 unknown_file | head -n 20
-```
-
-## All-in-One Detector
-
+## 6. Compression Sniffing
+If magic bytes are missing, try transparent decompression:
 ```python
-def detect_format(path_or_bytes) -> dict:
-    """Comprehensive format detection."""
-    if isinstance(path_or_bytes, (str, Path)):
-        with open(path_or_bytes, 'rb') as f:
-            data = f.read(4096)
-        path = str(path_or_bytes)
-    else:
-        data = path_or_bytes[:4096]
-        path = None
+import gzip, zlib, bz2, lzma
 
-    result = {}
-
-    # 1. python-magic (best if available)
+def sniff_compression(data):
+    # Try common headers
+    if data.startswith(b'\x1f\x8b'): return "gzip"
+    if data.startswith(b'BZh'): return "bzip2"
+    # Try raw zlib
     try:
-        import magic
-        result['magic_mime'] = magic.from_buffer(data, mime=True)
-        result['magic_desc'] = magic.from_buffer(data)
-    except ImportError:
+        zlib.decompress(data)
+        return "zlib (raw)"
+    except:
         pass
-
-    # 2. filetype
-    try:
-        import filetype
-        kind = filetype.guess(data)
-        result['filetype'] = kind.mime if kind else None
-    except ImportError:
-        pass
-
-    # 3. Manual magic bytes
-    result['detected'] = sniff_binary_format(data)
-
-    # 4. Encoding (if text-like)
-    freq = byte_frequency(data)
-    result['byte_stats'] = freq
-    if freq['likely_text']:
-        try:
-            import chardet
-            enc = chardet.detect(data)
-            result['encoding'] = enc
-        except ImportError:
-            pass
-
-    return result
+    return None
 ```

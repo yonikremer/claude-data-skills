@@ -202,7 +202,11 @@
         "./scientific-skills/regex",
         "./scientific-skills/sqlalchemy",
         "./scientific-skills/plotly-dash",
-        "./scientific-skills/data-validation"
+        "./scientific-skills/data-validation",
+        "./scientific-skills/jupyter",
+        "./scientific-skills/multithreading-io",
+        "./scientific-skills/scipy",
+        "./scientific-skills/data-format-detection"
       ]
     }
   ]

@@ -1,11 +1,7 @@
 ---
 name: binary-data-parsing
-description: Parse and manipulate raw binary data, byte streams, and custom binary file formats. Use when working with binary protocols, sensor/instrument output, legacy file formats, network packets, or any data that requires bit/byte-level access. Covers Python bytes/bytearray/memoryview (stdlib), struct (stdlib), bitarray (efficient bit arrays), construct (declarative parsing), bitstring (bit streams), and mmap (large files). Not for standard formats like Parquet/HDF5 — use polars or zarr for those.
-license: MIT
-metadata:
-    skill-author: K-Dense Inc.
+description: Parses and manipulates raw binary data and custom file formats. Use when working with sensor outputs, legacy binary formats, or bit-level protocols. Do NOT use for standard columnar formats (use pandas) or for identifying unknown file types (use data-format-detection).
 ---
-
 # Binary Data Parsing
 
 ## Overview

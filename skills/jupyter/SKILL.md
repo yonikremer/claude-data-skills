@@ -1,11 +1,7 @@
 ---
 name: jupyter
-description: Work effectively in Jupyter notebooks — magic commands, widgets, rich output, nbconvert, and productivity tips. Use when writing, running, or converting notebooks, or when adding interactivity with ipywidgets. Covers JupyterLab and classic notebook.
-license: https://github.com/jupyter/notebook/blob/main/LICENSE
-metadata:
-    skill-author: K-Dense Inc.
+description: Manages interactive development and visualization within Jupyter notebooks. Use when prototyping analyses or creating interactive widgets. Do NOT use for production-grade automation (use cli-scripts) or for complex web apps (use plotly-dash).
 ---
-
 # Jupyter
 
 ## Essential Magic Commands

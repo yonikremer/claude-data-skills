@@ -1,11 +1,7 @@
 ---
 name: log-parsing
-description: Parse structured and unstructured log files in Python. Use when working with syslog, Apache/nginx access logs, application logs, JSON logs, or any text-based log format. Covers regex extraction, Python logging module, structlog, common log formats, and loading results into pandas for analysis.
-license: MIT
-metadata:
-    skill-author: K-Dense Inc.
+description: Parses structured and unstructured log files into DataFrames for analysis. Use when processing syslog, access logs, or application logs. Do NOT use for real-time monitoring (use elasticsearch) or for simple text search (use regex).
 ---
-
 # Log Parsing
 
 ## Overview

@@ -1,11 +1,7 @@
 ---
 name: multithreading-io
-description: Speed up I/O-bound Python work using threads — concurrent DB queries, parallel file reads, simultaneous API calls, and S3 downloads. Use ThreadPoolExecutor for CPU-light work that spends time waiting (network, disk, database). For CPU-bound work use multiprocessing instead. Covers ThreadPoolExecutor, asyncio+aiohttp, Queue-based pipelines, and thread-safe patterns.
-license: MIT
-metadata:
-    skill-author: K-Dense Inc.
+description: Accelerates I/O-bound tasks like API calls and file operations using threads or asyncio. Use when overlapping network waits to improve ingestion speed. Do NOT use for CPU-bound computations (use dask or multiprocessing).
 ---
-
 # Multithreading for I/O-Bound Work
 
 ## When to Use Threads

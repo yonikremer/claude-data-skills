@@ -1,11 +1,7 @@
 ---
 name: plotly-dash
-description: Build interactive web dashboards in Python with Plotly Dash. Use when you need interactive charts with dropdowns, sliders, date pickers, and real-time updates — without JavaScript. Covers layout, callbacks, DataTable, graphs, deployment, and integration with pandas DataFrames.
-license: https://github.com/plotly/dash/blob/dev/LICENSE
-metadata:
-    skill-author: K-Dense Inc.
+description: Builds interactive web dashboards and data applications. Use when creating complex reactive UIs with charts and sliders. Do NOT use for simple static plots (use plotly) or for basic notebook interactivity (use jupyter).
 ---
-
 # Plotly Dash
 
 ## Overview

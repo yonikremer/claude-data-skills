@@ -1,9 +1,8 @@
 ---
 name: build-dashboard
-description: Build an interactive HTML dashboard with charts, filters, and tables. Use when creating an executive overview with KPI cards, turning query results into a shareable self-contained report, building a team monitoring snapshot, or needing multiple charts with filters in one browser-openable file.
+description: Builds interactive HTML dashboards with KPI cards, charts, and tables. Use when creating shareable executive overviews or multi-chart reports with browser-based filtering. Do NOT use for permanent web applications (use plotly-dash) or for simple single-chart visualizations (use create-viz).
 argument-hint: "<description> [data source]"
 ---
-
 # /build-dashboard - Build Interactive Dashboards
 
 > If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).

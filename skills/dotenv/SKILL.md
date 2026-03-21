@@ -1,11 +1,7 @@
 ---
 name: dotenv
-description: Manage configuration and secrets using environment variables and .env files. Use for database credentials, API keys, S3 config, and any value that varies between environments (dev/staging/prod). Covers python-dotenv, os.environ, and pydantic-settings for typed config objects.
-license: MIT
-metadata:
-    skill-author: K-Dense Inc.
+description: Manages configuration and secrets using environment variables and .env files. Use when handling database credentials or API keys in applications. Do NOT use for storing large datasets (use s3) or for version control (use git).
 ---
-
 # dotenv and Config Management
 
 ## Quick Start

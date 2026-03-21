@@ -1,9 +1,8 @@
 ---
 name: write-query
-description: Write optimized SQL for your dialect with best practices. Use when translating a natural-language data need into SQL, building a multi-CTE query with joins and aggregations, optimizing a query against a large partitioned table, or getting dialect-specific syntax for Snowflake, BigQuery, Postgres, etc.
+description: Generates optimized SQL queries from natural language descriptions. Use when building complex multi-CTE joins or translating needs into SQL syntax. Do NOT use for executing queries (use sql-queries) or for basic analysis (use analyze).
 argument-hint: "<description of what data you need>"
 ---
-
 # /write-query - Write Optimized SQL
 
 > If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).

@@ -1,11 +1,7 @@
 ---
 name: elasticsearch
-description: Query and index data in Elasticsearch using the official Python client. Use for full-text search, log analysis, aggregations, and bulk indexing. Covers the Query DSL (match, term, range, bool, aggs), scroll/search_after for large result extraction, bulk indexing, and loading results into pandas.
-license: https://www.elastic.co/licensing/
-metadata:
-    skill-author: K-Dense Inc.
+description: Queries and indexes data in Elasticsearch for search and log analysis. Use when performing full-text search or complex aggregations on large logs. Do NOT use for relational data modeling (use postgresql) or for simple tabular storage (use s3).
 ---
-
 # Elasticsearch
 
 ## Quick Start

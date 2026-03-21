@@ -1,11 +1,7 @@
 ---
 name: pandas
-description: The standard Python DataFrame library for tabular data that fits in RAM. Use for data cleaning, transformation, merging, time series, and I/O with CSV/JSON/SQL/Parquet/Excel/S3. Best for datasets up to a few GB. For larger-than-memory data use dask; for faster in-memory processing use polars.
-license: https://github.com/pandas-dev/pandas/blob/main/LICENSE
-metadata:
-    skill-author: K-Dense Inc.
+description: Analyzes and transforms tabular data using DataFrames. Use for data cleaning, merging, and time-series analysis of datasets that fit in memory. Do NOT use for larger-than-memory datasets (use dask) or for extreme performance (use polars).
 ---
-
 # pandas
 
 ## Overview

@@ -1,11 +1,7 @@
 ---
-name: data-validation
-description: Validate data quality, schemas, and constraints in Python using pandera (DataFrames), pydantic (JSON/configs/API responses), and great_expectations (pipeline-level data quality). Use when ingesting data from external sources, validating ETL outputs, or enforcing schemas at pipeline boundaries.
-license: MIT
-metadata:
-    skill-author: K-Dense Inc.
+name: data-validation-technical
+description: Enforces data quality and schemas using pandera or pydantic. Use when ingesting external data or ensuring ETL pipeline integrity. Do NOT use for high-level QA methodology (use data-validation-methodology) or for format identification (use data-format-detection).
 ---
-
 # Data Validation
 
 ## Overview

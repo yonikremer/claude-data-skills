@@ -1,11 +1,7 @@
 ---
 name: data-format-detection
-description: Identify the format of unknown raw bytes or files — magic bytes, file signatures, encoding detection, compression detection, and structured format sniffing (CSV, JSON, XML, Parquet, etc.). Use when you receive unknown binary blobs, unlabelled files, or data from legacy systems with no format documentation.
-license: MIT
-metadata:
-    skill-author: K-Dense Inc.
+description: Identifies the format and encoding of unknown raw bytes or files. Use when receiving unlabelled binary blobs or data from legacy systems. Do NOT use for parsing known formats (use json-processing) or for data validation (use data-validation-technical).
 ---
-
 # Data Format Detection
 
 ## Quick Identification Workflow

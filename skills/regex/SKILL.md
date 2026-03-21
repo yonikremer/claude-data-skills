@@ -1,11 +1,7 @@
 ---
 name: regex
-description: Write and use regular expressions in Python with the re module and regex library. Use when parsing text, extracting fields from logs, validating formats, or doing search-and-replace on strings. Covers re syntax, groups, lookahead/lookbehind, flags, performance, and pandas str.extract/str.findall.
-license: MIT
-metadata:
-    skill-author: K-Dense Inc.
+description: Parses and transforms text using regular expressions. Use when extracting fields from logs or validating complex string formats. Do NOT use for simple string methods or for parsing structured data (use json-processing).
 ---
-
 # Regular Expressions (Python)
 
 ## Quick Reference

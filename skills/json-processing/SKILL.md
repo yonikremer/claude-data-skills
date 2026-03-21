@@ -1,11 +1,7 @@
 ---
 name: json-processing
-description: Parse, query, transform, and validate JSON data in Python. Use when working with nested JSON APIs, NDJSON logs, JSON columns in DataFrames, or when you need JSONPath queries, schema validation, or fast serialization. Covers stdlib json, orjson (fast), jsonpath-ng, pandas json_normalize, and jsonschema.
-license: MIT
-metadata:
-    skill-author: K-Dense Inc.
+description: Parses, queries, and transforms complex or nested JSON data. Use when handling API responses or flattening NDJSON logs into DataFrames. Do NOT use for format identification (use data-format-detection) or for general text parsing (use regex).
 ---
-
 # JSON Processing
 
 ## Quick Start

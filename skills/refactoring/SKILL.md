@@ -1,11 +1,7 @@
 ---
 name: refactoring
-description: Refactor and fix Python codebases at scale — improve code quality, fix anti-patterns, rename symbols, restructure modules, and apply automated formatters and linters. Use when cleaning up legacy code, improving old research scripts, or doing large-scale codebase fixes. Covers black, isort, ruff, pyupgrade, rope, and systematic manual refactoring patterns.
-license: MIT
-metadata:
-    skill-author: K-Dense Inc.
+description: Improves code quality and restructures Python codebases using automated tools. Use when cleaning up legacy scripts or applying project-wide formatting. Do NOT use for initial feature implementation or for version control (use git).
 ---
-
 # Refactoring and Large-Scale Fixing
 
 ## Automated Tools (run first)

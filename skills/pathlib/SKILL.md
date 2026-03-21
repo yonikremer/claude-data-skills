@@ -1,11 +1,7 @@
 ---
 name: pathlib
-description: File system operations in Python using pathlib.Path, shutil, and os. Use for building paths, reading/writing files, listing directories, globbing, moving/copying/deleting files, and working with file metadata. Pathlib is the modern replacement for os.path string manipulation.
-license: MIT
-metadata:
-    skill-author: K-Dense Inc.
+description: Executes file system operations in Python using object-oriented paths. Use for building paths and managing file metadata within scripts. Do NOT use for command-line management (use windows-cli) or for format detection (use data-format-detection).
 ---
-
 # pathlib and File System Operations
 
 ## Path Basics

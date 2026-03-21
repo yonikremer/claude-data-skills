@@ -1,11 +1,7 @@
 ---
 name: exploratory-data-analysis
-description: Perform comprehensive exploratory data analysis on scientific data files across 200+ file formats. This skill should be used when analyzing any scientific data file to understand its structure, content, quality, and characteristics. Automatically detects file type and generates detailed markdown reports with format-specific analysis, quality metrics, and downstream analysis recommendations. Covers chemistry, bioinformatics, microscopy, spectroscopy, proteomics, metabolomics, and general scientific data formats.
-license: MIT license
-metadata:
-    skill-author: K-Dense Inc.
+description: Performs comprehensive exploratory analysis on scientific data across 200+ formats. Use when analyzing scientific files to understand structure, quality, and characteristics. Do NOT use for business metric analysis (use statistical-analysis-business) or for simple profiling (use explore-data).
 ---
-
 # Exploratory Data Analysis
 
 ## Overview

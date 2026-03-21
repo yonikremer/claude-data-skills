@@ -1,3 +1,7 @@
+---
+name: windows-cli
+description: Executes file and system operations using Windows cmd and PowerShell. Use when listing files or managing directories on Windows. Do NOT use for file operations within Python (use pathlib) or for version control (use git).
+---
 # Windows Command Line Usage
 
 This skill focuses on using the Windows Command Prompt (cmd.exe) and PowerShell for basic file and directory operations.

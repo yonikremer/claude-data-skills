@@ -1,11 +1,7 @@
 ---
 name: networkx
-description: Comprehensive toolkit for creating, analyzing, and visualizing complex networks and graphs in Python. Use when working with network/graph data structures, analyzing relationships between entities, computing graph algorithms (shortest paths, centrality, clustering), detecting communities, generating synthetic networks, or visualizing network topologies. Applicable to social networks, biological networks, transportation systems, citation networks, and any domain involving pairwise relationships.
-license: 3-clause BSD license
-metadata:
-    skill-author: K-Dense Inc.
+description: Creates, analyzes, and visualizes complex networks and graphs. Use when computing graph algorithms or analyzing relationships between entities. Do NOT use for simple tabular relationships (use pandas) or for high-performance large-scale graphs (use graph-tool).
 ---
-
 # NetworkX
 
 ## Overview

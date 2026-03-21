@@ -1,11 +1,7 @@
 ---
 name: oracle-db
-description: Connect to Oracle Database from Python using python-oracledb (thin mode, no Oracle Client needed) or cx_Oracle (thick mode). Use for querying Oracle production databases, bulk data extraction into pandas, and DDL/DML operations. Covers TNS/Easy Connect strings, LOBs, DATE/TIMESTAMP types, ROWNUM pagination, and pandas integration.
-license: https://www.oracle.com/database/
-metadata:
-    skill-author: K-Dense Inc.
+description: Connects to and queries Oracle Databases for data extraction and management. Use when working with Oracle production environments or schemas. Do NOT use for general SQL writing (use write-query) or for SQLite/Postgres (use sqlite or postgresql).
 ---
-
 # Oracle Database
 
 ## Overview

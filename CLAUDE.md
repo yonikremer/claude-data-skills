@@ -40,9 +40,8 @@ Every `SKILL.md` must have YAML frontmatter:
 ---
 name: skill-name
 description: One-liner used for skill matching/routing — be precise about when to use vs. alternatives
-license: https://...
-metadata:
-    skill-author: K-Dense Inc.
+
+
 ---
 ```
 

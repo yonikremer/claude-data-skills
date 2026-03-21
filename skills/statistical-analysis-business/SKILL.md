@@ -1,9 +1,8 @@
 ---
-name: statistical-analysis
-description: Apply statistical methods including descriptive stats, trend analysis, outlier detection, and hypothesis testing. Use when analyzing distributions, testing for significance, detecting anomalies, computing correlations, or interpreting statistical results.
+name: statistical-analysis-business
+description: Applies statistical methods like trend analysis and significance testing to business metrics. Use when analyzing A/B tests or detecting anomalies in business data. Do NOT use for academic research (use statistical-analysis-academic) or for deep ML (use scikit-learn).
 user-invocable: false
 ---
-
 # Statistical Analysis Skill
 
 Descriptive statistics, trend analysis, outlier detection, hypothesis testing, and guidance on when to be cautious about statistical claims.

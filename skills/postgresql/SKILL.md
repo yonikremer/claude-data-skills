@@ -1,11 +1,7 @@
 ---
 name: postgresql
-description: Connect to and query PostgreSQL databases from Python using psycopg2, psycopg3, or SQLAlchemy. Use for production relational data, complex SQL queries, bulk loading, and pandas integration. Covers connection management, parameterized queries, COPY-based bulk I/O, transactions, and schema inspection.
-license: https://www.postgresql.org/about/licence/
-metadata:
-    skill-author: K-Dense Inc.
+description: Connects to and manages PostgreSQL databases for production data. Use when performing complex queries, transactions, or bulk loading with COPY. Do NOT use for simple local storage (use sqlite) or for database-agnostic code (use sqlalchemy).
 ---
-
 # PostgreSQL
 
 ## Quick Start

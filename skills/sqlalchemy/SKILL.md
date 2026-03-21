@@ -1,11 +1,7 @@
 ---
 name: sqlalchemy
-description: Use SQLAlchemy for database-agnostic Python database access — connection pooling, SQL expression language (Core), ORM, schema reflection, and migrations with Alembic. Use when you need to work across multiple databases (SQLite, PostgreSQL, Oracle) with a unified API, or when you need ORM models. For simple pandas-only SQL work, use the database-specific skills directly.
-license: https://github.com/sqlalchemy/sqlalchemy/blob/main/LICENSE
-metadata:
-    skill-author: K-Dense Inc.
+description: Provides database-agnostic access and ORM capabilities. Use when managing connection pools or building apps requiring a unified API across databases. Do NOT use for one-off SQL queries (use sql-queries) or for simple pandas-to-SQL.
 ---
-
 # SQLAlchemy
 
 ## Overview

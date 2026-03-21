@@ -1,9 +1,8 @@
 ---
-name: validate-data
-description: QA an analysis before sharing -- methodology, accuracy, and bias checks. Use when reviewing an analysis before a stakeholder presentation, spot-checking calculations and aggregation logic, verifying a SQL query's results look right, or assessing whether conclusions are actually supported by the data.
+name: data-validation-methodology
+description: Provides a methodology for QAing analyses, including bias checks and conclusion verification. Use when reviewing reports before presentation or assessing analytical pitfalls. Do NOT use for technical schema enforcement (use data-validation-technical) or for basic cleaning (use pandas).
 argument-hint: "<analysis to review>"
 ---
-
 # /validate-data - Validate Analysis Before Sharing
 
 > If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).

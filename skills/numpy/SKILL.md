@@ -1,11 +1,7 @@
 ---
 name: numpy
-description: Numerical computing with NumPy arrays. Use for fast vectorized math, array manipulation, structured arrays, binary data buffers, and as the foundation under pandas/scipy. Covers array creation, indexing, broadcasting, ufuncs, structured dtypes, and I/O.
-license: https://github.com/numpy/numpy/blob/main/LICENSE.txt
-metadata:
-    skill-author: K-Dense Inc.
+description: Performs numerical computing and vectorized math using arrays. Use for fast array manipulation, binary data buffers, and linear algebra. Do NOT use for tabular data analysis (use pandas) or for symbolic math (use scipy).
 ---
-
 # NumPy
 
 ## Array Creation

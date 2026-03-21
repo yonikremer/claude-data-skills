@@ -1,9 +1,8 @@
 ---
 name: analyze
-description: Answer data questions -- from quick lookups to full analyses. Use when looking up a single metric, investigating what's driving a trend or drop, comparing segments over time, or preparing a formal data report for stakeholders.
+description: Answers data questions ranging from quick lookups to full analyses. Use when investigating trends, comparing segments, or preparing stakeholder reports. Do NOT use for data visualization (use data-visualization) or for writing raw SQL (use sql-queries).
 argument-hint: "<question>"
 ---
-
 # /analyze - Answer Data Questions
 
 > If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).

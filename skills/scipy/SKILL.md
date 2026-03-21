@@ -1,11 +1,7 @@
 ---
 name: scipy
-description: Scientific computing with SciPy — statistics, signal processing, optimization, interpolation, linear algebra, integration, and spatial operations. Use for hypothesis testing, curve fitting, filtering signals, solving equations, and numerical methods beyond what numpy provides.
-license: https://github.com/scipy/scipy/blob/main/LICENSE.txt
-metadata:
-    skill-author: K-Dense Inc.
+description: Performs scientific computing tasks like statistics, signal processing, and optimization. Use for hypothesis testing, curve fitting, and solving differential equations. Do NOT use for basic array operations (use numpy) or for tabular data (use pandas).
 ---
-
 # SciPy
 
 ## Overview

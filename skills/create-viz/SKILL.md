@@ -1,9 +1,8 @@
 ---
 name: create-viz
-description: Create publication-quality visualizations with Python. Use when turning query results or a DataFrame into a chart, selecting the right chart type for a trend or comparison, generating a plot for a report or presentation, or needing an interactive chart with hover and zoom.
+description: Generates visualizations from query results or DataFrames. Use when creating specific charts for reports or needing quick interactive plots. Do NOT use for learning visualization principles (use data-visualization) or for building complex dashboards (use build-dashboard).
 argument-hint: "<data source> [chart type]"
 ---
-
 # /create-viz - Create Visualizations
 
 > If you see unfamiliar placeholders or need to check which tools are connected, see [CONNECTORS.md](../../CONNECTORS.md).

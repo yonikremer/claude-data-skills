@@ -1,11 +1,7 @@
 ---
 name: sqlite
-description: Embedded SQL database using Python's built-in sqlite3 module or SQLAlchemy. Use for local data storage, file-based databases, prototyping SQL logic, and lightweight ETL. No server required. For production relational databases use the postgresql or oracle skills.
-license: https://docs.python.org/3/library/sqlite3.html
-metadata:
-    skill-author: K-Dense Inc.
+description: Manages embedded SQL databases for local storage and lightweight ETL. Use for prototyping SQL logic or local data management without a server. Do NOT use for production-scale relational data (use postgresql).
 ---
-
 # SQLite
 
 ## Overview

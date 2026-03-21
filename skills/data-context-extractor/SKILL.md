@@ -1,20 +1,7 @@
 ---
 name: data-context-extractor
-description: >
-  Generate or improve a company-specific data analysis skill by extracting tribal knowledge from analysts.
-
-  BOOTSTRAP MODE - Triggers: "Create a data context skill", "Set up data analysis for our warehouse",
-  "Help me create a skill for our database", "Generate a data skill for [company]"
-  → Discovers schemas, asks key questions, generates initial skill with reference files
-
-  ITERATION MODE - Triggers: "Add context about [domain]", "The skill needs more info about [topic]",
-  "Update the data skill with [metrics/tables/terminology]", "Improve the [domain] reference"
-  → Loads existing skill, asks targeted questions, appends/updates reference files
-
-  Use when data analysts want Claude to understand their company's specific data warehouse,
-  terminology, metrics definitions, and common query patterns.
+description: Extracts warehouse schemas and tribal knowledge to generate tailored data skills. Use when setting up a new data context or updating metric definitions. Do NOT use for general data exploration (use explore-data) or for writing SQL (use write-query).
 ---
-
 # Data Context Extractor
 
 A meta-skill that extracts company-specific data knowledge from analysts and generates tailored data analysis skills.

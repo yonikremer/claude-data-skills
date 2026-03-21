@@ -1,12 +1,8 @@
 ---
 name: scientific-slides
-description: Build slide decks and presentations for research talks. Use this for making PowerPoint slides, conference presentations, seminar talks, research presentations, thesis defense slides, or any scientific talk. Provides slide structure, design templates, timing guidance, and visual validation. Works with PowerPoint and LaTeX Beamer.
+description: Builds research-focused slide decks for conferences and seminars. Use for seminar talks, thesis defenses, or conference presentations. Do NOT use for general business decks (use pptx) or for one-off charts (use create-viz).
 allowed-tools: Read Write Edit Bash
-license: MIT license
-metadata:
-    skill-author: K-Dense Inc.
 ---
-
 # Scientific Slides
 
 ## Overview

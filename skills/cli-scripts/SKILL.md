@@ -1,11 +1,7 @@
 ---
 name: cli-scripts
-description: Turn Python scripts into proper command-line tools using click or argparse. Use when you need scripts with arguments, options, flags, subcommands, help text, and input validation. Click is recommended for new code; argparse for stdlib-only environments.
-license: MIT
-metadata:
-    skill-author: K-Dense Inc.
+description: Converts Python scripts into professional command-line tools. Use when creating scripts with arguments, subcommands, and input validation. Do NOT use for simple one-off file operations (use windows-cli) or for complex data pipelines (use dask).
 ---
-
 # CLI Scripts
 
 ## Running on Windows

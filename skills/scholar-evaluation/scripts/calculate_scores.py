@@ -11,7 +11,7 @@ Usage:
     python calculate_scores.py --interactive
 
 Author: ScholarEval Framework
-License: MIT
+
 """
 
 import json

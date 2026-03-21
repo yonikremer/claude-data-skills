@@ -1,11 +1,7 @@
 ---
 name: s3
-description: Read and write data to AWS S3 (and S3-compatible stores) using boto3, s3fs, and pandas. Use for storing and retrieving CSV/Parquet/JSON files, listing and managing objects, streaming large files, and building data pipelines with S3 as the data lake layer.
-license: https://aws.amazon.com/
-metadata:
-    skill-author: K-Dense Inc.
+description: Manages data storage and retrieval on AWS S3 and compatible services. Use when reading/writing files in a data lake or streaming large datasets. Do NOT use for local file operations (use pathlib) or for version control (use git).
 ---
-
 # S3
 
 ## Installation

@@ -1,3 +1,7 @@
+---
+name: anomaly-detection
+description: Identifies unusual patterns or outliers in data that do not conform to expected behavior. Use when detecting fraud, monitoring system health, or flagging abnormal traffic. Do NOT use for general exploratory analysis (use exploratory-data-analysis) or for basic data cleaning (use pandas).
+---
 # Anomaly Detection
 
 This skill focuses on identifying unusual patterns or outliers in data that do not conform to expected behavior. Anomalies can signify critical incidents, fraud, system failures, or novel opportunities.
@@ -159,5 +163,3 @@ decomposition = seasonal_decompose(time_series_data, model='additive', period=10
 5.  **Anomaly Scoring/Detection**: Get anomaly scores for new data points and apply a threshold.
 6.  **Evaluation**: Assess the performance of the anomaly detection system using appropriate metrics (e.g., precision, recall, F1-score if labels are available).
 7.  **Interpretation and Action**: Investigate detected anomalies and take appropriate action.
-
-```

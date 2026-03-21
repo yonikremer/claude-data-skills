@@ -1,3 +1,7 @@
+---
+name: git
+description: Manages source code version control and collaborative workflows. Use when tracking changes, managing branches, or configuring CI/CD. Do NOT use for basic file operations (use windows-cli) or for large binary data storage (use s3).
+---
 # Git and GitLab
 
 This skill provides a guide to using Git for version control and collaborating on projects with GitLab.

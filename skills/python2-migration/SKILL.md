@@ -1,11 +1,7 @@
 ---
 name: python2-migration
-description: Migrate Python 2 code to Python 3, or make code work with both versions. Use when working with legacy Python 2 scripts, old research code, or poorly-written Python 2/3 hybrid code. Covers the 2to3 tool, common breaking changes (print, unicode/str, division, iteritems, urllib), and patterns for reading old pickles and data files.
-license: MIT
-metadata:
-    skill-author: K-Dense Inc.
+description: Migrates legacy Python 2 code to Python 3. Use when modernizing old scripts or reading Python 2-specific data files. Do NOT use for general refactoring (use refactoring) or for new project development.
 ---
-
 # Python 2 → Python 3 Migration
 
 ## Automated Migration with 2to3

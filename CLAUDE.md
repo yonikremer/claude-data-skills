@@ -43,6 +43,7 @@ When a user provides a prompt, route to these specialized skills based on intent
 | **Manage version control** | `git`                                                      |
 | **Process audio/video**   | `ffmpeg`                                                   |
 | **Repair corrupted data** | `bit-error-correction`                                     |
+| **Network Research**      | `scapy`                                                    |
 | **Create new skills**     | `skill-engineering`                                        |
 | **Handle specific files** | `pdf`, `docx`, `pptx`, `xlsx`, `binary-data-parsing`       |
 

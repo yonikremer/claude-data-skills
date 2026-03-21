@@ -8,6 +8,16 @@ metadata:
 
 # CLI Scripts
 
+## Running on Windows
+
+All the examples in this document work on Windows. The `python` and `pip` commands are used in the same way. There is no need to use `chmod` or other Unix-specific commands. You can run the scripts from the Command Prompt (`cmd.exe`) or PowerShell.
+
+```batch
+:: Example from Command Prompt
+python your_script.py --help
+python your_script.py data.csv -o results.csv
+```
+
 ## click (recommended)
 
 ```bash

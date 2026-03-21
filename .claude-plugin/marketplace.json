@@ -206,7 +206,11 @@
         "./scientific-skills/jupyter",
         "./scientific-skills/multithreading-io",
         "./scientific-skills/scipy",
-        "./scientific-skills/data-format-detection"
+        "./scientific-skills/data-format-detection",
+        "./scientific-skills/numpy",
+        "./scientific-skills/cli-scripts",
+        "./scientific-skills/dotenv",
+        "./scientific-skills/pathlib"
       ]
     }
   ]

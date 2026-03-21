@@ -1,12 +1,36 @@
 ---
 name: anomaly-detection
-description: Identifies unusual patterns or outliers in data that do not conform to expected behavior. Use when detecting fraud, monitoring system health, or flagging abnormal traffic. Do NOT use for general exploratory analysis (use exploratory-data-analysis) or for basic data cleaning (use pandas).
+description: Identifies unusual patterns or outliers in data. Use for fraud, system health, or scientific outliers. CRITICAL: Always use `get-available-resources` first to determine if batch or streaming detection is needed.
 ---
 # Anomaly Detection
 
-This skill focuses on identifying unusual patterns or outliers in data that do not conform to expected behavior. Anomalies can signify critical incidents, fraud, system failures, or novel opportunities.
+## ⚠️ Mandatory Pre-flight: Resource Check
 
-## Overview
+Large-scale anomaly detection (e.g., Isolation Forest on millions of rows) can consume significant RAM.
+
+1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
+2. **Strategy**:
+   - **Small Data (< 1GB RAM)**: Use `IsolationForest` or `LocalOutlierFactor`.
+   - **Large Data (> 1GB RAM)**: Use **min-max sampling** or stream-based detection.
+
+## Professional Workflow
+
+1. **Detrending**: For time series, always detrend (`np.polyfit`) or seasonally decompose before calculating Z-scores.
+2. **Threshold Rigor**: 
+   - **WARNING**: Z-score > 2.0 (outside 95% CI).
+   - **CRITICAL**: Z-score > 3.0 (outside 99.7% CI).
+3. **Validation**: Use `IsolationForest.decision_function` to get a continuous "outlier score" rather than just a binary label.
+
+## Common Pitfalls (The "Wall of Shame")
+
+1. **Ignoring Seasonality**: Flagging "high traffic" as an anomaly on a Monday morning when it's normal behavior.
+2. **Global vs Local**: Using a global Z-score for a sensor that has different baseline states (e.g., Idle vs Operating).
+3. **Normalizing before Splitting**: (Leakage) Calculating the mean/std of the entire dataset before separating historical "normal" data.
+
+## References (Load on demand)
+- `references/statistical_methods.md` — Z-score, IQR, and MAD.
+- `references/machine_learning_methods.md` — Isolation Forest, One-Class SVM, LOF.
+- `references/timeseries_detection.md` — STL decomposition and residual analysis.
 
 Anomaly detection is crucial in various domains, including:
 - **Fraud Detection**: Identifying unusual financial transactions.

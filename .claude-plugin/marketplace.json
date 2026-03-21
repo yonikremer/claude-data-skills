@@ -1,17 +1,17 @@
 {
-  "name": "claude-scientific-skills",
+  "name": "claude-data-analytics-skills",
   "owner": {
-    "name": "K-Dense Inc.",
-    "email": "contact@k-dense.ai"
+    "name": "Yoni Kremer",
+    "email": "yoni@example.com"
   },
   "metadata": {
-    "description": "Claude scientific skills from K-Dense Inc",
-    "version": "2.28.0"
+    "description": "Professional Data Science & Research toolkit optimized for Open-Source LLMs, featuring resource-aware skills and idiomatic Python best practices.",
+    "version": "1.1.0"
   },
   "plugins": [
     {
-      "name": "scientific-skills",
-      "description": "Collection of scientific skills",
+      "name": "data-analytics-skills",
+      "description": "Collection of data science, research, and engineering skills",
       "source": "./",
       "strict": false,
       "skills": [
@@ -21,7 +21,6 @@
         "./skills/geopandas",
         "./skills/get-available-resources",
         "./skills/matlab",
-        "./skills/matplotlib",
         "./skills/networkx",
         "./skills/pdf",
         "./skills/peer-review",
@@ -77,11 +76,14 @@
         "./skills/create-viz",
         "./skills/data-context-extractor",
         "./skills/data-visualization",
-        "./skills/explore-data",
+        "./explore-data",
         "./skills/sql-queries",
         "./skills/write-query",
         "./skills/statistical-analysis-business",
-        "./skills/anomaly-detection"
+        "./skills/anomaly-detection",
+        "./skills/pydantic",
+        "./skills/pytest",
+        "./skills/python-best-practices"
       ]
     }
   ]

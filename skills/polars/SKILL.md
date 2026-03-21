@@ -1,12 +1,36 @@
 ---
 name: polars
-description: Performs fast in-memory DataFrame operations using a parallel Apache Arrow backend. Use when pandas is too slow for 1-100GB datasets. Do NOT use for larger-than-RAM data (use dask) or for legacy pandas-specific features.
+description: High-performance DataFrame library with a parallel Apache Arrow backend. Use for 1GB-100GB datasets where pandas is too slow. CRITICAL: Use `lazy` mode and `streaming` for datasets approaching RAM limits.
 ---
 # Polars
 
-## Overview
+## ⚠️ Mandatory Pre-flight: Resource Check
 
-Polars is a lightning-fast DataFrame library for Python and Rust built on Apache Arrow. Work with Polars' expression-based API, lazy evaluation framework, and high-performance data manipulation capabilities for efficient data processing, pandas migration, and data pipeline optimization.
+Polars is extremely fast but can easily consume all available CPU and RAM if not configured correctly.
+
+1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
+2. **Strategy Selection**:
+   - **Data < 50% RAM**: Use **Eager mode** (`pl.read_csv`) for convenience.
+   - **Data 50-90% RAM**: Use **Lazy mode** (`pl.scan_csv`) and `.collect()`.
+   - **Data > RAM**: Use **Streaming mode** (`.collect(streaming=True)`).
+3. **CPU Cores**: Polars uses all available cores by default. If the system is shared, limit threads via `POLARS_MAX_THREADS` environment variable.
+
+## Strict Idioms & Performance Gold
+
+- **Prefer `scan_*` over `read_*`**: Always start with a `LazyFrame` to allow the query optimizer to prune columns (projection pushdown) and rows (predicate pushdown).
+- **Expressions, not Lambdas**: NEVER use `.map_elements(lambda x: ...)` if a native expression exists. It breaks parallelization and optimization.
+- **Select Early**: Use `.select()` as the first step in a lazy chain to reduce the memory footprint of the intermediate buffers.
+
+## Common Pitfalls (The "Wall of Shame")
+
+1. **`to_pandas()` too early**: Converting a large Polars DataFrame to Pandas will often trigger an OOM as it duplicates the memory and loses Arrow optimization.
+2. **Missing `collect()`**: In lazy mode, operations return a `LazyFrame` (a query plan), not data. You must call `.collect()` to get the results.
+3. **Using `&` instead of `,` in filters**: While `df.filter((pl.col("a") > 1) & (pl.col("b") < 2))` works, `df.filter(pl.col("a") > 1, pl.col("b") < 2)` is more idiomatic and allows for better optimization.
+
+## References (Load on demand)
+- `references/core_concepts.md` — Expressions, contexts, and the query optimizer.
+- `references/pandas_migration.md` — Direct syntax mapping for Pandas users.
+- `references/io_guide.md` — Optimized reading for Parquet, CSV, and SQL.
 
 ## Quick Start
 

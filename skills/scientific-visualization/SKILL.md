@@ -1,12 +1,12 @@
 ---
 name: scientific-visualization
-description: Creates publication-ready multi-panel figures with journal-specific styling. Use when preparing figures for Nature, Science, or Cell submissions. Do NOT use for quick data exploration (use seaborn or plotly directly).
+description: Creates publication-ready multi-panel figures with journal-specific styling. Use when preparing figures for Nature, Science, or Cell submissions. Plotly is the primary modern recommendation for both interactive and static publication figures.
 ---
 # Scientific Visualization
 
 ## Overview
 
-Scientific visualization transforms data into clear, accurate figures for publication. Create journal-ready plots with multi-panel layouts, error bars, significance markers, and colorblind-safe palettes. Export as PDF/EPS/TIFF using matplotlib, seaborn, and plotly for manuscripts.
+Scientific visualization transforms data into clear, accurate figures for publication. While traditionally done with Matplotlib, **Plotly is the primary modern recommendation** for creating both interactive exploratory plots and high-quality, static, journal-ready figures.
 
 ## When to Use This Skill
 
@@ -17,41 +17,85 @@ This skill should be used when:
 - Making multi-panel figures with consistent styling
 - Exporting figures at correct resolution and format
 - Following specific publication guidelines
-- Improving existing figures to meet publication standards
-- Creating figures that need to work in both color and grayscale
 
-## Quick Start Guide
+## Quick Start Guide (Modern Workflow)
 
-### Basic Publication-Quality Figure
+### Publication-Quality Figure with Plotly
+
+Plotly Express is the fastest way to create high-quality figures that can be exported as static vectors for manuscripts.
 
 ```python
-import matplotlib.pyplot as plt
-import numpy as np
+import plotly.express as px
+import pandas as pd
 
-# Apply publication style (from scripts/style_presets.py)
-from style_presets import apply_publication_style
-apply_publication_style('default')
+# Load data
+df = px.data.iris()
 
-# Create figure with appropriate size (single column = 3.5 inches)
-fig, ax = plt.subplots(figsize=(3.5, 2.5))
+# Create figure with high-quality defaults
+fig = px.scatter(df, x="sepal_width", y="sepal_length", color="species",
+                 symbol="species", 
+                 labels={"sepal_width": "Sepal Width (cm)", 
+                         "sepal_length": "Sepal Length (cm)"},
+                 template="simple_white")
 
-# Plot data
-x = np.linspace(0, 10, 100)
-ax.plot(x, np.sin(x), label='sin(x)')
-ax.plot(x, np.cos(x), label='cos(x)')
+# Configure for publication (Nature single-column width ≈ 3.5 inches)
+fig.update_layout(
+    width=350, height=250,
+    font=dict(family="Arial, sans-serif", size=10),
+    margin=dict(l=40, r=10, t=10, b=40),
+    legend=dict(yanchor="top", y=0.99, xanchor="left", x=0.01)
+)
 
-# Proper labeling with units
-ax.set_xlabel('Time (seconds)')
-ax.set_ylabel('Amplitude (mV)')
-ax.legend(frameon=False)
-
-# Remove unnecessary spines
-ax.spines['top'].set_visible(False)
-ax.spines['right'].set_visible(False)
-
-# Save in publication formats (from scripts/figure_export.py)
+# Export using helper script (requires kaleido: pip install kaleido)
 from figure_export import save_publication_figure
 save_publication_figure(fig, 'figure1', formats=['pdf', 'png'], dpi=300)
+```
+
+## Core Principles and Best Practices
+
+### 1. Resolution and File Format
+
+**Critical requirements** (detailed in `references/publication_guidelines.md`):
+- **Vector formats** (preferred): PDF, EPS, SVG. Use these for all plots.
+- **Raster formats**: TIFF, PNG. Only use for photos or microscopy.
+- **DPI**: Ensure raster exports are at least 300-600 DPI.
+
+**Plotly Implementation:**
+```python
+# Plotly exports are 96 DPI by default. Use scale=3.125 for 300 DPI.
+fig.write_image("figure.png", scale=3.125) 
+fig.write_image("figure.pdf") # Vectors are resolution-independent
+```
+
+### 2. Color Selection - Colorblind Accessibility
+
+**Always use colorblind-friendly palettes** (detailed in `references/color_palettes.md`):
+
+**Plotly built-in safe palettes:**
+```python
+# Use the 'colorblind' palette in Plotly Express
+fig = px.scatter(df, x='x', y='y', color='category', 
+                 color_discrete_sequence=px.colors.qualitative.Safe)
+```
+
+**Always test figures in grayscale** to ensure interpretability.
+
+---
+
+## Legacy Workflow (Matplotlib & Seaborn)
+
+While Plotly is preferred for modern workflows, Matplotlib and Seaborn remain relevant for highly customized multi-panel layouts.
+
+### Matplotlib Example
+```python
+import matplotlib.pyplot as plt
+from style_presets import apply_publication_style
+
+apply_publication_style('nature')
+fig, ax = plt.subplots(figsize=(3.5, 2.5))
+ax.plot(x, y)
+from figure_export import save_publication_figure
+save_publication_figure(fig, 'output', formats=['pdf'])
 ```
 
 ### Using Pre-configured Styles

@@ -280,9 +280,11 @@ def analyze_general_scientific(filepath, extension):
 
         elif extension in ['csv', 'tsv']:
             import pandas as pd
+            import numpy as np
             sep = '\t' if extension == 'tsv' else ','
             df = pd.read_csv(filepath, sep=sep, nrows=10000)  # Sample first 10k rows
 
+            # Basic profiling
             results = {
                 'shape': df.shape,
                 'columns': list(df.columns),
@@ -290,6 +292,40 @@ def analyze_general_scientific(filepath, extension):
                 'missing_values': df.isnull().sum().to_dict(),
                 'summary_statistics': df.describe().to_dict() if len(df.select_dtypes(include='number').columns) > 0 else {}
             }
+
+            # Advanced Logic: Categorical Hierarchies
+            cat_cols = df.select_dtypes(include=['object', 'category']).columns
+            hierarchies = []
+            if len(cat_cols) > 1:
+                for i, col_a in enumerate(cat_cols):
+                    for col_b in cat_cols:
+                        if col_a == col_b: continue
+                        # Check if A is a sub-category of B
+                        if (df.groupby(col_a)[col_b].nunique() <= 1).all():
+                            hierarchies.append(f"{col_a} -> {col_b}")
+            results['categorical_hierarchies'] = hierarchies
+
+            # Advanced Logic: Nullity Correlations
+            null_df = df.isnull().astype(int)
+            null_cols = null_df.columns[null_df.any()]
+            if len(null_cols) > 1:
+                corr = null_df[null_cols].corr()
+                results['nullity_correlations'] = corr.to_dict()
+
+            # Advanced Logic: Conditional Nullity
+            cond_nullity = {}
+            if len(cat_cols) > 0 and len(null_cols) > 0:
+                for cat in cat_cols:
+                    for target in null_cols:
+                        if cat == target: continue
+                        rates = df.groupby(cat)[target].apply(lambda x: x.isnull().mean()).to_dict()
+                        # Only report if there's significant variance in null rates
+                        if max(rates.values()) - min(rates.values()) > 0.2:
+                            cond_nullity[f"{target} | {cat}"] = rates
+            results['conditional_nullity'] = cond_nullity
+
+            # Pro Addition: Constant Columns
+            results['constant_columns'] = [col for col in df.columns if df[col].nunique() <= 1]
 
         elif extension in ['json']:
             with open(filepath, 'r') as f:

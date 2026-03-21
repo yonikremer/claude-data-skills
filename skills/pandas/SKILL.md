@@ -1,17 +1,36 @@
 ---
 name: pandas
-description: Analyzes and transforms tabular data using DataFrames. Use for data cleaning, merging, and time-series analysis of datasets that fit in memory. Do NOT use for larger-than-memory datasets (use dask) or for extreme performance (use polars).
+description: Analyzes and transforms tabular data using DataFrames. Use for data cleaning, merging, and time-series analysis. CRITICAL: Always run `get-available-resources` first for files > 100MB.
 ---
 # pandas
 
-## Overview
+## ⚠️ Mandatory Pre-flight: Resource Check
 
-pandas is the standard Python library for working with structured (tabular) data. It provides two core data structures — `DataFrame` (2D table) and `Series` (1D column) — with rich support for data cleaning, transformation, grouping, joining, time series, and I/O across many formats.
+Before loading data, you MUST assess system memory. Pandas is memory-hungry (typically uses 5-10x the file size in RAM).
 
-**When to use pandas vs alternatives:**
-- `pandas` — default choice for datasets that fit in RAM (up to a few GB)
-- `polars` — drop-in faster alternative when pandas is too slow
-- `dask` — when data exceeds available RAM
+1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
+2. **Apply Thresholds**:
+   - **< 100MB**: Use standard `pd.read_csv()`.
+   - **100MB - 1GB**: Use `pd.read_csv(engine='pyarrow')` or `dtype` optimization.
+   - **> 1GB**: **STOP.** Recommend `polars` or `dask` instead.
+
+## Strict Idioms & Version Locking (v2.0+)
+
+- **No `append`**: `df.append()` was removed. Use `pd.concat([df1, df2])`.
+- **Copy-on-Write**: Expect `SettingWithCopyWarning` to become an error. Always use `.loc` for assignment.
+- **PyArrow Backend**: For faster I/O, use `pd.read_csv(..., engine='pyarrow')`.
+
+## Common Pitfalls (The "Wall of Shame")
+
+1. **Chained Indexing**: `df[df.a > 1]['b'] = 2` (Hallucination risk). Always use `df.loc[df.a > 1, 'b'] = 2`.
+2. **Iterating with `iterrows()`**: Extremely slow. Use vectorized operations or `apply()` as a last resort.
+3. **Implicit Object Types**: Strings default to `object` (slow). Convert to `string[pyarrow]` or `category`.
+4. **Datetime Parsing**: Don't use `parse_dates` on huge files without specifying the format; it's slow. Use `pd.to_datetime(..., format=...)` after loading.
+
+## References (Load on demand)
+- `references/indexing-selection.md` — Deep dive into loc/iloc and boolean masks.
+- `references/time-series.md` — Resampling, rolling windows, and timezone handling.
+- `references/performance.md` — Memory optimization and PyArrow integration.
 
 ## Quick Start
 

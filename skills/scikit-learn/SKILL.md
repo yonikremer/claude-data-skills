@@ -1,8 +1,36 @@
 ---
 name: scikit-learn
-description: Implements machine learning algorithms for classification, regression, and clustering. Use for model evaluation, preprocessing, and building ML pipelines. Do NOT use for deep learning (use pytorch-lightning) or for rigorous statistical inference (use statsmodels).
+description: Machine learning in Python. Use for classification, regression, clustering, and dimensionality reduction. CRITICAL: Check CPU cores for `n_jobs` and memory for large arrays.
 ---
-# Scikit-learn
+# scikit-learn
+
+## ⚠️ Mandatory Pre-flight: Resource Check
+
+Model training can be CPU and RAM intensive.
+
+1. **CPU Cores**: Run `python skills/get-available-resources/scripts/detect_resources.py` to find `logical_cores`.
+2. **`n_jobs` Strategy**: 
+   - Set `n_jobs=-1` to use all cores for compatible models (RandomForest, GridSearchCV).
+   - For memory-constrained systems, set `n_jobs` to `cores // 2` to avoid OOM.
+3. **Memory**: If dataset size > 50% of available RAM, use `IncrementalLearner` (partial_fit) or switch to `dask-ml`.
+
+## Strict Workflow Rigor
+
+1. **Always Split**: Use `train_test_split` before any exploration.
+2. **Pipelines**: Use `Pipeline` or `make_pipeline` to prevent data leakage during scaling/imputation.
+3. **Cross-Validation**: Never rely on a single split. Use `cross_val_score` or `GridSearchCV`.
+
+## Common Pitfalls (The "Wall of Shame")
+
+1. **Data Leakage**: Scaling the entire dataset before splitting. (Use Pipelines!).
+2. **Standardizing Categoricals**: Scaling One-Hot encoded columns (usually unnecessary/harmful).
+3. **Ignoring Class Imbalance**: Using `accuracy` for imbalanced data. Use `f1_score` or `balanced_accuracy`.
+4. **Default Hyperparameters**: Assuming defaults are optimal. Always run at least a small `RandomizedSearchCV`.
+
+## References (Load on demand)
+- `references/quick_reference.md` — API signatures for all common estimators.
+- `references/model_selection.md` — Detailed guide on GridSearch and cross-validation.
+- `references/unsupervised_learning.md` — Clustering (K-Means, DBSCAN) and PCA.
 
 ## Overview
 

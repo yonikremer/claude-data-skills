@@ -1,8 +1,53 @@
 ---
 name: exploratory-data-analysis
-description: Performs comprehensive exploratory analysis on scientific data across 200+ formats. Use when analyzing scientific files to understand structure, quality, and characteristics. Do NOT use for business metric analysis (use statistical-analysis-business) or for simple profiling (use explore-data).
+description: Performs comprehensive exploratory analysis on scientific data across 200+ formats. Use for deep structural analysis, data quality checks, and categorical hierarchies. CRITICAL: Run `get-available-resources` first for datasets > 500MB.
 ---
 # Exploratory Data Analysis
+
+## ⚠️ Mandatory Pre-flight: Resource Check
+
+EDA on large scientific files (HDF5, Zarr, CSV) can crash the session if memory is not managed.
+
+1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
+2. **Strategy**:
+   - **Data < 50% RAM**: Perform full in-memory analysis using `pandas` or `numpy`.
+   - **Data 50-90% RAM**: Use `polars` lazy mode or `dask` with sampling.
+   - **Data > RAM**: Perform **Streaming Analysis** or sample the first/random 10% of the dataset.
+
+## Professional Workflow & Logical Checks
+
+Beyond basic statistics, you MUST answer these "Deep EDA" questions for every dataset:
+
+### 1. Categorical Hierarchies
+Identify if columns have a parent-child relationship (e.g., `Species` → `Genus`).
+- **Check**: For every unique value in A, is there only one unique value in B?
+- **Logic**: Use `df.groupby(A)[B].nunique()`. If all values are 1, A is a sub-category of B.
+
+### 2. Missingness (Nullity) Patterns
+Understand the structure of missing data.
+- **Missingness Correlation**: Do certain columns always fail together? Calculate `df.isnull().corr()`.
+- **Conditional Nullity**: Is a column null only for certain categories? (e.g., `pregnancy_status` is only non-null for `Gender='Female'`).
+
+### 3. Redundancy & Constants
+- **Constant Columns**: Identify and ignore columns with `nunique() <= 1`.
+- **High Collinearity**: Identify numeric columns with `corr() > 0.99`.
+- **Redundant Categories**: Use Normalized Mutual Information (NMI) to find overlapping dimensions.
+
+### 4. Distribution & Skew
+- **Concentration Risk**: What % of the total sum is held by the top 1% of values? (Gini-coefficient style).
+- **Zero-Inflation**: Flag columns with >50% zeros.
+
+## Common Pitfalls (The "Wall of Shame")
+
+1. **Assuming Random Missingness**: Missing data is often a "signal" (e.g., failed sensor at low temps). Check `nullity_correlation`.
+2. **Over-Analysis of IDs**: Don't calculate mean/std for ID columns. Flag them as `identifiers` immediately.
+3. **Ignoring Unit Scales**: Mixing meters and millimeters in the same column. Check for multi-modal distributions.
+
+## References (Load on demand)
+- `references/advanced_eda_questions.md` — Detailed logic for hierarchy and nullity checks.
+- `references/general_scientific_formats.md` — How to read CSV, HDF5, Parquet, etc.
+- `references/microscopy_imaging_formats.md` — Domain-specific imaging EDA.
+- `references/bioinformatics_genomics_formats.md` — Domain-specific sequence EDA.
 
 ## Overview
 

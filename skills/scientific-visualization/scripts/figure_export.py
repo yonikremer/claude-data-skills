@@ -8,11 +8,11 @@ formats with appropriate settings for various journals.
 
 import matplotlib.pyplot as plt
 from pathlib import Path
-from typing import List, Optional, Union
+from typing import List, Optional, Union, Any
 
 
 def save_publication_figure(
-    fig: plt.Figure,
+    fig: Any,
     filename: Union[str, Path],
     formats: List[str] = ['pdf', 'png'],
     dpi: int = 300,
@@ -23,51 +23,62 @@ def save_publication_figure(
     **kwargs
 ) -> List[Path]:
     """
-    Save a matplotlib figure in multiple formats with publication-quality settings.
+    Save a matplotlib or plotly figure in multiple formats with publication-quality settings.
 
     Parameters
     ----------
-    fig : matplotlib.figure.Figure
+    fig : matplotlib.figure.Figure or plotly.graph_objects.Figure
         The figure to save
     filename : str or Path
         Base filename (without extension)
     formats : list of str, default ['pdf', 'png']
-        List of file formats to save. Options: 'pdf', 'png', 'eps', 'svg', 'tiff'
+        List of file formats to save. Options: 'pdf', 'png', 'eps', 'svg', 'tiff', 'html'
     dpi : int, default 300
         Resolution for raster formats (png, tiff). 300 DPI is minimum for most journals
     transparent : bool, default False
         If True, save with transparent background
     bbox_inches : str, default 'tight'
-        Bounding box specification. 'tight' removes excess whitespace
+        Bounding box specification (matplotlib only). 'tight' removes excess whitespace
     pad_inches : float, default 0.1
-        Padding around the figure when bbox_inches='tight'
+        Padding around the figure (matplotlib only)
     facecolor : str, default 'white'
         Background color (ignored if transparent=True)
     **kwargs
-        Additional keyword arguments passed to fig.savefig()
+        Additional keyword arguments passed to save method
 
     Returns
     -------
     list of Path
         List of paths to saved files
-
-    Examples
-    --------
-    >>> fig, ax = plt.subplots()
-    >>> ax.plot([1, 2, 3], [1, 4, 9])
-    >>> save_publication_figure(fig, 'my_plot', formats=['pdf', 'png'], dpi=600)
-    ['my_plot.pdf', 'my_plot.png']
     """
     filename = Path(filename)
     base_name = filename.stem
     output_dir = filename.parent if filename.parent.exists() else Path.cwd()
+
+    # Detect figure type
+    is_plotly = hasattr(fig, 'write_image') and hasattr(fig, 'write_html')
 
     saved_files = []
 
     for fmt in formats:
         output_file = output_dir / f"{base_name}.{fmt}"
 
-        # Set format-specific parameters
+        if is_plotly:
+            try:
+                if fmt == 'html':
+                    fig.write_html(str(output_file), **kwargs)
+                else:
+                    # scale=3 for ~300 DPI equivalent in Plotly (base is 96 DPI)
+                    scale = kwargs.pop('scale', dpi / 96.0)
+                    fig.write_image(str(output_file), format=fmt, scale=scale, **kwargs)
+                saved_files.append(output_file)
+                print(f"✓ Saved (Plotly): {output_file}")
+            except Exception as e:
+                print(f"✗ Failed to save Plotly {output_file}: {e}")
+                print("  Note: static image export requires 'kaleido' package.")
+            continue
+
+        # Matplotlib path
         save_kwargs = {
             'dpi': dpi,
             'bbox_inches': bbox_inches,
@@ -77,20 +88,17 @@ def save_publication_figure(
             'transparent': transparent,
             'format': fmt,
         }
-
-        # Update with user-provided kwargs
         save_kwargs.update(kwargs)
 
-        # Adjust DPI for vector formats (DPI less relevant)
         if fmt in ['pdf', 'eps', 'svg']:
-            save_kwargs['dpi'] = min(dpi, 300)  # Lower DPI for embedded rasters in vector
+            save_kwargs['dpi'] = min(dpi, 300)
 
         try:
             fig.savefig(output_file, **save_kwargs)
             saved_files.append(output_file)
-            print(f"✓ Saved: {output_file}")
+            print(f"✓ Saved (Matplotlib): {output_file}")
         except Exception as e:
-            print(f"✗ Failed to save {output_file}: {e}")
+            print(f"✗ Failed to save Matplotlib {output_file}: {e}")
 
     return saved_files
 

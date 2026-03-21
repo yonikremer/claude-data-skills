@@ -39,7 +39,7 @@
         "./skills/scientific-writing",
         "./skills/scikit-learn",
         "./skills/seaborn",
-skills/stable-baselines3",
+        "./skills/stable-baselines3",
         "./skills/statsmodels",
         "./skills/timesfm-forecasting",
         "./skills/transformers",
@@ -80,7 +80,8 @@ skills/stable-baselines3",
         "./skills/explore-data",
         "./skills/sql-queries",
         "./skills/write-query",
-        "./skills/statistical-analysis-business"
+        "./skills/statistical-analysis-business",
+        "./skills/anomaly-detection"
       ]
     }
   ]

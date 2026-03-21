@@ -309,6 +309,53 @@ print(byte_frequency(raw))
 print(sniff_binary_format(raw))
 ```
 
+## Advanced Tools and Techniques
+
+Beyond magic bytes, use these professional tools for deep inspection of unknown data.
+
+### 1. Media Discovery with FFprobe
+If you suspect a file is a media stream (audio, video, or container) that lacks a standard extension, use `ffprobe`.
+
+```bash
+# Check if ffprobe can decode any streams
+ffprobe -v error -show_format -show_streams unknown_file
+
+# Check for specific data at the start of the file
+ffprobe -i unknown_file -show_entries format=format_name,duration -of default=noprint_wrappers=1
+```
+
+### 2. CyberChef Patterns (Multi-step Transformations)
+CyberChef is the "Swiss Army Knife" for data. Use these mental models for common patterns:
+- **Base64 + Gzip**: Common for web payloads.
+- **Hex to Char**: For raw logs.
+- **XOR Brute Force**: If you see high entropy but repetitive small byte variations.
+- **Bit Flip**: For corrupted binary streams.
+
+### 3. Periodic Structure Analysis (The "Frame Size" Trick)
+For raw sensor data, telemetry, or unaligned binary streams, use self-similarity to find the "period" or "record size".
+
+**Logic**: Divide the file into candidate frame sizes (e.g., 1 to 1024 bytes) and find the size where adjacent frames are most similar.
+
+```python
+# Use the included script for automated detection:
+# python skills/data-format-detection/scripts/periodic_structure_detector.py <file>
+```
+
+### 4. Entropy Analysis
+Entropy (bits per byte) tells you if data is structured, compressed, or encrypted.
+- **0.0 - 4.0**: Highly structured (sparse arrays, zeros, repetitive text).
+- **4.0 - 6.0**: Normal structured data (JSON, CSV, Source Code).
+- **6.0 - 7.5**: Compressed data (Gzip, PNG, etc.).
+- **7.5 - 8.0**: Encrypted data or high-quality random noise.
+
+### 5. Strings Analysis
+Always check for human-readable ASCII/UTF-16 strings buried in binary blobs.
+
+```bash
+# Find strings of at least 4 characters
+strings -n 4 unknown_file | head -n 20
+```
+
 ## All-in-One Detector
 
 ```python

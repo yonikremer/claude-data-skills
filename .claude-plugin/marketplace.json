@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Professional Data Science & Research toolkit optimized for Open-Source LLMs, featuring resource-aware skills and idiomatic Python best practices.",
-    "version": "2.2.0"
+    "version": "2.3.0"
   },
   "plugins": [
     {
@@ -46,26 +46,19 @@
         "./skills/xlsx",
         "./skills/binary-data-parsing",
         "./skills/pandas",
-        "./skills/sqlite",
-        "./skills/postgresql",
-        "./skills/oracle-db",
         "./skills/elasticsearch",
         "./skills/s3",
         "./skills/log-parsing",
-        "./skills/json-processing",
         "./skills/python2-migration",
         "./skills/refactoring",
-        "./skills/regex",
         "./skills/sqlalchemy",
         "./skills/plotly-dash",
         "./skills/jupyter",
-        "./skills/multithreading-io",
         "./skills/scipy",
         "./skills/data-format-detection",
         "./skills/numpy",
         "./skills/cli-scripts",
         "./skills/dotenv",
-        "./skills/pathlib",
         "./skills/git",
         "./skills/windows-cli",
         "./skills/build-dashboard",
@@ -82,7 +75,9 @@
         "./skills/bit-error-correction",
         "./skills/skill-engineering",
         "./skills/scapy",
-        "./skills/research-summaries"
+        "./skills/research-summaries",
+        "./skills/python-stdlib-pro",
+        "./skills/parallel-processing-pro"
       ]
     }
   ]

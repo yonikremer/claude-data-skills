@@ -34,19 +34,20 @@ When a user provides a prompt, route to these specialized skills based on intent
 | If user wants to...       | Use these Primary Skills                                   |
 |:--------------------------|:-----------------------------------------------------------|
 | **Explore a new dataset** | `exploratory-data-analysis`                                |
-| **Clean/Transform data**  | `pandas`, `polars`, `numpy`                                |
+| **Clean/Transform data**  | `pandas`, `polars`, `numpy`, `python-stdlib-pro`           |
 | **Visualize data**        | `data-visualization`, `scientific-visualization`           |
 | **Train/Evaluate ML**     | `scikit-learn`, `anomaly-detection`, `timesfm-forecasting` |
 | **Write/Optimize SQL**    | `sql-queries`                                              |
 | **Build a UI/Dashboard**  | `build-dashboard`, `plotly-dash`                           |
+| **Parallel Processing**   | `parallel-processing-pro`                                  |
 | **Verify code quality**   | `pytest`, `pydantic`, `python-best-practices`              |
 | **Manage version control** | `git`                                                      |
 | **Process audio/video**   | `ffmpeg`                                                   |
 | **Repair corrupted data** | `bit-error-correction`                                     |
-| **Network Research**      | `scapy`                                                    |
 | **Create new skills**     | `skill-engineering`                                        |
 | **Summarize research**    | `research-summaries`                                       |
 | **Handle specific files** | `pdf`, `docx`, `pptx`, `xlsx`, `binary-data-parsing`       |
+
 
 ## Gold Standard Requirements
 

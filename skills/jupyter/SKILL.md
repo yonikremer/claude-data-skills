@@ -1,8 +1,38 @@
 ---
 name: jupyter
-description: Manages interactive development and visualization within Jupyter notebooks. Use when prototyping analyses or creating interactive widgets. Do NOT use for production-grade automation (use cli-scripts) or for complex web apps (use plotly-dash).
+description: Manages interactive development within Jupyter notebooks. Use for prototyping and visualization. CRITICAL: Follow "Notebook Hygiene" standards (modularity, variable cleanup, and linear flow).
 ---
 # Jupyter
+
+## ⚠️ Notebook Hygiene & Good Habits (MANDATORY)
+
+Jupyter notebooks can easily become messy, non-linear, and memory-heavy. Adhere to these "Gold Standard" habits:
+
+### 1. Modularity (Avoid "Code Bloat")
+- **Rule**: If a function exceeds 20 lines or is reused across notebooks, move it to a standalone Python script (e.g., `utils/data_processing.py`).
+- **Import**: Use `%load_ext autoreload` and `%autoreload 2` to automatically pick up changes in your `.py` files without restarting the kernel.
+
+### 2. Descriptive Variable Naming
+- **Avoid Generic Names**: Never use `df`, `df2`, `data`, `x`.
+- **State-Based Naming**: Use names that reflect the data state:
+  - `df_raw_census`
+  - `df_cleaned_income`
+  - `df_final_pivot`
+- **Context**: Ensure names describe the subset (e.g., `df_us_adults` instead of `df_subset`).
+
+### 3. Memory Management
+- **Cleanup**: Delete large DataFrames or objects as soon as they are no longer needed to free up system RAM.
+- **Explicit GC**: Use `gc.collect()` after deleting very large objects (>500MB).
+```python
+import gc
+del df_temporary_large
+gc.collect()
+```
+
+### 4. Linear Flow & Reproducibility
+- **Top-to-Bottom**: The notebook MUST run from start to finish without errors. Avoid jumping between cells.
+- **One-Time Setup**: Keep all imports and global constants (like `RANDOM_STATE = 42`) in the first cell.
+- **Restart & Run All**: Before finalizing, always test with "Restart Kernel and Run All Cells".
 
 ## Essential Magic Commands
 

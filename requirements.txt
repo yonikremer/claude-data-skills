@@ -1,0 +1,76 @@
+# Core Data Science & Analysis
+numpy
+pandas
+scipy
+scikit-learn
+polars
+
+# Deep Learning & AI
+torch
+transformers
+datasets
+evaluate
+accelerate
+timm
+timesfm[torch]
+
+# Data Visualization
+matplotlib
+seaborn
+plotly
+kaleido
+dash
+
+# Database & Storage
+sqlalchemy
+psycopg2-binary
+oracledb
+alembic
+boto3
+s3fs
+
+# Geospatial Analysis
+geopandas
+folium
+mapclassify
+pyarrow
+geoalchemy2
+contextily
+cartopy
+
+# Web & API
+requests
+python-dotenv
+pydantic
+pydantic-settings
+click
+
+# File Formats & Processing
+Pillow
+PyPDF2
+python-pptx
+pymupdf
+defusedxml
+openpyxl
+bitarray
+construct
+bitstring
+
+# System & Utilities
+psutil
+tqdm
+ipywidgets
+
+# Development & Testing
+pytest
+ruff
+black
+isort
+pyupgrade
+pylint
+vulture
+
+# Jupyter/Notebook Support
+nbformat
+nbconvert
+watermark

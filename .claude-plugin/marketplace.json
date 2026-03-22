@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Professional Data Science & Research toolkit optimized for Open-Source LLMs, featuring resource-aware skills and idiomatic Python best practices.",
-    "version": "2.1.0"
+    "version": "2.2.0"
   },
   "plugins": [
     {
@@ -81,7 +81,8 @@
         "./skills/ffmpeg",
         "./skills/bit-error-correction",
         "./skills/skill-engineering",
-        "./skills/scapy"
+        "./skills/scapy",
+        "./skills/research-summaries"
       ]
     }
   ]

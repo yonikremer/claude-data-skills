@@ -45,6 +45,7 @@ When a user provides a prompt, route to these specialized skills based on intent
 | **Repair corrupted data** | `bit-error-correction`                                     |
 | **Network Research**      | `scapy`                                                    |
 | **Create new skills**     | `skill-engineering`                                        |
+| **Summarize research**    | `research-summaries`                                       |
 | **Handle specific files** | `pdf`, `docx`, `pptx`, `xlsx`, `binary-data-parsing`       |
 
 ## Gold Standard Requirements

@@ -45,6 +45,32 @@ skills/[library-name]/
 2. **Commit**: Use `git` to track the new skill.
 3. **Verify**: Test the skill by asking a question that requires its usage.
 
+## Workflow: Database to Skill Creation
+
+Use this workflow when you want to create a skill for interacting with a specific database or schema.
+
+1. **Schema Discovery**: Connect to the database and extract schema information (tables, columns, types, relationships).
+2. **Entity Mapping**: Identify core entities and how they map to business logic.
+3. **Common Query Patterns**: Document the 5-10 most frequent or complex query patterns.
+4. **Validation Logic**: Create `Pydantic` models or `SQLAlchemy` schemas for data validation.
+5. **Skill Generation**:
+   - `scripts/query_generator.py`: A helper script for generating or validating queries.
+   - `references/schema.md`: Detailed documentation of the database structure.
+   - `SKILL.md`: Entry point with core query examples and "Gold Standard" safety rules (e.g., "Always use parameterized queries").
+
+## Workflow: API to Skill Creation
+
+Use this workflow when you want to create a skill for interacting with a specific REST or GraphQL API.
+
+1. **Endpoint Analysis**: Read OpenAPI/Swagger specs or inspect live endpoints to map available resources.
+2. **Authentication Flow**: Document how to obtain and use API keys or tokens.
+3. **Data Contract Extraction**: Identify request/response structures for primary endpoints.
+4. **Error Handling**: Document specific API error codes and their meanings.
+5. **Skill Generation**:
+   - `scripts/api_client.py`: A lightweight, robust client template for interacting with the API.
+   - `references/endpoints.md`: Documentation of all major endpoints and parameters.
+   - `SKILL.md`: Entry point with common request examples and "Gold Standard" efficiency rules (e.g., "Use batch endpoints when possible").
+
 ## Best Practices for OS Models
 
 - **Dense Documentation**: Keep the primary `SKILL.md` dense with keywords to save tokens.

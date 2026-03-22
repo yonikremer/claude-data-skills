@@ -4,22 +4,22 @@
 
 ---
 
-## 🚀 Key Takeaways
+## Key Takeaways
 - **[Insight 1]**: [Brief explanation].
 - **[Insight 2]**: [Brief explanation].
 - **[Insight 3]**: [Brief explanation].
 
-## 📊 Visual Highlights
+## Visual Highlights
 [Insert Plotly Chart 1: descriptive title like "Top 10 categories for North America"]
 > **What this shows**: [1-sentence explanation of the visual trend].
 
 [Insert Plotly Chart 2: descriptive title]
 > **What this shows**: [1-sentence explanation].
 
-## 💡 Example Impact
+## Example Impact
 [Describe a specific user story or data point that illustrates the finding in human terms.]
 
-## 🛠 Next Steps
+## Next Steps
 - [Department-level action 1]
 - [Department-level action 2]
 

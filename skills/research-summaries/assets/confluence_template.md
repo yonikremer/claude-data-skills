@@ -45,12 +45,5 @@
 ---
 
 ## 7. Appendix
-### 7.1 SQL Queries
-```sql
-[Paste Query here]
-```
 
-### 7.2 Python Analysis Code
-```python
-[Paste critical logic here]
-```
+Links to gitlab repo with analysis code.

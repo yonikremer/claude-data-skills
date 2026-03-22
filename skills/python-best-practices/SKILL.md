@@ -95,7 +95,15 @@ logger.warning("Subset of data contains nulls in non-nullable column.")
 logger.error("Failed to connect to database.", exc_info=True)
 ```
 
-## 5. Data Safety & Integrity (CRITICAL)
+## 5. Dependency Management & Import Failures (CRITICAL)
+
+To ensure the agent knows when to install missing libraries, **NEVER** catch `ImportError` silently.
+
+- **Fail Loudly**: If a script requires a library (e.g., `pandas`), it must fail immediately if the library is missing. Do not use `try...except ImportError` to skip functionality.
+- **Action**: When an agent sees an `ImportError`, its first action is to install the missing dependency (e.g., `pip install ...`).
+- **Conditional Imports**: If a library is truly optional for a specific small feature, log a **CRITICAL** error or raise a custom exception that explains exactly what to install.
+
+## 6. Data Safety & Integrity (CRITICAL)
 
 To prevent irreversible data loss, especially during autonomous execution:
 

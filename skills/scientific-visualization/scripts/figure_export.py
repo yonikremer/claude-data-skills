@@ -64,18 +64,14 @@ def save_publication_figure(
         output_file = output_dir / f"{base_name}.{fmt}"
 
         if is_plotly:
-            try:
-                if fmt == 'html':
-                    fig.write_html(str(output_file), **kwargs)
-                else:
-                    # scale=3 for ~300 DPI equivalent in Plotly (base is 96 DPI)
-                    scale = kwargs.pop('scale', dpi / 96.0)
-                    fig.write_image(str(output_file), format=fmt, scale=scale, **kwargs)
-                saved_files.append(output_file)
-                print(f"✓ Saved (Plotly): {output_file}")
-            except Exception as e:
-                print(f"✗ Failed to save Plotly {output_file}: {e}")
-                print("  Note: static image export requires 'kaleido' package.")
+            if fmt == 'html':
+                fig.write_html(str(output_file), **kwargs)
+            else:
+                # scale=3 for ~300 DPI equivalent in Plotly (base is 96 DPI)
+                scale = kwargs.pop('scale', dpi / 96.0)
+                fig.write_image(str(output_file), format=fmt, scale=scale, **kwargs)
+            saved_files.append(output_file)
+            print(f"✓ Saved (Plotly): {output_file}")
             continue
 
         # Matplotlib path
@@ -302,24 +298,14 @@ def verify_font_embedding(pdf_path: Union[str, Path]) -> bool:
     bool
         True if fonts are embedded, False otherwise
     """
-    try:
-        from PyPDF2 import PdfReader
-    except ImportError:
-        print("Warning: PyPDF2 not installed. Cannot verify font embedding.")
-        print("Install with: pip install PyPDF2")
-        return None
+    from PyPDF2 import PdfReader
 
     pdf_path = Path(pdf_path)
-
-    try:
-        reader = PdfReader(pdf_path)
-        # This is a simplified check; full verification is complex
-        print(f"PDF has {len(reader.pages)} page(s)")
-        print("Note: Full font embedding verification requires detailed PDF inspection.")
-        return True
-    except Exception as e:
-        print(f"Error reading PDF: {e}")
-        return False
+    reader = PdfReader(pdf_path)
+    # This is a simplified check; full verification is complex
+    print(f"PDF has {len(reader.pages)} page(s)")
+    print("Note: Full font embedding verification requires detailed PDF inspection.")
+    return True
 
 
 if __name__ == "__main__":

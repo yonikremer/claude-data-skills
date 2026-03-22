@@ -9,24 +9,11 @@ import binascii
 import zlib
 from pathlib import Path
 import numpy as np
-
-try:
-    import magic
-    HAS_MAGIC = True
-except ImportError:
-    HAS_MAGIC = False
-
-try:
-    from reedsolo import RSCodec, ReedSolomonError
-    HAS_REEDSOLO = True
-except ImportError:
-    HAS_REEDSOLO = False
+import magic
+from reedsolo import RSCodec, ReedSolomonError
 
 def brute_force_bitflips(data, max_bytes=1024):
     """Try flipping every single bit in the first max_bytes and check for file type change."""
-    if not HAS_MAGIC:
-        return "Skip bitflip: python-magic not installed"
-    
     print(f"[*] Brute-forcing single bit-flips in first {min(len(data), max_bytes)} bytes...")
     data_list = bytearray(data)
     results = []
@@ -55,9 +42,6 @@ def check_common_checksums(data):
 
 def try_reedsolo(data, max_ecc=32):
     """Attempt Reed-Solomon correction with varying ECC lengths."""
-    if not HAS_REEDSOLO:
-        return "Skip RS: reedsolo not installed"
-    
     print(f"[*] Attempting Reed-Solomon recovery (ECC lengths 2 to {max_ecc})...")
     results = []
     # Try common block sizes/ECC lengths
@@ -105,9 +89,8 @@ def main():
         for ecc, err_count, decoded in rs_results:
             print(f"    ECC Length {ecc}: Corrected {err_count} errors.")
             # Verify if corrected data is recognized
-            if HAS_MAGIC:
-                mime = magic.from_buffer(decoded, mime=True)
-                print(f"    -> Resulting MIME: {mime}")
+            mime = magic.from_buffer(decoded, mime=True)
+            print(f"    -> Resulting MIME: {mime}")
     else:
         print("\n[-] No Reed-Solomon blocks detected with common ECC lengths.")
 

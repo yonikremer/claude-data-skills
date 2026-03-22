@@ -262,41 +262,33 @@ def check_ram(profile: dict[str, Any]) -> CheckResult:
 def check_gpu() -> CheckResult:
     """Check GPU availability and VRAM."""
     # Try CUDA first
-    try:
-        import torch
+    import torch
 
-        if torch.cuda.is_available():
-            name = torch.cuda.get_device_name(0)
-            vram = torch.cuda.get_device_properties(0).total_memory / (1024**3)
-            return CheckResult(
-                name="GPU",
-                status="pass",
-                detail=f"{name} with {vram:.1f} GB VRAM detected.",
-                value=f"{name} | VRAM: {vram:.1f} GB",
-            )
-        elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
-            return CheckResult(
-                name="GPU",
-                status="pass",
-                detail="Apple Silicon MPS backend available. Uses unified memory.",
-                value="Apple Silicon MPS",
-            )
-        else:
-            return CheckResult(
-                name="GPU",
-                status="warn",
-                detail=(
-                    "No GPU detected. TimesFM will run on CPU (slower but functional). "
-                    "Install CUDA-enabled PyTorch for GPU acceleration."
-                ),
-                value="None (CPU only)",
-            )
-    except ImportError:
+    if torch.cuda.is_available():
+        name = torch.cuda.get_device_name(0)
+        vram = torch.cuda.get_device_properties(0).total_memory / (1024**3)
+        return CheckResult(
+            name="GPU",
+            status="pass",
+            detail=f"{name} with {vram:.1f} GB VRAM detected.",
+            value=f"{name} | VRAM: {vram:.1f} GB",
+        )
+    elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+        return CheckResult(
+            name="GPU",
+            status="pass",
+            detail="Apple Silicon MPS backend available. Uses unified memory.",
+            value="Apple Silicon MPS",
+        )
+    else:
         return CheckResult(
             name="GPU",
             status="warn",
-            detail="PyTorch not installed — cannot check GPU. Install torch first.",
-            value="Unknown (torch not installed)",
+            detail=(
+                "No GPU detected. TimesFM will run on CPU (slower but functional). "
+                "Install CUDA-enabled PyTorch for GPU acceleration."
+            ),
+            value="None (CPU only)",
         )
 
 
@@ -357,22 +349,14 @@ def check_python() -> CheckResult:
 def check_package(pkg_name: str, import_name: str | None = None) -> CheckResult:
     """Check if a Python package is installed."""
     import_name = import_name or pkg_name
-    try:
-        mod = __import__(import_name)
-        version = getattr(mod, "__version__", "unknown")
-        return CheckResult(
-            name=pkg_name,
-            status="pass",
-            detail=f"{pkg_name} {version} is installed.",
-            value=f"Installed ({version})",
-        )
-    except ImportError:
-        return CheckResult(
-            name=pkg_name,
-            status="warn",
-            detail=f"{pkg_name} is not installed. Run: uv pip install {pkg_name}",
-            value="Not installed",
-        )
+    mod = __import__(import_name)
+    version = getattr(mod, "__version__", "unknown")
+    return CheckResult(
+        name=pkg_name,
+        status="pass",
+        detail=f"{pkg_name} {version} is installed.",
+        value=f"Installed ({version})",
+    )
 
 
 # ---------------------------------------------------------------------------

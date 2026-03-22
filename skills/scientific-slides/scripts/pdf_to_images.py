@@ -13,13 +13,7 @@ import sys
 import argparse
 from pathlib import Path
 from typing import Optional, List
-
-# Try to import pymupdf (preferred - no external dependencies)
-try:
-    import fitz  # PyMuPDF
-    HAS_PYMUPDF = True
-except ImportError:
-    HAS_PYMUPDF = False
+import fitz  # PyMuPDF
 
 
 class PDFToImagesConverter:
@@ -55,14 +49,7 @@ class PDFToImagesConverter:
         print(f"DPI: {self.dpi}")
         print(f"Format: {self.format}")
         
-        if HAS_PYMUPDF:
-            return self._convert_with_pymupdf()
-        else:
-            raise RuntimeError(
-                "PyMuPDF not installed. Install it with:\n"
-                "  pip install pymupdf\n\n"
-                "PyMuPDF is a self-contained library - no external dependencies needed."
-            )
+        return self._convert_with_pymupdf()
     
     def _convert_with_pymupdf(self) -> List[Path]:
         """Convert using PyMuPDF library (no external dependencies)."""

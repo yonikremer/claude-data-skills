@@ -55,10 +55,12 @@ Every skill in this repository should adhere to the "Gold Standard":
 
 1. **Data Integrity & Safety**: **NEVER** delete, overwrite, or drop data (files, columns, or rows) without explicit
    user permission. Prefer creating new columns or files (e.g., `_processed.csv`) to preserve original data.
-2. **Resource Awareness**: Call `get-available-resources` for data-intensive tasks.
-3. **Strict Idioms**: Enforce PEP-8 and modern library syntax (e.g., Pandas 2.0+, Pydantic V2).
-4. **Reference Tiering**: Keep `SKILL.md` focused; move deep documentation to `references/`.
-5. **Pitfalls Section**: Explicitly list common hallucinations or errors for OS models.
+2. **No Silent Import Failures (CRITICAL)**: **NEVER** catch `ImportError` silently. Scripts must fail loudly if a 
+   dependency is missing so the agent can see the error and install the required library.
+3. **Resource Awareness**: Call `get-available-resources` for data-intensive tasks.
+4. **Strict Idioms**: Enforce PEP-8 and modern library syntax (e.g., Pandas 2.0+, Pydantic V2).
+5. **Reference Tiering**: Keep `SKILL.md` focused; move deep documentation to `references/`.
+6. **Pitfalls Section**: Explicitly list common hallucinations or errors for OS models.
 
 ### Special Skills
 

@@ -129,11 +129,7 @@ def apply_palette(palette_name='okabe_ito'):
     >>> apply_palette('okabe_ito')
     >>> plt.plot([1, 2, 3], [1, 4, 9])  # Uses Okabe-Ito colors
     """
-    try:
-        import matplotlib.pyplot as plt
-    except ImportError:
-        print("matplotlib not installed")
-        return None
+    import matplotlib.pyplot as plt
 
     palettes = {
         'okabe_ito': OKABE_ITO_LIST,

@@ -252,118 +252,112 @@ def analyze_general_scientific(filepath, extension):
     """Analyze general scientific data formats."""
     results = {}
 
-    try:
-        if extension in ['npy']:
-            import numpy as np
-            data = np.load(filepath)
-            results = {
-                'shape': data.shape,
-                'dtype': str(data.dtype),
-                'size': data.size,
-                'ndim': data.ndim,
-                'statistics': {
-                    'min': float(np.min(data)) if np.issubdtype(data.dtype, np.number) else None,
-                    'max': float(np.max(data)) if np.issubdtype(data.dtype, np.number) else None,
-                    'mean': float(np.mean(data)) if np.issubdtype(data.dtype, np.number) else None,
-                    'std': float(np.std(data)) if np.issubdtype(data.dtype, np.number) else None,
-                }
+    if extension in ['npy']:
+        import numpy as np
+        data = np.load(filepath)
+        results = {
+            'shape': data.shape,
+            'dtype': str(data.dtype),
+            'size': data.size,
+            'ndim': data.ndim,
+            'statistics': {
+                'min': float(np.min(data)) if np.issubdtype(data.dtype, np.number) else None,
+                'max': float(np.max(data)) if np.issubdtype(data.dtype, np.number) else None,
+                'mean': float(np.mean(data)) if np.issubdtype(data.dtype, np.number) else None,
+                'std': float(np.std(data)) if np.issubdtype(data.dtype, np.number) else None,
             }
+        }
 
-        elif extension in ['npz']:
-            import numpy as np
-            data = np.load(filepath)
+    elif extension in ['npz']:
+        import numpy as np
+        data = np.load(filepath)
+        results = {
+            'arrays': list(data.files),
+            'array_count': len(data.files),
+            'array_shapes': {name: data[name].shape for name in data.files}
+        }
+
+    elif extension in ['csv', 'tsv']:
+        import pandas as pd
+        import numpy as np
+        sep = '\t' if extension == 'tsv' else ','
+        df = pd.read_csv(filepath, sep=sep, nrows=10000)  # Sample first 10k rows
+
+        # Basic profiling
+        results = {
+            'shape': df.shape,
+            'columns': list(df.columns),
+            'dtypes': {col: str(dtype) for col, dtype in df.dtypes.items()},
+            'missing_values': df.isnull().sum().to_dict(),
+            'summary_statistics': df.describe().to_dict() if len(df.select_dtypes(include='number').columns) > 0 else {}
+        }
+
+        # Advanced Logic: Categorical Hierarchies
+        cat_cols = df.select_dtypes(include=['object', 'category']).columns
+        hierarchies = []
+        if len(cat_cols) > 1:
+            for i, col_a in enumerate(cat_cols):
+                for col_b in cat_cols:
+                    if col_a == col_b: continue
+                    # Check if A is a sub-category of B
+                    if (df.groupby(col_a)[col_b].nunique() <= 1).all():
+                        hierarchies.append(f"{col_a} -> {col_b}")
+        results['categorical_hierarchies'] = hierarchies
+
+        # Advanced Logic: Nullity Correlations
+        null_df = df.isnull().astype(int)
+        null_cols = null_df.columns[null_df.any()]
+        if len(null_cols) > 1:
+            corr = null_df[null_cols].corr()
+            results['nullity_correlations'] = corr.to_dict()
+
+        # Advanced Logic: Conditional Nullity
+        cond_nullity = {}
+        if len(cat_cols) > 0 and len(null_cols) > 0:
+            for cat in cat_cols:
+                for target in null_cols:
+                    if cat == target: continue
+                    rates = df.groupby(cat)[target].apply(lambda x: x.isnull().mean()).to_dict()
+                    # Only report if there's significant variance in null rates
+                    if max(rates.values()) - min(rates.values()) > 0.2:
+                        cond_nullity[f"{target} | {cat}"] = rates
+        results['conditional_nullity'] = cond_nullity
+
+        # Pro Addition: Constant Columns
+        results['constant_columns'] = [col for col in df.columns if df[col].nunique() <= 1]
+
+    elif extension in ['json']:
+        with open(filepath, 'r') as f:
+            data = json.load(f)
+
+        results = {
+            'type': type(data).__name__,
+            'keys': list(data.keys()) if isinstance(data, dict) else None,
+            'length': len(data) if isinstance(data, (list, dict)) else None
+        }
+
+    elif extension in ['h5', 'hdf5']:
+        import h5py
+        with h5py.File(filepath, 'r') as f:
+            def get_structure(group, prefix=''):
+                items = {}
+                for key in group.keys():
+                    path = f"{prefix}/{key}"
+                    if isinstance(group[key], h5py.Dataset):
+                        items[path] = {
+                            'type': 'dataset',
+                            'shape': group[key].shape,
+                            'dtype': str(group[key].dtype)
+                        }
+                    elif isinstance(group[key], h5py.Group):
+                        items[path] = {'type': 'group'}
+                        items.update(get_structure(group[key], path))
+                return items
+
             results = {
-                'arrays': list(data.files),
-                'array_count': len(data.files),
-                'array_shapes': {name: data[name].shape for name in data.files}
+                'structure': get_structure(f),
+                'attributes': dict(f.attrs)
             }
-
-        elif extension in ['csv', 'tsv']:
-            import pandas as pd
-            import numpy as np
-            sep = '\t' if extension == 'tsv' else ','
-            df = pd.read_csv(filepath, sep=sep, nrows=10000)  # Sample first 10k rows
-
-            # Basic profiling
-            results = {
-                'shape': df.shape,
-                'columns': list(df.columns),
-                'dtypes': {col: str(dtype) for col, dtype in df.dtypes.items()},
-                'missing_values': df.isnull().sum().to_dict(),
-                'summary_statistics': df.describe().to_dict() if len(df.select_dtypes(include='number').columns) > 0 else {}
-            }
-
-            # Advanced Logic: Categorical Hierarchies
-            cat_cols = df.select_dtypes(include=['object', 'category']).columns
-            hierarchies = []
-            if len(cat_cols) > 1:
-                for i, col_a in enumerate(cat_cols):
-                    for col_b in cat_cols:
-                        if col_a == col_b: continue
-                        # Check if A is a sub-category of B
-                        if (df.groupby(col_a)[col_b].nunique() <= 1).all():
-                            hierarchies.append(f"{col_a} -> {col_b}")
-            results['categorical_hierarchies'] = hierarchies
-
-            # Advanced Logic: Nullity Correlations
-            null_df = df.isnull().astype(int)
-            null_cols = null_df.columns[null_df.any()]
-            if len(null_cols) > 1:
-                corr = null_df[null_cols].corr()
-                results['nullity_correlations'] = corr.to_dict()
-
-            # Advanced Logic: Conditional Nullity
-            cond_nullity = {}
-            if len(cat_cols) > 0 and len(null_cols) > 0:
-                for cat in cat_cols:
-                    for target in null_cols:
-                        if cat == target: continue
-                        rates = df.groupby(cat)[target].apply(lambda x: x.isnull().mean()).to_dict()
-                        # Only report if there's significant variance in null rates
-                        if max(rates.values()) - min(rates.values()) > 0.2:
-                            cond_nullity[f"{target} | {cat}"] = rates
-            results['conditional_nullity'] = cond_nullity
-
-            # Pro Addition: Constant Columns
-            results['constant_columns'] = [col for col in df.columns if df[col].nunique() <= 1]
-
-        elif extension in ['json']:
-            with open(filepath, 'r') as f:
-                data = json.load(f)
-
-            results = {
-                'type': type(data).__name__,
-                'keys': list(data.keys()) if isinstance(data, dict) else None,
-                'length': len(data) if isinstance(data, (list, dict)) else None
-            }
-
-        elif extension in ['h5', 'hdf5']:
-            import h5py
-            with h5py.File(filepath, 'r') as f:
-                def get_structure(group, prefix=''):
-                    items = {}
-                    for key in group.keys():
-                        path = f"{prefix}/{key}"
-                        if isinstance(group[key], h5py.Dataset):
-                            items[path] = {
-                                'type': 'dataset',
-                                'shape': group[key].shape,
-                                'dtype': str(group[key].dtype)
-                            }
-                        elif isinstance(group[key], h5py.Group):
-                            items[path] = {'type': 'group'}
-                            items.update(get_structure(group[key], path))
-                    return items
-
-                results = {
-                    'structure': get_structure(f),
-                    'attributes': dict(f.attrs)
-                }
-
-    except ImportError as e:
-        results['error'] = f"Required library not installed: {e}"
-    except Exception as e:
-        results['error'] = f"Analysis error: {e}"
 
     return results
 
@@ -372,44 +366,38 @@ def analyze_bioinformatics(filepath, extension):
     """Analyze bioinformatics/genomics formats."""
     results = {}
 
-    try:
-        if extension in ['fasta', 'fa', 'fna']:
-            from Bio import SeqIO
-            sequences = list(SeqIO.parse(filepath, 'fasta'))
-            lengths = [len(seq) for seq in sequences]
+    if extension in ['fasta', 'fa', 'fna']:
+        from Bio import SeqIO
+        sequences = list(SeqIO.parse(filepath, 'fasta'))
+        lengths = [len(seq) for seq in sequences]
 
-            results = {
-                'sequence_count': len(sequences),
-                'total_length': sum(lengths),
-                'mean_length': sum(lengths) / len(lengths) if lengths else 0,
-                'min_length': min(lengths) if lengths else 0,
-                'max_length': max(lengths) if lengths else 0,
-                'sequence_ids': [seq.id for seq in sequences[:10]]  # First 10
-            }
+        results = {
+            'sequence_count': len(sequences),
+            'total_length': sum(lengths),
+            'mean_length': sum(lengths) / len(lengths) if lengths else 0,
+            'min_length': min(lengths) if lengths else 0,
+            'max_length': max(lengths) if lengths else 0,
+            'sequence_ids': [seq.id for seq in sequences[:10]]  # First 10
+        }
 
-        elif extension in ['fastq', 'fq']:
-            from Bio import SeqIO
-            sequences = []
-            for i, seq in enumerate(SeqIO.parse(filepath, 'fastq')):
-                sequences.append(seq)
-                if i >= 9999:  # Sample first 10k
-                    break
+    elif extension in ['fastq', 'fq']:
+        from Bio import SeqIO
+        sequences = []
+        for i, seq in enumerate(SeqIO.parse(filepath, 'fastq')):
+            sequences.append(seq)
+            if i >= 9999:  # Sample first 10k
+                break
 
-            lengths = [len(seq) for seq in sequences]
-            qualities = [sum(seq.letter_annotations['phred_quality']) / len(seq) for seq in sequences]
+        lengths = [len(seq) for seq in sequences]
+        qualities = [sum(seq.letter_annotations['phred_quality']) / len(seq) for seq in sequences]
 
-            results = {
-                'read_count_sampled': len(sequences),
-                'mean_length': sum(lengths) / len(lengths) if lengths else 0,
-                'mean_quality': sum(qualities) / len(qualities) if qualities else 0,
-                'min_length': min(lengths) if lengths else 0,
-                'max_length': max(lengths) if lengths else 0,
-            }
-
-    except ImportError as e:
-        results['error'] = f"Required library not installed (try: pip install biopython): {e}"
-    except Exception as e:
-        results['error'] = f"Analysis error: {e}"
+        results = {
+            'read_count_sampled': len(sequences),
+            'mean_length': sum(lengths) / len(lengths) if lengths else 0,
+            'mean_quality': sum(qualities) / len(qualities) if qualities else 0,
+            'min_length': min(lengths) if lengths else 0,
+            'max_length': max(lengths) if lengths else 0,
+        }
 
     return results
 
@@ -418,38 +406,32 @@ def analyze_imaging(filepath, extension):
     """Analyze microscopy/imaging formats."""
     results = {}
 
-    try:
-        if extension in ['tif', 'tiff', 'png', 'jpg', 'jpeg']:
-            from PIL import Image
-            import numpy as np
+    if extension in ['tif', 'tiff', 'png', 'jpg', 'jpeg']:
+        from PIL import Image
+        import numpy as np
 
-            img = Image.open(filepath)
-            img_array = np.array(img)
+        img = Image.open(filepath)
+        img_array = np.array(img)
 
-            results = {
-                'size': img.size,
-                'mode': img.mode,
-                'format': img.format,
-                'shape': img_array.shape,
-                'dtype': str(img_array.dtype),
-                'value_range': [int(img_array.min()), int(img_array.max())],
-                'mean_intensity': float(img_array.mean()),
-            }
+        results = {
+            'size': img.size,
+            'mode': img.mode,
+            'format': img.format,
+            'shape': img_array.shape,
+            'dtype': str(img_array.dtype),
+            'value_range': [int(img_array.min()), int(img_array.max())],
+            'mean_intensity': float(img_array.mean()),
+        }
 
-            # Check for multi-page TIFF
-            if extension in ['tif', 'tiff']:
-                try:
-                    frame_count = 0
-                    while True:
-                        img.seek(frame_count)
-                        frame_count += 1
-                except EOFError:
-                    results['page_count'] = frame_count
-
-    except ImportError as e:
-        results['error'] = f"Required library not installed (try: pip install pillow): {e}"
-    except Exception as e:
-        results['error'] = f"Analysis error: {e}"
+        # Check for multi-page TIFF
+        if extension in ['tif', 'tiff']:
+            try:
+                frame_count = 0
+                while True:
+                    img.seek(frame_count)
+                    frame_count += 1
+            except EOFError:
+                results['page_count'] = frame_count
 
     return results
 

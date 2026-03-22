@@ -27,11 +27,8 @@ import time
 from pathlib import Path
 from typing import Optional, Dict, Any, List, Tuple
 
-try:
-    import requests
-except ImportError:
-    print("Error: requests library not found. Install with: pip install requests")
-    sys.exit(1)
+import requests
+from dotenv import load_dotenv
 
 # Try to load .env file from multiple potential locations
 def _load_env_file():
@@ -40,11 +37,6 @@ def _load_env_file():
     Returns True if a .env file was found and loaded, False otherwise.
     Note: This does NOT override existing environment variables.
     """
-    try:
-        from dotenv import load_dotenv
-    except ImportError:
-        return False  # python-dotenv not installed
-    
     # Try current working directory first
     env_path = Path.cwd() / ".env"
     if env_path.exists():

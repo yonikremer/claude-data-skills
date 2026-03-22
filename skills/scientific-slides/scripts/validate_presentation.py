@@ -16,20 +16,8 @@ import subprocess
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional
 
-# Try to import PyPDF2 for PDF analysis
-try:
-    import PyPDF2
-    HAS_PYPDF2 = True
-except ImportError:
-    HAS_PYPDF2 = False
-
-# Try to import python-pptx for PowerPoint analysis
-try:
-    from pptx import Presentation
-    HAS_PPTX = True
-except ImportError:
-    HAS_PPTX = False
-
+import PyPDF2
+from pptx import Presentation
 
 class PresentationValidator:
     """Validates presentations for common issues."""
@@ -97,12 +85,6 @@ class PresentationValidator:
     
     def _validate_pdf(self):
         """Validate PDF presentation."""
-        if not HAS_PYPDF2:
-            self.warnings.append(
-                "PyPDF2 not installed. Install with: pip install PyPDF2"
-            )
-            return
-        
         try:
             with open(self.filepath, 'rb') as f:
                 reader = PyPDF2.PdfReader(f)
@@ -146,12 +128,6 @@ class PresentationValidator:
     
     def _validate_pptx(self):
         """Validate PowerPoint presentation."""
-        if not HAS_PPTX:
-            self.warnings.append(
-                "python-pptx not installed. Install with: pip install python-pptx"
-            )
-            return
-        
         try:
             prs = Presentation(self.filepath)
             num_slides = len(prs.slides)

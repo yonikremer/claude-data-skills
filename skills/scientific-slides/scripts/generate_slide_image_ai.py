@@ -39,20 +39,11 @@ from pathlib import Path
 from typing import Optional, Dict, Any, List, Tuple
 
 
-try:
-    import requests
-except ImportError:
-    print("Error: requests library not found. Install with: pip install requests")
-    sys.exit(1)
-
+import requests
+from dotenv import load_dotenv
 
 def _load_env_file():
     """Load .env file from current directory, parent directories, or package directory."""
-    try:
-        from dotenv import load_dotenv
-    except ImportError:
-        return False
-    
     # Try current working directory first
     env_path = Path.cwd() / ".env"
     if env_path.exists():

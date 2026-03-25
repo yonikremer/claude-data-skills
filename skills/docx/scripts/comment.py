@@ -66,29 +66,49 @@ Nest markers inside parent {pid}'s markers (markers must be direct children of w
 
 
 def _generate_hex_id() -> str:
+    """Generate a random 8-character hex ID.
+
+    Returns:
+        A random 8-character hex string.
+    """
     return f"{random.randint(0, 0x7FFFFFFE):08X}"
 
 
 SMART_QUOTE_ENTITIES = {
-    "\u201c": "&#x201C;",  
-    "\u201d": "&#x201D;",  
-    "\u2018": "&#x2018;",  
-    "\u2019": "&#x2019;",  
+    "\u201c": "&#x201C;",
+    "\u201d": "&#x201D;",
+    "\u2018": "&#x2018;",
+    "\u2019": "&#x2019;",
 }
 
 
 def _encode_smart_quotes(text: str) -> str:
+    """Encode smart quotes as XML entities.
+
+    Args:
+        text: The text to encode.
+
+    Returns:
+        The text with smart quotes encoded.
+    """
     for char, entity in SMART_QUOTE_ENTITIES.items():
         text = text.replace(char, entity)
     return text
 
 
 def _append_xml(xml_path: Path, root_tag: str, content: str) -> None:
+    """Append XML content to a specified root tag in an XML file.
+
+    Args:
+        xml_path: Path to the XML file.
+        root_tag: The tag name to append content to.
+        content: The XML content to append.
+    """
     dom = defusedxml.minidom.parseString(xml_path.read_text(encoding="utf-8"))
     root = dom.getElementsByTagName(root_tag)[0]
     ns_attrs = " ".join(f'xmlns:{k}="{v}"' for k, v in NS.items())
     wrapper_dom = defusedxml.minidom.parseString(f"<root {ns_attrs}>{content}</root>")
-    for child in wrapper_dom.documentElement.childNodes:  
+    for child in wrapper_dom.documentElement.childNodes:
         if child.nodeType == child.ELEMENT_NODE:
             root.appendChild(dom.importNode(child, True))
     output = _encode_smart_quotes(dom.toxml(encoding="UTF-8").decode("utf-8"))
@@ -96,6 +116,15 @@ def _append_xml(xml_path: Path, root_tag: str, content: str) -> None:
 
 
 def _find_para_id(comments_path: Path, comment_id: int) -> str | None:
+    """Find the paraId for a given comment ID.
+
+    Args:
+        comments_path: Path to the comments.xml file.
+        comment_id: The comment ID to find.
+
+    Returns:
+        The paraId if found, None otherwise.
+    """
     dom = defusedxml.minidom.parseString(comments_path.read_text(encoding="utf-8"))
     for c in dom.getElementsByTagName("w:comment"):
         if c.getAttribute("w:id") == str(comment_id):
@@ -106,6 +135,14 @@ def _find_para_id(comments_path: Path, comment_id: int) -> str | None:
 
 
 def _get_next_rid(rels_path: Path) -> int:
+    """Get the next relationship ID (rIdN) for a relationships file.
+
+    Args:
+        rels_path: Path to the .rels file.
+
+    Returns:
+        The next available rId number as an integer.
+    """
     dom = defusedxml.minidom.parseString(rels_path.read_text(encoding="utf-8"))
     max_rid = 0
     for rel in dom.getElementsByTagName("Relationship"):
@@ -119,6 +156,15 @@ def _get_next_rid(rels_path: Path) -> int:
 
 
 def _has_relationship(rels_path: Path, target: str) -> bool:
+    """Check if a relationship to a target already exists.
+
+    Args:
+        rels_path: Path to the .rels file.
+        target: The relationship target to check for.
+
+    Returns:
+        True if the relationship exists, False otherwise.
+    """
     dom = defusedxml.minidom.parseString(rels_path.read_text(encoding="utf-8"))
     for rel in dom.getElementsByTagName("Relationship"):
         if rel.getAttribute("Target") == target:
@@ -127,6 +173,15 @@ def _has_relationship(rels_path: Path, target: str) -> bool:
 
 
 def _has_content_type(ct_path: Path, part_name: str) -> bool:
+    """Check if a content type override for a part name already exists.
+
+    Args:
+        ct_path: Path to [Content_Types].xml.
+        part_name: The PartName to check for.
+
+    Returns:
+        True if the content type exists, False otherwise.
+    """
     dom = defusedxml.minidom.parseString(ct_path.read_text(encoding="utf-8"))
     for override in dom.getElementsByTagName("Override"):
         if override.getAttribute("PartName") == part_name:
@@ -135,12 +190,17 @@ def _has_content_type(ct_path: Path, part_name: str) -> bool:
 
 
 def _ensure_comment_relationships(unpacked_dir: Path) -> None:
+    """Ensure all required comment relationships exist in document.xml.rels.
+
+    Args:
+        unpacked_dir: Path to the unpacked DOCX directory.
+    """
     rels_path = unpacked_dir / "word" / "_rels" / "document.xml.rels"
     if not rels_path.exists():
         return
 
     if _has_relationship(rels_path, "comments.xml"):
-        return  
+        return
 
     dom = defusedxml.minidom.parseString(rels_path.read_text(encoding="utf-8"))
     root = dom.documentElement
@@ -170,19 +230,24 @@ def _ensure_comment_relationships(unpacked_dir: Path) -> None:
         rel.setAttribute("Id", f"rId{next_rid}")
         rel.setAttribute("Type", rel_type)
         rel.setAttribute("Target", target)
-        root.appendChild(rel)  
+        root.appendChild(rel)
         next_rid += 1
 
     rels_path.write_bytes(dom.toxml(encoding="UTF-8"))
 
 
 def _ensure_comment_content_types(unpacked_dir: Path) -> None:
+    """Ensure all required comment content types exist in [Content_Types].xml.
+
+    Args:
+        unpacked_dir: Path to the unpacked DOCX directory.
+    """
     ct_path = unpacked_dir / "[Content_Types].xml"
     if not ct_path.exists():
         return
 
     if _has_content_type(ct_path, "/word/comments.xml"):
-        return  
+        return
 
     dom = defusedxml.minidom.parseString(ct_path.read_text(encoding="utf-8"))
     root = dom.documentElement
@@ -210,7 +275,7 @@ def _ensure_comment_content_types(unpacked_dir: Path) -> None:
         override = dom.createElement("Override")
         override.setAttribute("PartName", part_name)
         override.setAttribute("ContentType", content_type)
-        root.appendChild(override)  
+        root.appendChild(override)
 
     ct_path.write_bytes(dom.toxml(encoding="UTF-8"))
 
@@ -223,6 +288,19 @@ def add_comment(
     initials: str = "C",
     parent_id: int | None = None,
 ) -> tuple[str, str]:
+    """Add a comment or reply to a DOCX document.
+
+    Args:
+        unpacked_dir: Path to the unpacked DOCX directory.
+        comment_id: Unique ID for the new comment.
+        text: The comment text.
+        author: Author name.
+        initials: Author initials.
+        parent_id: Optional ID of the parent comment (for replies).
+
+    Returns:
+        A tuple of (para_id, message).
+    """
     word = Path(unpacked_dir) / "word"
     if not word.exists():
         return "", f"Error: {word} not found"
@@ -245,7 +323,7 @@ def add_comment(
             date=ts,
             initials=initials,
             para_id=para_id,
-            text=text,  
+            text=text,
         ),
     )
 

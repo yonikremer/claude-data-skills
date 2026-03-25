@@ -13,13 +13,23 @@ Rules:
 import xml.etree.ElementTree as ET
 import zipfile
 from pathlib import Path
+from typing import Any, Dict, List, Tuple, Union
 
 import defusedxml.minidom
 
 WORD_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 
 
-def simplify_redlines(input_dir: str) -> tuple[int, str]:
+def simplify_redlines(input_dir: Union[str, Path]) -> Tuple[int, str]:
+    """
+    Simplify tracked changes by merging adjacent w:ins or w:del elements.
+
+    Args:
+        input_dir: Path to the unpacked DOCX directory.
+
+    Returns:
+        A tuple of (merge_count, message).
+    """
     doc_xml = Path(input_dir) / "word" / "document.xml"
 
     if not doc_xml.exists():
@@ -44,7 +54,17 @@ def simplify_redlines(input_dir: str) -> tuple[int, str]:
         return 0, f"Error: {e}"
 
 
-def _merge_tracked_changes_in(container, tag: str) -> int:
+def _merge_tracked_changes_in(container: Any, tag: str) -> int:
+    """
+    Merge adjacent tracked changes within a specific container.
+
+    Args:
+        container: The container element.
+        tag: The tag name ('ins' or 'del').
+
+    Returns:
+        The number of merges performed.
+    """
     merge_count = 0
 
     tracked = [
@@ -72,12 +92,31 @@ def _merge_tracked_changes_in(container, tag: str) -> int:
     return merge_count
 
 
-def _is_element(node, tag: str) -> bool:
+def _is_element(node: Any, tag: str) -> bool:
+    """
+    Check if a node is an element with a specific tag name.
+
+    Args:
+        node: The node to check.
+        tag: The tag name to look for.
+
+    Returns:
+        True if it matches, False otherwise.
+    """
     name = node.localName or node.tagName
     return name == tag or name.endswith(f":{tag}")
 
 
-def _get_author(elem) -> str:
+def _get_author(elem: Any) -> str:
+    """
+    Get the author of a tracked change element.
+
+    Args:
+        elem: The tracked change element.
+
+    Returns:
+        The author name.
+    """
     author = elem.getAttribute("w:author")
     if not author:
         for attr in elem.attributes.values():
@@ -86,7 +125,17 @@ def _get_author(elem) -> str:
     return author
 
 
-def _can_merge_tracked(elem1, elem2) -> bool:
+def _can_merge_tracked(elem1: Any, elem2: Any) -> bool:
+    """
+    Check if two tracked changes can be merged.
+
+    Args:
+        elem1: The first element.
+        elem2: The second element.
+
+    Returns:
+        True if they can be merged, False otherwise.
+    """
     if _get_author(elem1) != _get_author(elem2):
         return False
 
@@ -101,17 +150,34 @@ def _can_merge_tracked(elem1, elem2) -> bool:
     return True
 
 
-def _merge_tracked_content(target, source):
+def _merge_tracked_content(target: Any, source: Any) -> None:
+    """
+    Move content from source tracked change to target tracked change.
+
+    Args:
+        target: The target element.
+        source: The source element.
+    """
     while source.firstChild:
         child = source.firstChild
         source.removeChild(child)
         target.appendChild(child)
 
 
-def _find_elements(root, tag: str) -> list:
+def _find_elements(root: Any, tag: str) -> List[Any]:
+    """
+    Find all elements with a specific tag name.
+
+    Args:
+        root: The root element to search from.
+        tag: The tag name to look for.
+
+    Returns:
+        A list of matching elements.
+    """
     results = []
 
-    def traverse(node):
+    def traverse(node: Any) -> None:
         if node.nodeType == node.ELEMENT_NODE:
             name = node.localName or node.tagName
             if name == tag or name.endswith(f":{tag}"):
@@ -123,7 +189,16 @@ def _find_elements(root, tag: str) -> list:
     return results
 
 
-def get_tracked_change_authors(doc_xml_path: Path) -> dict[str, int]:
+def get_tracked_change_authors(doc_xml_path: Path) -> Dict[str, int]:
+    """
+    Get authors and counts of tracked changes from an XML file.
+
+    Args:
+        doc_xml_path: Path to the document.xml file.
+
+    Returns:
+        A dictionary mapping author names to change counts.
+    """
     if not doc_xml_path.exists():
         return {}
 
@@ -136,7 +211,7 @@ def get_tracked_change_authors(doc_xml_path: Path) -> dict[str, int]:
     namespaces = {"w": WORD_NS}
     author_attr = f"{{{WORD_NS}}}author"
 
-    authors: dict[str, int] = {}
+    authors: Dict[str, int] = {}
     for tag in ["ins", "del"]:
         for elem in root.findall(f".//w:{tag}", namespaces):
             author = elem.get(author_attr)
@@ -146,7 +221,16 @@ def get_tracked_change_authors(doc_xml_path: Path) -> dict[str, int]:
     return authors
 
 
-def _get_authors_from_docx(docx_path: Path) -> dict[str, int]:
+def _get_authors_from_docx(docx_path: Path) -> Dict[str, int]:
+    """
+    Get authors and counts of tracked changes from a .docx file.
+
+    Args:
+        docx_path: Path to the .docx file.
+
+    Returns:
+        A dictionary mapping author names to change counts.
+    """
     try:
         with zipfile.ZipFile(docx_path, "r") as zf:
             if "word/document.xml" not in zf.namelist():
@@ -158,7 +242,7 @@ def _get_authors_from_docx(docx_path: Path) -> dict[str, int]:
                 namespaces = {"w": WORD_NS}
                 author_attr = f"{{{WORD_NS}}}author"
 
-                authors: dict[str, int] = {}
+                authors: Dict[str, int] = {}
                 for tag in ["ins", "del"]:
                     for elem in root.findall(f".//w:{tag}", namespaces):
                         author = elem.get(author_attr)
@@ -169,7 +253,23 @@ def _get_authors_from_docx(docx_path: Path) -> dict[str, int]:
         return {}
 
 
-def infer_author(modified_dir: Path, original_docx: Path, default: str = "Claude") -> str:
+def infer_author(
+    modified_dir: Path, original_docx: Path, default: str = "Claude"
+) -> str:
+    """
+    Infer the author of new changes in a document.
+
+    Args:
+        modified_dir: Path to the unpacked modified directory.
+        original_docx: Path to the original .docx file.
+        default: Default author name if none can be inferred.
+
+    Returns:
+        The inferred author name.
+
+    Raises:
+        ValueError: If multiple authors added new changes.
+    """
     modified_xml = modified_dir / "word" / "document.xml"
     modified_authors = get_tracked_change_authors(modified_xml)
 
@@ -178,7 +278,7 @@ def infer_author(modified_dir: Path, original_docx: Path, default: str = "Claude
 
     original_authors = _get_authors_from_docx(original_docx)
 
-    new_changes: dict[str, int] = {}
+    new_changes: Dict[str, int] = {}
     for author, count in modified_authors.items():
         original_count = original_authors.get(author, 0)
         diff = count - original_count

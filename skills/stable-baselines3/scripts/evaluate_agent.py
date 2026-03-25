@@ -8,40 +8,43 @@ This template demonstrates:
 - Visualizing agent performance
 """
 
+import os
+from typing import Dict, List, Optional, Tuple, Union
+
 import gymnasium as gym
 import numpy as np
 from stable_baselines3 import PPO
 from stable_baselines3.common.evaluation import evaluate_policy
-from stable_baselines3.common.vec_env import DummyVecEnv, VecVideoRecorder, VecNormalize
-import os
+from stable_baselines3.common.vec_env import DummyVecEnv, VecNormalize, VecVideoRecorder
 
 
 def evaluate_agent(
-    model_path,
-    env_id="CartPole-v1",
-    n_eval_episodes=10,
-    deterministic=True,
-    render=False,
-    record_video=False,
-    video_folder="./videos/",
-    vec_normalize_path=None,
-):
+    model_path: str,
+    env_id: str = "CartPole-v1",
+    n_eval_episodes: int = 10,
+    deterministic: bool = True,
+    render: bool = False,
+    record_video: bool = False,
+    video_folder: str = "./videos/",
+    vec_normalize_path: Optional[str] = None,
+) -> Tuple[float, float]:
     """
     Evaluate a trained RL agent.
 
     Args:
-        model_path: Path to the saved model
-        env_id: Gymnasium environment ID
-        n_eval_episodes: Number of episodes to evaluate
-        deterministic: Use deterministic actions
-        render: Render the environment during evaluation
-        record_video: Record videos of the agent
-        video_folder: Folder to save videos
-        vec_normalize_path: Path to VecNormalize statistics (if used during training)
+        model_path: Path to the saved model.
+        env_id: Gymnasium environment ID.
+        n_eval_episodes: Number of episodes to evaluate.
+        deterministic: Use deterministic actions.
+        render: Render the environment during evaluation.
+        record_video: Record videos of the agent.
+        video_folder: Folder to save videos.
+        vec_normalize_path: Path to VecNormalize statistics (if used during training).
 
     Returns:
-        mean_reward: Mean episode reward
-        std_reward: Standard deviation of episode rewards
+        A tuple containing:
+            - mean_reward: Mean episode reward.
+            - std_reward: Standard deviation of episode rewards.
     """
     # Load the trained model
     print(f"Loading model from {model_path}...")
@@ -49,12 +52,14 @@ def evaluate_agent(
 
     # Create evaluation environment
     if render:
-        env = gym.make(env_id, render_mode="human")
+        env_base = gym.make(env_id, render_mode="human")
     else:
-        env = gym.make(env_id)
+        env_base = gym.make(env_id)
 
     # Wrap in DummyVecEnv for consistency
-    env = DummyVecEnv([lambda: env])
+    env: Union[DummyVecEnv, VecNormalize, VecVideoRecorder] = DummyVecEnv(
+        [lambda: env_base]
+    )
 
     # Load VecNormalize statistics if they were used during training
     if vec_normalize_path and os.path.exists(vec_normalize_path):
@@ -91,25 +96,25 @@ def evaluate_agent(
     # Cleanup
     env.close()
 
-    return mean_reward, std_reward
+    return float(mean_reward), float(std_reward)
 
 
 def watch_agent(
-    model_path,
-    env_id="CartPole-v1",
-    n_episodes=5,
-    deterministic=True,
-    vec_normalize_path=None,
-):
+    model_path: str,
+    env_id: str = "CartPole-v1",
+    n_episodes: int = 5,
+    deterministic: bool = True,
+    vec_normalize_path: Optional[str] = None,
+) -> None:
     """
     Watch a trained agent play (with rendering).
 
     Args:
-        model_path: Path to the saved model
-        env_id: Gymnasium environment ID
-        n_episodes: Number of episodes to watch
-        deterministic: Use deterministic actions
-        vec_normalize_path: Path to VecNormalize statistics (if used during training)
+        model_path: Path to the saved model.
+        env_id: Gymnasium environment ID.
+        n_episodes: Number of episodes to watch.
+        deterministic: Use deterministic actions.
+        vec_normalize_path: Path to VecNormalize statistics (if used during training).
     """
     # Load the trained model
     print(f"Loading model from {model_path}...")
@@ -131,7 +136,7 @@ def watch_agent(
     # Run episodes
     for episode in range(n_episodes):
         obs, info = env.reset()
-        episode_reward = 0
+        episode_reward = 0.0
         done = False
         step = 0
 
@@ -140,7 +145,8 @@ def watch_agent(
         while not done:
             # Apply observation normalization if needed
             if obs_normalization:
-                obs_normalized = obs_normalization.normalize_obs(obs)
+                # VecNormalize expects a batch of observations
+                obs_normalized = obs_normalization.normalize_obs(np.array([obs]))[0]
             else:
                 obs_normalized = obs
 
@@ -151,7 +157,7 @@ def watch_agent(
             obs, reward, terminated, truncated, info = env.step(action)
             done = terminated or truncated
 
-            episode_reward += reward
+            episode_reward += float(reward)
             step += 1
 
         print(f"Episode reward: {episode_reward:.2f} ({step} steps)")
@@ -160,19 +166,22 @@ def watch_agent(
 
 
 def compare_models(
-    model_paths,
-    env_id="CartPole-v1",
-    n_eval_episodes=10,
-    deterministic=True,
-):
+    model_paths: List[str],
+    env_id: str = "CartPole-v1",
+    n_eval_episodes: int = 10,
+    deterministic: bool = True,
+) -> Dict[str, Dict[str, float]]:
     """
     Compare performance of multiple trained models.
 
     Args:
-        model_paths: List of paths to saved models
-        env_id: Gymnasium environment ID
-        n_eval_episodes: Number of episodes to evaluate each model
-        deterministic: Use deterministic actions
+        model_paths: List of paths to saved models.
+        env_id: Gymnasium environment ID.
+        n_eval_episodes: Number of episodes to evaluate each model.
+        deterministic: Use deterministic actions.
+
+    Returns:
+        Dictionary mapping model paths to their evaluation statistics.
     """
     results = {}
 
@@ -199,13 +208,14 @@ def compare_models(
 
 if __name__ == "__main__":
     # Example 1: Evaluate a trained model
-    model_path = "./models/best_model/best_model.zip"
-    evaluate_agent(
-        model_path=model_path,
-        env_id="CartPole-v1",
-        n_eval_episodes=10,
-        deterministic=True,
-    )
+    BEST_MODEL_PATH = "./models/best_model/best_model.zip"
+    if os.path.exists(BEST_MODEL_PATH):
+        evaluate_agent(
+            model_path=BEST_MODEL_PATH,
+            env_id="CartPole-v1",
+            n_eval_episodes=10,
+            deterministic=True,
+        )
 
     # Example 2: Record videos of agent behavior
     # evaluate_agent(
@@ -234,12 +244,4 @@ if __name__ == "__main__":
     #     ],
     #     env_id="CartPole-v1",
     #     n_eval_episodes=10,
-    # )
-
-    # Example 5: Evaluate with VecNormalize statistics
-    # evaluate_agent(
-    #     model_path="./models/best_model/best_model.zip",
-    #     env_id="Pendulum-v1",
-    #     n_eval_episodes=10,
-    #     vec_normalize_path="./models/vec_normalize.pkl",
     # )

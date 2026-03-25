@@ -22,6 +22,13 @@ from pathlib import Path
 
 
 def get_soffice_env() -> dict:
+    """Gets the environment variables required for running LibreOffice.
+
+    Detects if an LD_PRELOAD shim is needed and adds it to the environment.
+
+    Returns:
+        dict: A dictionary of environment variables.
+    """
     env = os.environ.copy()
     env["SAL_USE_VCLPLUGIN"] = "svp"
 
@@ -33,15 +40,28 @@ def get_soffice_env() -> dict:
 
 
 def run_soffice(args: list[str], **kwargs) -> subprocess.CompletedProcess:
+    """Runs LibreOffice with the given arguments.
+
+    Args:
+        args (list[str]): The command-line arguments to pass to LibreOffice.
+        **kwargs: Additional keyword arguments to pass to subprocess.run.
+
+    Returns:
+        subprocess.CompletedProcess: The result of the subprocess call.
+    """
     env = get_soffice_env()
     return subprocess.run(["soffice"] + args, env=env, **kwargs)
-
 
 
 _SHIM_SO = Path(tempfile.gettempdir()) / "lo_socket_shim.so"
 
 
 def _needs_shim() -> bool:
+    """Checks if an LD_PRELOAD shim is needed for AF_UNIX sockets.
+
+    Returns:
+        bool: True if a shim is needed, False otherwise.
+    """
     try:
         s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
         s.close()
@@ -51,6 +71,11 @@ def _needs_shim() -> bool:
 
 
 def _ensure_shim() -> Path:
+    """Ensures that the LD_PRELOAD shim is compiled and available.
+
+    Returns:
+        Path: The path to the compiled shim shared object.
+    """
     if _SHIM_SO.exists():
         return _SHIM_SO
 
@@ -63,7 +88,6 @@ def _ensure_shim() -> Path:
     )
     src.unlink()
     return _SHIM_SO
-
 
 
 _SHIM_SOURCE = r"""
@@ -176,8 +200,8 @@ int close(int fd) {
 """
 
 
-
 if __name__ == "__main__":
     import sys
+
     result = run_soffice(sys.argv[1:])
     sys.exit(result.returncode)

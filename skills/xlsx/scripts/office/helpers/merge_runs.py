@@ -14,6 +14,14 @@ import defusedxml.minidom
 
 
 def merge_runs(input_dir: str) -> tuple[int, str]:
+    """Merges adjacent runs with identical formatting in a DOCX document.
+
+    Args:
+        input_dir (str): The directory containing the unpacked DOCX files.
+
+    Returns:
+        tuple[int, str]: A tuple containing the number of merged runs and a status message.
+    """
     doc_xml = Path(input_dir) / "word" / "document.xml"
 
     if not doc_xml.exists():
@@ -39,9 +47,18 @@ def merge_runs(input_dir: str) -> tuple[int, str]:
         return 0, f"Error: {e}"
 
 
+def _find_elements(
+    root: defusedxml.minidom.Element, tag: str
+) -> list[defusedxml.minidom.Element]:
+    """Recursively finds all elements with the given tag name.
 
+    Args:
+        root (defusedxml.minidom.Element): The root element to start the search from.
+        tag (str): The tag name to search for.
 
-def _find_elements(root, tag: str) -> list:
+    Returns:
+        list[defusedxml.minidom.Element]: A list of matching elements.
+    """
     results = []
 
     def traverse(node):
@@ -56,7 +73,18 @@ def _find_elements(root, tag: str) -> list:
     return results
 
 
-def _get_child(parent, tag: str):
+def _get_child(
+    parent: defusedxml.minidom.Element, tag: str
+) -> defusedxml.minidom.Element | None:
+    """Gets the first child element with the given tag name.
+
+    Args:
+        parent (defusedxml.minidom.Element): The parent element.
+        tag (str): The tag name to search for.
+
+    Returns:
+        defusedxml.minidom.Element | None: The matching child element, or None if not found.
+    """
     for child in parent.childNodes:
         if child.nodeType == child.ELEMENT_NODE:
             name = child.localName or child.tagName
@@ -65,7 +93,18 @@ def _get_child(parent, tag: str):
     return None
 
 
-def _get_children(parent, tag: str) -> list:
+def _get_children(
+    parent: defusedxml.minidom.Element, tag: str
+) -> list[defusedxml.minidom.Element]:
+    """Gets all child elements with the given tag name.
+
+    Args:
+        parent (defusedxml.minidom.Element): The parent element.
+        tag (str): The tag name to search for.
+
+    Returns:
+        list[defusedxml.minidom.Element]: A list of matching child elements.
+    """
     results = []
     for child in parent.childNodes:
         if child.nodeType == child.ELEMENT_NODE:
@@ -75,7 +114,18 @@ def _get_children(parent, tag: str) -> list:
     return results
 
 
-def _is_adjacent(elem1, elem2) -> bool:
+def _is_adjacent(
+    elem1: defusedxml.minidom.Element, elem2: defusedxml.minidom.Element
+) -> bool:
+    """Checks if two elements are adjacent, ignoring whitespace.
+
+    Args:
+        elem1 (defusedxml.minidom.Element): The first element.
+        elem2 (defusedxml.minidom.Element): The second element.
+
+    Returns:
+        bool: True if adjacent, False otherwise.
+    """
     node = elem1.nextSibling
     while node:
         if node == elem2:
@@ -88,24 +138,39 @@ def _is_adjacent(elem1, elem2) -> bool:
     return False
 
 
+def _remove_elements(root: defusedxml.minidom.Element, tag: str) -> None:
+    """Removes all elements with the given tag name from the document.
 
-
-def _remove_elements(root, tag: str):
+    Args:
+        root (defusedxml.minidom.Element): The root element.
+        tag (str): The tag name of elements to remove.
+    """
     for elem in _find_elements(root, tag):
         if elem.parentNode:
             elem.parentNode.removeChild(elem)
 
 
-def _strip_run_rsid_attrs(root):
+def _strip_run_rsid_attrs(root: defusedxml.minidom.Element) -> None:
+    """Removes rsid attributes from all run elements.
+
+    Args:
+        root (defusedxml.minidom.Element): The root element.
+    """
     for run in _find_elements(root, "r"):
         for attr in list(run.attributes.values()):
             if "rsid" in attr.name.lower():
                 run.removeAttribute(attr.name)
 
 
+def _merge_runs_in(container: defusedxml.minidom.Element) -> int:
+    """Merges adjacent compatible runs within a container element.
 
+    Args:
+        container (defusedxml.minidom.Element): The element containing runs (e.g., a paragraph).
 
-def _merge_runs_in(container) -> int:
+    Returns:
+        int: The number of merges performed.
+    """
     merge_count = 0
     run = _first_child_run(container)
 
@@ -125,14 +190,34 @@ def _merge_runs_in(container) -> int:
     return merge_count
 
 
-def _first_child_run(container):
+def _first_child_run(
+    container: defusedxml.minidom.Element,
+) -> defusedxml.minidom.Element | None:
+    """Gets the first child element that is a run.
+
+    Args:
+        container (defusedxml.minidom.Element): The container element.
+
+    Returns:
+        defusedxml.minidom.Element | None: The first child run, or None if not found.
+    """
     for child in container.childNodes:
         if child.nodeType == child.ELEMENT_NODE and _is_run(child):
             return child
     return None
 
 
-def _next_element_sibling(node):
+def _next_element_sibling(
+    node: defusedxml.minidom.Node,
+) -> defusedxml.minidom.Element | None:
+    """Gets the next sibling that is an element.
+
+    Args:
+        node (defusedxml.minidom.Node): The current node.
+
+    Returns:
+        defusedxml.minidom.Element | None: The next sibling element, or None if not found.
+    """
     sibling = node.nextSibling
     while sibling:
         if sibling.nodeType == sibling.ELEMENT_NODE:
@@ -141,7 +226,17 @@ def _next_element_sibling(node):
     return None
 
 
-def _next_sibling_run(node):
+def _next_sibling_run(
+    node: defusedxml.minidom.Node,
+) -> defusedxml.minidom.Element | None:
+    """Gets the next sibling that is a run.
+
+    Args:
+        node (defusedxml.minidom.Node): The current node.
+
+    Returns:
+        defusedxml.minidom.Element | None: The next sibling run, or None if not found.
+    """
     sibling = node.nextSibling
     while sibling:
         if sibling.nodeType == sibling.ELEMENT_NODE:
@@ -151,12 +246,33 @@ def _next_sibling_run(node):
     return None
 
 
-def _is_run(node) -> bool:
+def _is_run(node: defusedxml.minidom.Node) -> bool:
+    """Checks if a node is a run element.
+
+    Args:
+        node (defusedxml.minidom.Node): The node to check.
+
+    Returns:
+        bool: True if it's a run, False otherwise.
+    """
+    if node.nodeType != node.ELEMENT_NODE:
+        return False
     name = node.localName or node.tagName
     return name == "r" or name.endswith(":r")
 
 
-def _can_merge(run1, run2) -> bool:
+def _can_merge(
+    run1: defusedxml.minidom.Element, run2: defusedxml.minidom.Element
+) -> bool:
+    """Checks if two runs can be merged based on their formatting.
+
+    Args:
+        run1 (defusedxml.minidom.Element): The first run.
+        run2 (defusedxml.minidom.Element): The second run.
+
+    Returns:
+        bool: True if they can be merged, False otherwise.
+    """
     rpr1 = _get_child(run1, "rPr")
     rpr2 = _get_child(run2, "rPr")
 
@@ -164,10 +280,18 @@ def _can_merge(run1, run2) -> bool:
         return False
     if rpr1 is None:
         return True
-    return rpr1.toxml() == rpr2.toxml()  
+    return rpr1.toxml() == rpr2.toxml()
 
 
-def _merge_run_content(target, source):
+def _merge_run_content(
+    target: defusedxml.minidom.Element, source: defusedxml.minidom.Element
+) -> None:
+    """Moves content from a source run to a target run.
+
+    Args:
+        target (defusedxml.minidom.Element): The run to merge content into.
+        source (defusedxml.minidom.Element): The run to move content from.
+    """
     for child in list(source.childNodes):
         if child.nodeType == child.ELEMENT_NODE:
             name = child.localName or child.tagName
@@ -175,7 +299,12 @@ def _merge_run_content(target, source):
                 target.appendChild(child)
 
 
-def _consolidate_text(run):
+def _consolidate_text(run: defusedxml.minidom.Element) -> None:
+    """Consolidates adjacent text elements within a run.
+
+    Args:
+        run (defusedxml.minidom.Element): The run element to consolidate text in.
+    """
     t_elements = _get_children(run, "t")
 
     for i in range(len(t_elements) - 1, 0, -1):

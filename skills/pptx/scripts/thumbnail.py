@@ -37,7 +37,8 @@ FONT_SIZE_RATIO = 0.10
 LABEL_PADDING_RATIO = 0.4
 
 
-def main():
+def main() -> None:
+    """Main execution function for creating thumbnail grids."""
     parser = argparse.ArgumentParser(
         description="Create thumbnail grids from PowerPoint slides."
     )
@@ -93,6 +94,14 @@ def main():
 
 
 def get_slide_info(pptx_path: Path) -> list[dict]:
+    """Extract slide information (names and visibility) from a PPTX file.
+
+    Args:
+        pptx_path: Path to the PowerPoint file.
+
+    Returns:
+        A list of dictionaries containing 'name' and 'hidden' status for each slide.
+    """
     with zipfile.ZipFile(pptx_path, "r") as zf:
         rels_content = zf.read("ppt/_rels/presentation.xml.rels").decode("utf-8")
         rels_dom = defusedxml.minidom.parseString(rels_content)
@@ -123,6 +132,16 @@ def build_slide_list(
     visible_images: list[Path],
     temp_dir: Path,
 ) -> list[tuple[Path, str]]:
+    """Build a list of image paths and labels for all slides, including placeholders.
+
+    Args:
+        slide_info: List of slide info dictionaries.
+        visible_images: List of paths to converted slide images.
+        temp_dir: Temporary directory to store placeholder images.
+
+    Returns:
+        A list of tuples (image_path, slide_label).
+    """
     if visible_images:
         with Image.open(visible_images[0]) as img:
             placeholder_size = img.size
@@ -147,6 +166,14 @@ def build_slide_list(
 
 
 def create_hidden_placeholder(size: tuple[int, int]) -> Image.Image:
+    """Create a placeholder image for hidden slides.
+
+    Args:
+        size: The (width, height) of the placeholder image.
+
+    Returns:
+        A PIL Image object representing the placeholder.
+    """
     img = Image.new("RGB", size, color="#F0F0F0")
     draw = ImageDraw.Draw(img)
     line_width = max(5, min(size) // 100)
@@ -156,6 +183,18 @@ def create_hidden_placeholder(size: tuple[int, int]) -> Image.Image:
 
 
 def convert_to_images(pptx_path: Path, temp_dir: Path) -> list[Path]:
+    """Convert PowerPoint slides to a sequence of image files.
+
+    Args:
+        pptx_path: Path to the PowerPoint file.
+        temp_dir: Directory to store the intermediate PDF and final images.
+
+    Returns:
+        A sorted list of Paths to the generated slide images.
+
+    Raises:
+        RuntimeError: If PDF or image conversion fails.
+    """
     pdf_path = temp_dir / f"{pptx_path.stem}.pdf"
 
     result = subprocess.run(
@@ -199,6 +238,17 @@ def create_grids(
     width: int,
     output_path: Path,
 ) -> list[str]:
+    """Create one or more grid images from a list of slides.
+
+    Args:
+        slides: List of (image_path, label) tuples.
+        cols: Number of columns in the grid.
+        width: Target width for each thumbnail.
+        output_path: Base path for the output image(s).
+
+    Returns:
+        A list of paths to the created grid images.
+    """
     max_per_grid = cols * (cols + 1)
     grid_files = []
 
@@ -227,6 +277,16 @@ def create_grid(
     cols: int,
     width: int,
 ) -> Image.Image:
+    """Create a single grid image from a chunk of slides.
+
+    Args:
+        slides: List of (image_path, label) tuples.
+        cols: Number of columns in the grid.
+        width: Target width for each thumbnail.
+
+    Returns:
+        A PIL Image object representing the grid.
+    """
     font_size = int(width * FONT_SIZE_RATIO)
     label_padding = int(font_size * LABEL_PADDING_RATIO)
 

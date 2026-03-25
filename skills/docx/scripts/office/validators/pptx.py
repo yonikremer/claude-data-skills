@@ -3,11 +3,18 @@ Validator for PowerPoint presentation XML files against XSD schemas.
 """
 
 import re
+from pathlib import Path
+from typing import Dict, List, Tuple
+
+import lxml.etree
 
 from .base import BaseSchemaValidator
 
 
 class PPTXSchemaValidator(BaseSchemaValidator):
+    """
+    Validator for PowerPoint presentation XML files.
+    """
 
     PRESENTATIONML_NAMESPACE = (
         "http://schemas.openxmlformats.org/presentationml/2006/main"
@@ -22,7 +29,13 @@ class PPTXSchemaValidator(BaseSchemaValidator):
         "tablestyleid": "tablestyles",
     }
 
-    def validate(self):
+    def validate(self) -> bool:
+        """
+        Perform all PPTX-specific validation checks.
+
+        Returns:
+            True if all checks pass, False otherwise.
+        """
         if not self.validate_xml():
             return False
 
@@ -59,9 +72,13 @@ class PPTXSchemaValidator(BaseSchemaValidator):
 
         return all_valid
 
-    def validate_uuid_ids(self):
-        import lxml.etree
+    def validate_uuid_ids(self) -> bool:
+        """
+        Validate that all UUID-like IDs contain valid hex values.
 
+        Returns:
+            True if all UUID-like IDs are valid, False otherwise.
+        """
         errors = []
         uuid_pattern = re.compile(
             r"^[\{\(]?[0-9A-Fa-f]{8}-?[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12}[\}\)]?$"
@@ -97,13 +114,26 @@ class PPTXSchemaValidator(BaseSchemaValidator):
                 print("PASSED - All UUID-like IDs contain valid hex values")
             return True
 
-    def _looks_like_uuid(self, value):
+    def _looks_like_uuid(self, value: str) -> bool:
+        """
+        Check if a string looks like a UUID.
+
+        Args:
+            value: The string to check.
+
+        Returns:
+            True if it looks like a UUID, False otherwise.
+        """
         clean_value = value.strip("{}()").replace("-", "")
         return len(clean_value) == 32 and all(c.isalnum() for c in clean_value)
 
-    def validate_slide_layout_ids(self):
-        import lxml.etree
+    def validate_slide_layout_ids(self) -> bool:
+        """
+        Validate that all slide layout IDs reference valid slide layouts.
 
+        Returns:
+            True if valid, False otherwise.
+        """
         errors = []
 
         slide_masters = list(self.unpacked_dir.glob("ppt/slideMasters/*.xml"))
@@ -169,9 +199,13 @@ class PPTXSchemaValidator(BaseSchemaValidator):
                 print("PASSED - All slide layout IDs reference valid slide layouts")
             return True
 
-    def validate_no_duplicate_slide_layouts(self):
-        import lxml.etree
+    def validate_no_duplicate_slide_layouts(self) -> bool:
+        """
+        Validate that all slides have exactly one slideLayout reference.
 
+        Returns:
+            True if valid, False otherwise.
+        """
         errors = []
         slide_rels_files = list(self.unpacked_dir.glob("ppt/slides/_rels/*.xml.rels"))
 
@@ -207,11 +241,15 @@ class PPTXSchemaValidator(BaseSchemaValidator):
                 print("PASSED - All slides have exactly one slideLayout reference")
             return True
 
-    def validate_notes_slide_references(self):
-        import lxml.etree
+    def validate_notes_slide_references(self) -> bool:
+        """
+        Validate that all notes slide references are unique (each notes slide is referenced by only one slide).
 
+        Returns:
+            True if all references are unique, False otherwise.
+        """
         errors = []
-        notes_slide_references = {}  
+        notes_slide_references: Dict[str, List[Tuple[str, Path]]] = {}
 
         slide_rels_files = list(self.unpacked_dir.glob("ppt/slides/_rels/*.xml.rels"))
 
@@ -233,9 +271,7 @@ class PPTXSchemaValidator(BaseSchemaValidator):
                         if target:
                             normalized_target = target.replace("../", "")
 
-                            slide_name = rels_file.stem.replace(
-                                ".xml", ""
-                            )  
+                            slide_name = rels_file.stem.replace(".xml", "")
 
                             if normalized_target not in notes_slide_references:
                                 notes_slide_references[normalized_target] = []

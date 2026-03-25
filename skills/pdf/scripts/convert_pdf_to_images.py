@@ -4,9 +4,15 @@ import sys
 from pdf2image import convert_from_path
 
 
+def convert(pdf_path: str, output_dir: str, max_dim: int = 1000) -> None:
+    """Converts a PDF file into a set of PNG images, one per page.
 
-
-def convert(pdf_path, output_dir, max_dim=1000):
+    Args:
+        pdf_path: Path to the input PDF file.
+        output_dir: Directory where the output images will be saved.
+        max_dim: Maximum dimension (width or height) for the output images.
+            Images larger than this will be resized proportionally.
+    """
     images = convert_from_path(pdf_path, dpi=200)
 
     for i, image in enumerate(images):
@@ -16,10 +22,10 @@ def convert(pdf_path, output_dir, max_dim=1000):
             new_width = int(width * scale_factor)
             new_height = int(height * scale_factor)
             image = image.resize((new_width, new_height))
-        
-        image_path = os.path.join(output_dir, f"page_{i+1}.png")
+
+        image_path = os.path.join(output_dir, f"page_{i + 1}.png")
         image.save(image_path)
-        print(f"Saved page {i+1} as {image_path} (size: {image.size})")
+        print(f"Saved page {i + 1} as {image_path} (size: {image.size})")
 
     print(f"Converted {len(images)} pages to PNG images")
 

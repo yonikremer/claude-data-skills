@@ -14,6 +14,13 @@ from .base import BaseSchemaValidator
 
 
 class DOCXSchemaValidator(BaseSchemaValidator):
+    """Validator for Word document XML files against XSD schemas and OOXML constraints.
+
+    Attributes:
+        WORD_2006_NAMESPACE (str): The primary namespace for WordprocessingML.
+        W14_NAMESPACE (str): The namespace for Word 2010 (w14) features.
+        W16CID_NAMESPACE (str): The namespace for Word 2016 (w16cid) features.
+    """
 
     WORD_2006_NAMESPACE = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
     W14_NAMESPACE = "http://schemas.microsoft.com/office/word/2010/wordml"
@@ -21,7 +28,12 @@ class DOCXSchemaValidator(BaseSchemaValidator):
 
     ELEMENT_RELATIONSHIP_TYPES = {}
 
-    def validate(self):
+    def validate(self) -> bool:
+        """Runs all DOCX-specific validations.
+
+        Returns:
+            bool: True if all validations pass, False otherwise.
+        """
         if not self.validate_xml():
             return False
 
@@ -63,7 +75,12 @@ class DOCXSchemaValidator(BaseSchemaValidator):
 
         return all_valid
 
-    def validate_whitespace_preservation(self):
+    def validate_whitespace_preservation(self) -> bool:
+        """Validates that text elements with leading/trailing whitespace have xml:space='preserve'.
+
+        Returns:
+            bool: True if all such elements are correctly marked, False otherwise.
+        """
         errors = []
 
         for xml_file in self.xml_files:
@@ -109,7 +126,12 @@ class DOCXSchemaValidator(BaseSchemaValidator):
                 print("PASSED - All whitespace is properly preserved")
             return True
 
-    def validate_deletions(self):
+    def validate_deletions(self) -> bool:
+        """Validates that w:t elements are not directly within w:del elements.
+
+        Returns:
+            bool: True if deletions are valid, False otherwise.
+        """
         errors = []
 
         for xml_file in self.xml_files:
@@ -160,7 +182,12 @@ class DOCXSchemaValidator(BaseSchemaValidator):
                 print("PASSED - No w:t elements found within w:del elements")
             return True
 
-    def count_paragraphs_in_unpacked(self):
+    def count_paragraphs_in_unpacked(self) -> int:
+        """Counts the total number of paragraphs in the unpacked document.xml.
+
+        Returns:
+            int: The number of paragraphs found.
+        """
         count = 0
 
         for xml_file in self.xml_files:
@@ -176,7 +203,12 @@ class DOCXSchemaValidator(BaseSchemaValidator):
 
         return count
 
-    def count_paragraphs_in_original(self):
+    def count_paragraphs_in_original(self) -> int:
+        """Counts the total number of paragraphs in the original document.xml.
+
+        Returns:
+            int: The number of paragraphs found in the original file.
+        """
         original = self.original_file
         if original is None:
             return 0
@@ -199,7 +231,12 @@ class DOCXSchemaValidator(BaseSchemaValidator):
 
         return count
 
-    def validate_insertions(self):
+    def validate_insertions(self) -> bool:
+        """Validates that w:delText elements are not within w:ins elements.
+
+        Returns:
+            bool: True if insertions are valid, False otherwise.
+        """
         errors = []
 
         for xml_file in self.xml_files:
@@ -240,7 +277,8 @@ class DOCXSchemaValidator(BaseSchemaValidator):
                 print("PASSED - No w:delText elements within w:ins elements")
             return True
 
-    def compare_paragraph_counts(self):
+    def compare_paragraph_counts(self) -> None:
+        """Prints a comparison of paragraph counts between the original and modified document."""
         original_count = self.count_paragraphs_in_original()
         new_count = self.count_paragraphs_in_unpacked()
 
@@ -249,9 +287,23 @@ class DOCXSchemaValidator(BaseSchemaValidator):
         print(f"\nParagraphs: {original_count} → {new_count} ({diff_str})")
 
     def _parse_id_value(self, val: str, base: int = 16) -> int:
+        """Parses an ID string into an integer.
+
+        Args:
+            val (str): The ID string.
+            base (int, optional): The numerical base. Defaults to 16.
+
+        Returns:
+            int: The parsed integer value.
+        """
         return int(val, base)
 
-    def validate_id_constraints(self):
+    def validate_id_constraints(self) -> bool:
+        """Validates that paraId and durableId values are within OOXML limits.
+
+        Returns:
+            bool: True if all IDs are within constraints, False otherwise.
+        """
         errors = []
         para_id_attr = f"{{{self.W14_NAMESPACE}}}paraId"
         durable_id_attr = f"{{{self.W16CID_NAMESPACE}}}durableId"
@@ -295,7 +347,12 @@ class DOCXSchemaValidator(BaseSchemaValidator):
             print("PASSED - All paraId/durableId values within constraints")
         return not errors
 
-    def validate_comment_markers(self):
+    def validate_comment_markers(self) -> bool:
+        """Validates that comment markers (start, end, reference) are properly paired and reference existing comments.
+
+        Returns:
+            bool: True if all comment markers are valid, False otherwise.
+        """
         errors = []
 
         document_xml = None
@@ -365,7 +422,7 @@ class DOCXSchemaValidator(BaseSchemaValidator):
                 for comment_id in sorted(
                     invalid_refs, key=lambda x: int(x) if x and x.isdigit() else 0
                 ):
-                    if comment_id:  
+                    if comment_id:
                         errors.append(
                             f'  document.xml: marker id="{comment_id}" references non-existent comment'
                         )
@@ -384,11 +441,21 @@ class DOCXSchemaValidator(BaseSchemaValidator):
             return True
 
     def repair(self) -> int:
+        """Repairs common issues in Word documents, including durableId constraints.
+
+        Returns:
+            int: The number of repairs performed.
+        """
         repairs = super().repair()
         repairs += self.repair_durableId()
         return repairs
 
     def repair_durableId(self) -> int:
+        """Repairs durableId values that exceed OOXML limits.
+
+        Returns:
+            int: The number of repairs performed.
+        """
         repairs = 0
 
         for xml_file in self.xml_files:
@@ -422,9 +489,9 @@ class DOCXSchemaValidator(BaseSchemaValidator):
                     if needs_repair:
                         value = random.randint(1, 0x7FFFFFFE)
                         if xml_file.name == "numbering.xml":
-                            new_id = str(value)  
+                            new_id = str(value)
                         else:
-                            new_id = f"{value:08X}"  
+                            new_id = f"{value:08X}"
 
                         elem.setAttribute("w16cid:durableId", new_id)
                         print(

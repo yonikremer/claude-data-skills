@@ -21,13 +21,26 @@ import defusedxml.minidom
 
 from validators import DOCXSchemaValidator, PPTXSchemaValidator, RedliningValidator
 
+
 def pack(
     input_directory: str,
     output_file: str,
     original_file: str | None = None,
     validate: bool = True,
-    infer_author_func=None,
+    infer_author_func: callable | None = None,
 ) -> tuple[None, str]:
+    """Packs a directory into a DOCX, PPTX, or XLSX file.
+
+    Args:
+        input_directory: Path to the directory to pack.
+        output_file: Path to the output Office file.
+        original_file: Optional path to the original file for validation.
+        validate: Whether to run validation before packing.
+        infer_author_func: Optional function to infer the author for redlining validation.
+
+    Returns:
+        A tuple of (None, message).
+    """
     input_dir = Path(input_directory)
     output_path = Path(output_file)
     suffix = output_path.suffix.lower()
@@ -70,8 +83,19 @@ def _run_validation(
     unpacked_dir: Path,
     original_file: Path,
     suffix: str,
-    infer_author_func=None,
+    infer_author_func: callable | None = None,
 ) -> tuple[bool, str | None]:
+    """Runs validation on the unpacked directory.
+
+    Args:
+        unpacked_dir: Path to the unpacked directory.
+        original_file: Path to the original file.
+        suffix: File extension (e.g., ".docx").
+        infer_author_func: Optional function to infer the author.
+
+    Returns:
+        A tuple of (success_boolean, output_message).
+    """
     output_lines = []
     validators = []
 
@@ -106,6 +130,14 @@ def _run_validation(
 
 
 def _condense_xml(xml_file: Path) -> None:
+    """Condenses an XML file by removing unnecessary whitespace and comments.
+
+    Args:
+        xml_file: Path to the XML file to condense.
+
+    Raises:
+        Exception: If parsing fails.
+    """
     try:
         with open(xml_file, encoding="utf-8") as f:
             dom = defusedxml.minidom.parse(f)

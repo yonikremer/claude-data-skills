@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Any
 
 import matplotlib
 
@@ -49,16 +50,20 @@ CLR = {"CRITICAL": "#e02020", "WARNING": "#f08030", "NORMAL": "#4a90d9"}
 
 def detect_context_anomalies(
     values: np.ndarray,
-    dates: list,
-) -> tuple[list[dict], np.ndarray, np.ndarray, float]:
+    dates: list[pd.Timestamp],
+) -> tuple[list[dict[str, Any]], np.ndarray, np.ndarray, float]:
     """Linear detrend + Z-score anomaly detection on context period.
 
-    Returns
-    -------
-    records    : list of dicts, one per month
-    trend_line : fitted linear trend values (same length as values)
-    residuals  : actual - trend_line
-    res_std    : std of residuals (used as sigma for threshold bands)
+    Args:
+        values: The numerical values for the context period.
+        dates: The timestamps corresponding to the values.
+
+    Returns:
+        A tuple containing:
+            - records: list of dicts, one per month.
+            - trend_line: fitted linear trend values (same length as values).
+            - residuals: actual - trend_line.
+            - res_std: std of residuals (used as sigma for threshold bands).
     """
     n = len(values)
     idx = np.arange(n, dtype=float)
@@ -103,7 +108,16 @@ def build_synthetic_future(
     """Build a plausible future with 3 injected anomalies.
 
     Injected months: 3, 8, 11 (0-indexed within the 12-month horizon).
-    Returns (future_values, injected_indices).
+
+    Args:
+        context: The historical data to base the future trend on.
+        n: Number of future steps to generate.
+        seed: Random seed for reproducibility.
+
+    Returns:
+        A tuple containing:
+            - future_values: The generated synthetic future values.
+            - injected_indices: The indices where anomalies were injected.
     """
     rng = np.random.default_rng(seed)
     trend = np.linspace(context[-6:].mean(), context[-6:].mean() + 0.05, n)
@@ -122,14 +136,24 @@ def detect_forecast_anomalies(
     future_values: np.ndarray,
     point: np.ndarray,
     quant_fc: np.ndarray,
-    future_dates: list,
+    future_dates: list[pd.Timestamp],
     injected_at: list[int],
-) -> list[dict]:
+) -> list[dict[str, Any]]:
     """Classify each forecast month by which PI band it falls outside.
 
     CRITICAL = outside 80% PI (q10-q90)
     WARNING  = outside 60% PI (q20-q80) but inside 80% PI
     NORMAL   = inside 60% PI
+
+    Args:
+        future_values: The actual values observed in the future.
+        point: The point forecast values.
+        quant_fc: The quantile forecast values (shape [10, horizon]).
+        future_dates: The timestamps for the forecast period.
+        injected_at: The indices where anomalies were intentionally injected.
+
+    Returns:
+        A list of dictionaries containing detection details for each month.
     """
     q10 = quant_fc[IDX_Q10]
     q20 = quant_fc[IDX_Q20]
@@ -170,18 +194,33 @@ def detect_forecast_anomalies(
 
 
 def plot_results(
-    context_dates: list,
+    context_dates: list[pd.Timestamp],
     context_values: np.ndarray,
-    ctx_records: list[dict],
+    ctx_records: list[dict[str, Any]],
     trend_line: np.ndarray,
     residuals: np.ndarray,
     res_std: float,
-    future_dates: list,
+    future_dates: list[pd.Timestamp],
     future_values: np.ndarray,
     point_fc: np.ndarray,
     quant_fc: np.ndarray,
-    fc_records: list[dict],
+    fc_records: list[dict[str, Any]],
 ) -> None:
+    """Generate and save the 2-panel anomaly detection visualization.
+
+    Args:
+        context_dates: Timestamps for the context period.
+        context_values: Actual values for the context period.
+        ctx_records: Detection records for the context period.
+        trend_line: Fitted trend values for the context period.
+        residuals: Residual values for the context period.
+        res_std: Standard deviation of context residuals.
+        future_dates: Timestamps for the forecast period.
+        future_values: Actual (synthetic) values for the forecast period.
+        point_fc: Point forecast values.
+        quant_fc: Quantile forecast values.
+        fc_records: Detection records for the forecast period.
+    """
     OUTPUT_DIR.mkdir(exist_ok=True)
 
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(15, 10), gridspec_kw={"hspace": 0.42})
@@ -389,6 +428,7 @@ def plot_results(
 
 
 def main() -> None:
+    """Run the two-phase anomaly detection example."""
     print("=" * 68)
     print("  TIMESFM ANOMALY DETECTION — TWO-PHASE METHOD")
     print("=" * 68)
@@ -400,8 +440,12 @@ def main() -> None:
 
     context_values = df["anomaly_c"].values.astype(np.float32)
     context_dates = [pd.Timestamp(d) for d in df["date"].tolist()]
-    start_str = context_dates[0].strftime('%Y-%m') if not pd.isnull(context_dates[0]) else '?'
-    end_str   = context_dates[-1].strftime('%Y-%m') if not pd.isnull(context_dates[-1]) else '?'
+    start_str = (
+        context_dates[0].strftime("%Y-%m") if not pd.isnull(context_dates[0]) else "?"
+    )
+    end_str = (
+        context_dates[-1].strftime("%Y-%m") if not pd.isnull(context_dates[-1]) else "?"
+    )
     print(f"\n  Context: {len(context_values)} months  ({start_str} - {end_str})")
 
     # --- Phase 1: context anomaly detection ----------------------------------

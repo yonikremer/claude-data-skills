@@ -1,17 +1,28 @@
 import json
 import sys
+from typing import Any, Dict, Optional
 
 from pypdf import PdfReader, PdfWriter
 
 from extract_form_field_info import get_field_info
 
 
+def fill_pdf_fields(
+    input_pdf_path: str, fields_json_path: str, output_pdf_path: str
+) -> None:
+    """Fills form fields in a PDF using values from a JSON file.
 
+    Validates field IDs, page numbers, and values before attempting to fill
+    the PDF.
 
-def fill_pdf_fields(input_pdf_path: str, fields_json_path: str, output_pdf_path: str):
+    Args:
+        input_pdf_path: Path to the source PDF with fillable fields.
+        fields_json_path: Path to the JSON file containing field IDs and values.
+        output_pdf_path: Path where the filled PDF will be saved.
+    """
     with open(fields_json_path) as f:
         fields = json.load(f)
-    fields_by_page = {}
+    fields_by_page: Dict[int, Dict[str, Any]] = {}
     for field in fields:
         if "value" in field:
             field_id = field["field_id"]
@@ -19,7 +30,7 @@ def fill_pdf_fields(input_pdf_path: str, fields_json_path: str, output_pdf_path:
             if page not in fields_by_page:
                 fields_by_page[page] = {}
             fields_by_page[page][field_id] = field["value"]
-    
+
     reader = PdfReader(input_pdf_path)
 
     has_error = False
@@ -32,7 +43,9 @@ def fill_pdf_fields(input_pdf_path: str, fields_json_path: str, output_pdf_path:
             print(f"ERROR: `{field['field_id']}` is not a valid field ID")
         elif field["page"] != existing_field["page"]:
             has_error = True
-            print(f"ERROR: Incorrect page number for `{field['field_id']}` (got {field['page']}, expected {existing_field['page']})")
+            print(
+                f"ERROR: Incorrect page number for `{field['field_id']}` (got {field['page']}, expected {existing_field['page']})"
+            )
         else:
             if "value" in field:
                 err = validation_error_for_field_value(existing_field, field["value"])
@@ -44,15 +57,28 @@ def fill_pdf_fields(input_pdf_path: str, fields_json_path: str, output_pdf_path:
 
     writer = PdfWriter(clone_from=reader)
     for page, field_values in fields_by_page.items():
-        writer.update_page_form_field_values(writer.pages[page - 1], field_values, auto_regenerate=False)
+        writer.update_page_form_field_values(
+            writer.pages[page - 1], field_values, auto_regenerate=False
+        )
 
     writer.set_need_appearances_writer(True)
-    
+
     with open(output_pdf_path, "wb") as f:
         writer.write(f)
 
 
-def validation_error_for_field_value(field_info, field_value):
+def validation_error_for_field_value(
+    field_info: Dict[str, Any], field_value: Any
+) -> Optional[str]:
+    """Validates a field value against its expected type and allowed options.
+
+    Args:
+        field_info: Dictionary containing field metadata.
+        field_value: The value to validate.
+
+    Returns:
+        A string describing the error if validation fails, otherwise None.
+    """
     field_type = field_info["type"]
     field_id = field_info["field_id"]
     if field_type == "checkbox":
@@ -63,7 +89,7 @@ def validation_error_for_field_value(field_info, field_value):
     elif field_type == "radio_group":
         option_values = [opt["value"] for opt in field_info["radio_options"]]
         if field_value not in option_values:
-            return f'ERROR: Invalid value "{field_value}" for radio group field "{field_id}". Valid values are: {option_values}' 
+            return f'ERROR: Invalid value "{field_value}" for radio group field "{field_id}". Valid values are: {option_values}'
     elif field_type == "choice":
         choice_values = [opt["value"] for opt in field_info["choice_options"]]
         if field_value not in choice_values:
@@ -71,16 +97,22 @@ def validation_error_for_field_value(field_info, field_value):
     return None
 
 
-def monkeypatch_pydpf_method():
-    from pypdf.generic import DictionaryObject
+def monkeypatch_pydpf_method() -> None:
+    """Applies a monkeypatch to pypdf's DictionaryObject.get_inherited.
+
+    This patch fixes issues with how inherited properties are retrieved in some PDFs.
+    """
     from pypdf.constants import FieldDictionaryAttributes
+    from pypdf.generic import DictionaryObject
 
     original_get_inherited = DictionaryObject.get_inherited
 
-    def patched_get_inherited(self, key: str, default = None):
+    def patched_get_inherited(self: Any, key: str, default: Any = None) -> Any:
         result = original_get_inherited(self, key, default)
         if key == FieldDictionaryAttributes.Opt:
-            if isinstance(result, list) and all(isinstance(v, list) and len(v) == 2 for v in result):
+            if isinstance(result, list) and all(
+                isinstance(v, list) and len(v) == 2 for v in result
+            ):
                 result = [r[0] for r in result]
         return result
 
@@ -89,10 +121,12 @@ def monkeypatch_pydpf_method():
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
-        print("Usage: fill_fillable_fields.py [input pdf] [field_values.json] [output pdf]")
+        print(
+            "Usage: fill_fillable_fields.py [input pdf] [field_values.json] [output pdf]"
+        )
         sys.exit(1)
     monkeypatch_pydpf_method()
-    input_pdf = sys.argv[1]
-    fields_json = sys.argv[2]
-    output_pdf = sys.argv[3]
-    fill_pdf_fields(input_pdf, fields_json, output_pdf)
+    input_pdf_arg = sys.argv[1]
+    fields_json_arg = sys.argv[2]
+    output_pdf_arg = sys.argv[3]
+    fill_pdf_fields(input_pdf_arg, fields_json_arg, output_pdf_arg)

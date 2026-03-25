@@ -5,6 +5,8 @@ This template provides a complete boilerplate for building a LightningModule
 with all essential methods and best practices.
 """
 
+from typing import Any, Dict
+
 import lightning as L
 import torch
 import torch.nn as nn
@@ -18,9 +20,9 @@ class TemplateLightningModule(L.LightningModule):
     Template LightningModule for building deep learning models.
 
     Args:
-        learning_rate: Learning rate for optimizer
-        hidden_dim: Hidden dimension size
-        dropout: Dropout probability
+        learning_rate: Learning rate for optimizer.
+        hidden_dim: Hidden dimension size.
+        dropout: Dropout probability.
     """
 
     def __init__(
@@ -28,7 +30,7 @@ class TemplateLightningModule(L.LightningModule):
         learning_rate: float = 0.001,
         hidden_dim: int = 256,
         dropout: float = 0.1,
-    ):
+    ) -> None:
         super().__init__()
 
         # Save hyperparameters (accessible via self.hparams)
@@ -47,28 +49,28 @@ class TemplateLightningModule(L.LightningModule):
         # self.train_accuracy = Accuracy(task="multiclass", num_classes=10)
         # self.val_accuracy = Accuracy(task="multiclass", num_classes=10)
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
         Forward pass of the model.
 
         Args:
-            x: Input tensor
+            x: Input tensor.
 
         Returns:
-            Model output
+            Model output tensor.
         """
         return self.model(x)
 
-    def training_step(self, batch, batch_idx):
+    def training_step(self, batch: Any, batch_idx: int) -> torch.Tensor:
         """
         Training step (called for each training batch).
 
         Args:
-            batch: Current batch of data
-            batch_idx: Index of the current batch
+            batch: Current batch of data.
+            batch_idx: Index of the current batch.
 
         Returns:
-            Loss tensor
+            Loss tensor.
         """
         x, y = batch
 
@@ -87,13 +89,13 @@ class TemplateLightningModule(L.LightningModule):
 
         return loss
 
-    def validation_step(self, batch, batch_idx):
+    def validation_step(self, batch: Any, batch_idx: int) -> None:
         """
         Validation step (called for each validation batch).
 
         Args:
-            batch: Current batch of data
-            batch_idx: Index of the current batch
+            batch: Current batch of data.
+            batch_idx: Index of the current batch.
         """
         x, y = batch
 
@@ -109,13 +111,13 @@ class TemplateLightningModule(L.LightningModule):
         self.log("val/loss", loss, on_epoch=True, prog_bar=True, sync_dist=True)
         self.log("val/acc", acc, on_epoch=True, prog_bar=True, sync_dist=True)
 
-    def test_step(self, batch, batch_idx):
+    def test_step(self, batch: Any, batch_idx: int) -> None:
         """
         Test step (called for each test batch).
 
         Args:
-            batch: Current batch of data
-            batch_idx: Index of the current batch
+            batch: Current batch of data.
+            batch_idx: Index of the current batch.
         """
         x, y = batch
 
@@ -131,29 +133,31 @@ class TemplateLightningModule(L.LightningModule):
         self.log("test/loss", loss, on_epoch=True)
         self.log("test/acc", acc, on_epoch=True)
 
-    def predict_step(self, batch, batch_idx, dataloader_idx=0):
+    def predict_step(
+        self, batch: Any, batch_idx: int, dataloader_idx: int = 0
+    ) -> torch.Tensor:
         """
         Prediction step (called for each prediction batch).
 
         Args:
-            batch: Current batch of data
-            batch_idx: Index of the current batch
-            dataloader_idx: Index of the dataloader (if multiple)
+            batch: Current batch of data.
+            batch_idx: Index of the current batch.
+            dataloader_idx: Index of the dataloader (if multiple).
 
         Returns:
-            Predictions
+            Predictions tensor.
         """
         x, y = batch
         logits = self(x)
         preds = torch.argmax(logits, dim=1)
         return preds
 
-    def configure_optimizers(self):
+    def configure_optimizers(self) -> Dict[str, Any]:
         """
         Configure optimizers and learning rate schedulers.
 
         Returns:
-            Optimizer and scheduler configuration
+            Optimizer and scheduler configuration.
         """
         # Define optimizer
         optimizer = Adam(
@@ -168,7 +172,6 @@ class TemplateLightningModule(L.LightningModule):
             mode="min",
             factor=0.5,
             patience=5,
-            verbose=True,
         )
 
         # Return configuration
@@ -184,12 +187,12 @@ class TemplateLightningModule(L.LightningModule):
 
     # Optional: Add custom methods for model-specific logic
 
-    def on_train_epoch_end(self):
+    def on_train_epoch_end(self) -> None:
         """Called at the end of each training epoch."""
         # Example: Log custom metrics
         pass
 
-    def on_validation_epoch_end(self):
+    def on_validation_epoch_end(self) -> None:
         """Called at the end of each validation epoch."""
         # Example: Compute epoch-level metrics
         pass
@@ -198,14 +201,14 @@ class TemplateLightningModule(L.LightningModule):
 # Example usage
 if __name__ == "__main__":
     # Create model
-    model = TemplateLightningModule(
+    model_inst = TemplateLightningModule(
         learning_rate=0.001,
         hidden_dim=256,
         dropout=0.1,
     )
 
     # Create trainer
-    trainer = L.Trainer(
+    trainer_inst = L.Trainer(
         max_epochs=10,
         accelerator="auto",
         devices="auto",
@@ -213,7 +216,7 @@ if __name__ == "__main__":
     )
 
     # Train (you need to provide train_dataloader and val_dataloader)
-    # trainer.fit(model, train_dataloader, val_dataloader)
+    # trainer_inst.fit(model, train_dataloader, val_dataloader)
 
-    print(f"Model created with {model.num_parameters:,} parameters")
-    print(f"Hyperparameters: {model.hparams}")
+    # print(f"Model created with {model_inst.num_parameters:,} parameters")
+    print(f"Hyperparameters: {model_inst.hparams}")

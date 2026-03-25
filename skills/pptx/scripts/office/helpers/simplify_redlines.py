@@ -20,6 +20,14 @@ WORD_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 
 
 def simplify_redlines(input_dir: str) -> tuple[int, str]:
+    """Simplify tracked changes by merging adjacent w:ins or w:del elements.
+
+    Args:
+        input_dir: Path to the unpacked DOCX directory.
+
+    Returns:
+        A tuple of (merge_count, message).
+    """
     doc_xml = Path(input_dir) / "word" / "document.xml"
 
     if not doc_xml.exists():
@@ -44,7 +52,16 @@ def simplify_redlines(input_dir: str) -> tuple[int, str]:
         return 0, f"Error: {e}"
 
 
-def _merge_tracked_changes_in(container, tag: str) -> int:
+def _merge_tracked_changes_in(container: defusedxml.minidom.Element, tag: str) -> int:
+    """Merges adjacent tracked changes (ins or del) within a container.
+
+    Args:
+        container: The container element (e.g., paragraph or table cell).
+        tag: The tag to merge ("ins" or "del").
+
+    Returns:
+        The number of elements merged.
+    """
     merge_count = 0
 
     tracked = [
@@ -72,12 +89,31 @@ def _merge_tracked_changes_in(container, tag: str) -> int:
     return merge_count
 
 
-def _is_element(node, tag: str) -> bool:
+def _is_element(node: defusedxml.minidom.Node, tag: str) -> bool:
+    """Checks if a node is an element with a given tag name.
+
+    Args:
+        node: The node to check.
+        tag: The tag name to match.
+
+    Returns:
+        True if it's a matching element, False otherwise.
+    """
+    if node.nodeType != node.ELEMENT_NODE:
+        return False
     name = node.localName or node.tagName
     return name == tag or name.endswith(f":{tag}")
 
 
-def _get_author(elem) -> str:
+def _get_author(elem: defusedxml.minidom.Element) -> str:
+    """Gets the author attribute from an element.
+
+    Args:
+        elem: The element to check.
+
+    Returns:
+        The author name, or an empty string if not found.
+    """
     author = elem.getAttribute("w:author")
     if not author:
         for attr in elem.attributes.values():
@@ -86,7 +122,18 @@ def _get_author(elem) -> str:
     return author
 
 
-def _can_merge_tracked(elem1, elem2) -> bool:
+def _can_merge_tracked(
+    elem1: defusedxml.minidom.Element, elem2: defusedxml.minidom.Element
+) -> bool:
+    """Checks if two tracked change elements can be merged.
+
+    Args:
+        elem1: The first element.
+        elem2: The second element.
+
+    Returns:
+        True if they can be merged, False otherwise.
+    """
     if _get_author(elem1) != _get_author(elem2):
         return False
 
@@ -101,14 +148,33 @@ def _can_merge_tracked(elem1, elem2) -> bool:
     return True
 
 
-def _merge_tracked_content(target, source):
+def _merge_tracked_content(
+    target: defusedxml.minidom.Element, source: defusedxml.minidom.Element
+) -> None:
+    """Moves content from a source tracked change to a target tracked change.
+
+    Args:
+        target: The target element.
+        source: The source element.
+    """
     while source.firstChild:
         child = source.firstChild
         source.removeChild(child)
         target.appendChild(child)
 
 
-def _find_elements(root, tag: str) -> list:
+def _find_elements(
+    root: defusedxml.minidom.Element, tag: str
+) -> list[defusedxml.minidom.Element]:
+    """Finds all elements with a given tag name.
+
+    Args:
+        root: The root element to search from.
+        tag: The tag name to find.
+
+    Returns:
+        A list of matching elements.
+    """
     results = []
 
     def traverse(node):
@@ -124,6 +190,14 @@ def _find_elements(root, tag: str) -> list:
 
 
 def get_tracked_change_authors(doc_xml_path: Path) -> dict[str, int]:
+    """Gets a count of tracked changes by author in a document.xml file.
+
+    Args:
+        doc_xml_path: Path to the document.xml file.
+
+    Returns:
+        A dictionary mapping author names to change counts.
+    """
     if not doc_xml_path.exists():
         return {}
 
@@ -147,6 +221,14 @@ def get_tracked_change_authors(doc_xml_path: Path) -> dict[str, int]:
 
 
 def _get_authors_from_docx(docx_path: Path) -> dict[str, int]:
+    """Gets a count of tracked changes by author from a DOCX file (ZIP).
+
+    Args:
+        docx_path: Path to the DOCX file.
+
+    Returns:
+        A dictionary mapping author names to change counts.
+    """
     try:
         with zipfile.ZipFile(docx_path, "r") as zf:
             if "word/document.xml" not in zf.namelist():
@@ -169,7 +251,22 @@ def _get_authors_from_docx(docx_path: Path) -> dict[str, int]:
         return {}
 
 
-def infer_author(modified_dir: Path, original_docx: Path, default: str = "Claude") -> str:
+def infer_author(
+    modified_dir: Path, original_docx: Path, default: str = "Claude"
+) -> str:
+    """Infers the author of new tracked changes by comparing modified and original.
+
+    Args:
+        modified_dir: Path to the modified unpacked directory.
+        original_docx: Path to the original DOCX file.
+        default: Default author name if none inferred.
+
+    Returns:
+        The inferred author name.
+
+    Raises:
+        ValueError: If multiple authors added new changes.
+    """
     modified_xml = modified_dir / "word" / "document.xml"
     modified_authors = get_tracked_change_authors(modified_xml)
 

@@ -29,7 +29,12 @@ RECALCULATE_MACRO = """<?xml version="1.0" encoding="UTF-8"?>
 </script:module>"""
 
 
-def has_gtimeout():
+def has_gtimeout() -> bool:
+    """Checks if gtimeout is available in the system.
+
+    Returns:
+        bool: True if gtimeout is found, False otherwise.
+    """
     try:
         subprocess.run(
             ["gtimeout", "--version"], capture_output=True, timeout=1, check=False
@@ -39,7 +44,12 @@ def has_gtimeout():
         return False
 
 
-def setup_libreoffice_macro():
+def setup_libreoffice_macro() -> bool:
+    """Sets up the LibreOffice macro for recalculating and saving.
+
+    Returns:
+        bool: True if setup was successful, False otherwise.
+    """
     macro_dir = os.path.expanduser(
         MACRO_DIR_MACOS if platform.system() == "Darwin" else MACRO_DIR_LINUX
     )
@@ -67,7 +77,17 @@ def setup_libreoffice_macro():
         return False
 
 
-def recalc(filename, timeout=30):
+def recalc(filename: str, timeout: int = 30) -> dict:
+    """Recalculates formulas in an Excel file using LibreOffice.
+
+    Args:
+        filename (str): Path to the Excel file.
+        timeout (int): Timeout in seconds for the recalculation process. Defaults to 30.
+
+    Returns:
+        dict: A dictionary containing the status, total errors, total formulas, and error summary.
+            Returns an error message if the process fails.
+    """
     if not Path(filename).exists():
         return {"error": f"File {filename} does not exist"}
 
@@ -91,7 +111,7 @@ def recalc(filename, timeout=30):
 
     result = subprocess.run(cmd, capture_output=True, text=True, env=get_soffice_env())
 
-    if result.returncode != 0 and result.returncode != 124:  
+    if result.returncode != 0 and result.returncode != 124:
         error_msg = result.stderr or "Unknown error during recalculation"
         if "Module1" in error_msg or "RecalculateAndSave" not in error_msg:
             return {"error": "LibreOffice macro not configured properly"}
@@ -136,7 +156,7 @@ def recalc(filename, timeout=30):
             if locations:
                 result["error_summary"][err_type] = {
                     "count": len(locations),
-                    "locations": locations[:20],  
+                    "locations": locations[:20],
                 }
 
         wb_formulas = load_workbook(filename, data_only=False)
@@ -161,7 +181,11 @@ def recalc(filename, timeout=30):
         return {"error": str(e)}
 
 
-def main():
+def main() -> None:
+    """Main entry point for the recalculation script.
+
+    Parses command-line arguments and prints the results as JSON.
+    """
     if len(sys.argv) < 2:
         print("Usage: python recalc.py <excel_file> [timeout_seconds]")
         print("\nRecalculates all formulas in an Excel file using LibreOffice")

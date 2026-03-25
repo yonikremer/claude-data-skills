@@ -37,6 +37,15 @@ def accept_changes(
     input_file: str,
     output_file: str,
 ) -> tuple[None, str]:
+    """Accept all tracked changes in a DOCX file.
+
+    Args:
+        input_file: Path to the input DOCX file.
+        output_file: Path to the output DOCX file.
+
+    Returns:
+        A tuple of (None, status_message).
+    """
     input_path = Path(input_file)
     output_path = Path(output_file)
 
@@ -89,6 +98,11 @@ def accept_changes(
 
 
 def _setup_libreoffice_macro() -> bool:
+    """Setup the LibreOffice macro for accepting changes.
+
+    Returns:
+        True if the macro was successfully setup, False otherwise.
+    """
     macro_dir = Path(MACRO_DIR)
     macro_file = macro_dir / "Module1.xba"
 

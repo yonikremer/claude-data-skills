@@ -15,16 +15,23 @@ This script removes:
 - Content-Type overrides for deleted files
 """
 
+import re
 import sys
 from pathlib import Path
+from typing import Dict, List, Set
 
 import defusedxml.minidom
 
 
-import re
+def get_slides_in_sldidlst(unpacked_dir: Path) -> Set[str]:
+    """Identifies slides that are actually referenced in the presentation.
 
+    Args:
+        unpacked_dir: Root directory of the unpacked PPTX.
 
-def get_slides_in_sldidlst(unpacked_dir: Path) -> set[str]:
+    Returns:
+        A set of slide filenames (e.g., {'slide1.xml', 'slide2.xml'}).
+    """
     pres_path = unpacked_dir / "ppt" / "presentation.xml"
     pres_rels_path = unpacked_dir / "ppt" / "_rels" / "presentation.xml.rels"
 
@@ -32,7 +39,7 @@ def get_slides_in_sldidlst(unpacked_dir: Path) -> set[str]:
         return set()
 
     rels_dom = defusedxml.minidom.parse(str(pres_rels_path))
-    rid_to_slide = {}
+    rid_to_slide: Dict[str, str] = {}
     for rel in rels_dom.getElementsByTagName("Relationship"):
         rid = rel.getAttribute("Id")
         target = rel.getAttribute("Target")
@@ -46,7 +53,15 @@ def get_slides_in_sldidlst(unpacked_dir: Path) -> set[str]:
     return {rid_to_slide[rid] for rid in referenced_rids if rid in rid_to_slide}
 
 
-def remove_orphaned_slides(unpacked_dir: Path) -> list[str]:
+def remove_orphaned_slides(unpacked_dir: Path) -> List[str]:
+    """Deletes slide XML and .rels files that are not in the slide ID list.
+
+    Args:
+        unpacked_dir: Root directory of the unpacked PPTX.
+
+    Returns:
+        A list of paths of the removed files.
+    """
     slides_dir = unpacked_dir / "ppt" / "slides"
     slides_rels_dir = slides_dir / "_rels"
     pres_rels_path = unpacked_dir / "ppt" / "_rels" / "presentation.xml.rels"
@@ -88,7 +103,15 @@ def remove_orphaned_slides(unpacked_dir: Path) -> list[str]:
     return removed
 
 
-def remove_trash_directory(unpacked_dir: Path) -> list[str]:
+def remove_trash_directory(unpacked_dir: Path) -> List[str]:
+    """Removes the '[trash]' directory if it exists.
+
+    Args:
+        unpacked_dir: Root directory of the unpacked PPTX.
+
+    Returns:
+        A list of paths of the removed files.
+    """
     trash_dir = unpacked_dir / "[trash]"
     removed = []
 
@@ -103,8 +126,16 @@ def remove_trash_directory(unpacked_dir: Path) -> list[str]:
     return removed
 
 
-def get_slide_referenced_files(unpacked_dir: Path) -> set:
-    referenced = set()
+def get_slide_referenced_files(unpacked_dir: Path) -> Set[Path]:
+    """Finds all files referenced by all slide relationship files.
+
+    Args:
+        unpacked_dir: Root directory of the unpacked PPTX.
+
+    Returns:
+        A set of Paths relative to the unpacked root.
+    """
+    referenced: Set[Path] = set()
     slides_rels_dir = unpacked_dir / "ppt" / "slides" / "_rels"
 
     if not slides_rels_dir.exists():
@@ -125,7 +156,15 @@ def get_slide_referenced_files(unpacked_dir: Path) -> set:
     return referenced
 
 
-def remove_orphaned_rels_files(unpacked_dir: Path) -> list[str]:
+def remove_orphaned_rels_files(unpacked_dir: Path) -> List[str]:
+    """Removes .rels files for resources that no longer exist or are unreferenced.
+
+    Args:
+        unpacked_dir: Root directory of the unpacked PPTX.
+
+    Returns:
+        A list of paths of the removed .rels files.
+    """
     resource_dirs = ["charts", "diagrams", "drawings"]
     removed = []
     slide_referenced = get_slide_referenced_files(unpacked_dir)
@@ -138,7 +177,9 @@ def remove_orphaned_rels_files(unpacked_dir: Path) -> list[str]:
         for rels_file in rels_dir.glob("*.rels"):
             resource_file = rels_dir.parent / rels_file.name.replace(".rels", "")
             try:
-                resource_rel_path = resource_file.resolve().relative_to(unpacked_dir.resolve())
+                resource_rel_path = resource_file.resolve().relative_to(
+                    unpacked_dir.resolve()
+                )
             except ValueError:
                 continue
 
@@ -150,8 +191,16 @@ def remove_orphaned_rels_files(unpacked_dir: Path) -> list[str]:
     return removed
 
 
-def get_referenced_files(unpacked_dir: Path) -> set:
-    referenced = set()
+def get_referenced_files(unpacked_dir: Path) -> Set[Path]:
+    """Finds all files referenced by any .rels file in the entire package.
+
+    Args:
+        unpacked_dir: Root directory of the unpacked PPTX.
+
+    Returns:
+        A set of Paths relative to the unpacked root.
+    """
+    referenced: Set[Path] = set()
 
     for rels_file in unpacked_dir.rglob("*.rels"):
         dom = defusedxml.minidom.parse(str(rels_file))
@@ -168,8 +217,25 @@ def get_referenced_files(unpacked_dir: Path) -> set:
     return referenced
 
 
-def remove_orphaned_files(unpacked_dir: Path, referenced: set) -> list[str]:
-    resource_dirs = ["media", "embeddings", "charts", "diagrams", "tags", "drawings", "ink"]
+def remove_orphaned_files(unpacked_dir: Path, referenced: Set[Path]) -> List[str]:
+    """Removes media, theme, and notes files that are not in the referenced set.
+
+    Args:
+        unpacked_dir: Root directory of the unpacked PPTX.
+        referenced: A set of Paths that are known to be referenced.
+
+    Returns:
+        A list of paths of the removed files.
+    """
+    resource_dirs = [
+        "media",
+        "embeddings",
+        "charts",
+        "diagrams",
+        "tags",
+        "drawings",
+        "ink",
+    ]
     removed = []
 
     for dir_name in resource_dirs:
@@ -218,7 +284,13 @@ def remove_orphaned_files(unpacked_dir: Path, referenced: set) -> list[str]:
     return removed
 
 
-def update_content_types(unpacked_dir: Path, removed_files: list[str]) -> None:
+def update_content_types(unpacked_dir: Path, removed_files: List[str]) -> None:
+    """Removes registered Content-Type overrides for files that were deleted.
+
+    Args:
+        unpacked_dir: Root directory of the unpacked PPTX.
+        removed_files: List of file paths that were removed.
+    """
     ct_path = unpacked_dir / "[Content_Types].xml"
     if not ct_path.exists():
         return
@@ -238,7 +310,17 @@ def update_content_types(unpacked_dir: Path, removed_files: list[str]) -> None:
             f.write(dom.toxml(encoding="utf-8"))
 
 
-def clean_unused_files(unpacked_dir: Path) -> list[str]:
+def clean_unused_files(unpacked_dir: Path) -> List[str]:
+    """Orchestrates the cleaning process for an unpacked PPTX.
+
+    Iteratively identifies and removes unreferenced files until no more can be found.
+
+    Args:
+        unpacked_dir: Root directory of the unpacked PPTX.
+
+    Returns:
+        A list of paths of all files removed during the process.
+    """
     all_removed = []
 
     slides_removed = remove_orphaned_slides(unpacked_dir)
@@ -270,17 +352,17 @@ if __name__ == "__main__":
         print("Example: python clean.py unpacked/", file=sys.stderr)
         sys.exit(1)
 
-    unpacked_dir = Path(sys.argv[1])
+    unpacked_dir_arg = Path(sys.argv[1])
 
-    if not unpacked_dir.exists():
-        print(f"Error: {unpacked_dir} not found", file=sys.stderr)
+    if not unpacked_dir_arg.exists():
+        print(f"Error: {unpacked_dir_arg} not found", file=sys.stderr)
         sys.exit(1)
 
-    removed = clean_unused_files(unpacked_dir)
+    removed_list = clean_unused_files(unpacked_dir_arg)
 
-    if removed:
-        print(f"Removed {len(removed)} unreferenced files:")
-        for f in removed:
+    if removed_list:
+        print(f"Removed {len(removed_list)} unreferenced files:")
+        for f in removed_list:
             print(f"  {f}")
     else:
         print("No unreferenced files found")

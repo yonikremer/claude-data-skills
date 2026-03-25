@@ -8,9 +8,27 @@ import zipfile
 from pathlib import Path
 
 
-class RedliningValidator:
+import xml.etree.ElementTree as ET
 
-    def __init__(self, unpacked_dir, original_docx, verbose=False, author="Claude"):
+
+class RedliningValidator:
+    """Validator for tracked changes in Word documents."""
+
+    def __init__(
+        self,
+        unpacked_dir: str | Path,
+        original_docx: str | Path,
+        verbose: bool = False,
+        author: str = "Claude",
+    ) -> None:
+        """Initializes the redlining validator.
+
+        Args:
+            unpacked_dir: Path to the unpacked Office directory.
+            original_docx: Path to the original Office file.
+            verbose: Whether to enable verbose output.
+            author: Author name to validate tracked changes for.
+        """
         self.unpacked_dir = Path(unpacked_dir)
         self.original_docx = Path(original_docx)
         self.verbose = verbose
@@ -20,17 +38,25 @@ class RedliningValidator:
         }
 
     def repair(self) -> int:
+        """Performs automatic repairs (none implemented for redlining).
+
+        Returns:
+            Always 0.
+        """
         return 0
 
-    def validate(self):
+    def validate(self) -> bool:
+        """Validates that all changes by the specified author are properly tracked.
+
+        Returns:
+            True if all changes are properly tracked, False otherwise.
+        """
         modified_file = self.unpacked_dir / "word" / "document.xml"
         if not modified_file.exists():
             print(f"FAILED - Modified document.xml not found at {modified_file}")
             return False
 
         try:
-            import xml.etree.ElementTree as ET
-
             tree = ET.parse(modified_file)
             root = tree.getroot()
 
@@ -74,8 +100,6 @@ class RedliningValidator:
                 return False
 
             try:
-                import xml.etree.ElementTree as ET
-
                 modified_tree = ET.parse(modified_file)
                 modified_root = modified_tree.getroot()
                 original_tree = ET.parse(original_file)
@@ -101,7 +125,16 @@ class RedliningValidator:
                 print(f"PASSED - All changes by {self.author} are properly tracked")
             return True
 
-    def _generate_detailed_diff(self, original_text, modified_text):
+    def _generate_detailed_diff(self, original_text: str, modified_text: str) -> str:
+        """Generates a detailed error message with a diff.
+
+        Args:
+            original_text: Text from the original document (after removing author's changes).
+            modified_text: Text from the modified document (after removing author's changes).
+
+        Returns:
+            The error message string.
+        """
         error_parts = [
             f"FAILED - Document text doesn't match after removing {self.author}'s tracked changes",
             "",
@@ -124,7 +157,16 @@ class RedliningValidator:
 
         return "\n".join(error_parts)
 
-    def _get_git_word_diff(self, original_text, modified_text):
+    def _get_git_word_diff(self, original_text: str, modified_text: str) -> str | None:
+        """Uses git to generate a word-level diff between two strings.
+
+        Args:
+            original_text: The original text.
+            modified_text: The modified text.
+
+        Returns:
+            The git diff output, or None if it fails.
+        """
         try:
             with tempfile.TemporaryDirectory() as temp_dir:
                 temp_path = Path(temp_dir)
@@ -140,8 +182,8 @@ class RedliningValidator:
                         "git",
                         "diff",
                         "--word-diff=plain",
-                        "--word-diff-regex=.",  
-                        "-U0",  
+                        "--word-diff-regex=.",
+                        "-U0",
                         "--no-index",
                         str(original_file),
                         str(modified_file),
@@ -169,7 +211,7 @@ class RedliningValidator:
                         "git",
                         "diff",
                         "--word-diff=plain",
-                        "-U0",  
+                        "-U0",
                         "--no-index",
                         str(original_file),
                         str(modified_file),
@@ -195,7 +237,12 @@ class RedliningValidator:
 
         return None
 
-    def _remove_author_tracked_changes(self, root):
+    def _remove_author_tracked_changes(self, root: ET.Element) -> None:
+        """Removes all tracked changes made by the specified author from an XML tree.
+
+        Args:
+            root: The root element of the XML tree.
+        """
         ins_tag = f"{{{self.namespaces['w']}}}ins"
         del_tag = f"{{{self.namespaces['w']}}}del"
         author_attr = f"{{{self.namespaces['w']}}}author"
@@ -226,7 +273,15 @@ class RedliningValidator:
                     parent.insert(del_index, child)
                 parent.remove(del_elem)
 
-    def _extract_text_content(self, root):
+    def _extract_text_content(self, root: ET.Element) -> str:
+        """Extracts plain text content from a document.xml root.
+
+        Args:
+            root: The root element of the XML tree.
+
+        Returns:
+            The extracted text.
+        """
         p_tag = f"{{{self.namespaces['w']}}}p"
         t_tag = f"{{{self.namespaces['w']}}}t"
 

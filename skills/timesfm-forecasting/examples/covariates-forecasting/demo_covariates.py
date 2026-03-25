@@ -29,11 +29,12 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Any
 
 import matplotlib
 
 matplotlib.use("Agg")
-import matplotlib.pyplot as plt
+import matplotlib.plt as plt
 import numpy as np
 import pandas as pd
 
@@ -46,13 +47,14 @@ HORIZON_LEN = 12
 TOTAL_LEN = CONTEXT_LEN + HORIZON_LEN  # 36
 
 
-def generate_sales_data() -> dict:
+def generate_sales_data() -> dict[str, Any]:
     """Generate synthetic retail sales data with covariate components stored separately.
 
-    Returns a dict with:
-      stores:     {store_id: {sales, config}}
-      covariates: {price, promotion, holiday, day_of_week, store_type, region}
-      components: {store_id: {base, price_effect, promo_effect, holiday_effect}}
+    Returns:
+        A dictionary containing:
+            - stores: {store_id: {sales, config}}
+            - covariates: {price, promotion, holiday, day_of_week, store_type, region}
+            - components: {store_id: {base, price_effect, promo_effect, holiday_effect}}
 
     Components let us show 'what would sales look like without covariates?' --
     the gap between 'base' and 'sales' IS the covariate signal.
@@ -71,7 +73,7 @@ def generate_sales_data() -> dict:
     }
     base_prices = {"store_A": 12.0, "store_B": 10.0, "store_C": 7.5}
 
-    data: dict = {"stores": {}, "covariates": {}, "components": {}}
+    data: dict[str, Any] = {"stores": {}, "covariates": {}, "components": {}}
 
     prices_by_store: dict[str, np.ndarray] = {}
     promos_by_store: dict[str, np.ndarray] = {}
@@ -129,8 +131,9 @@ def generate_sales_data() -> dict:
     return data
 
 
-def create_visualization(data: dict) -> None:
-    """
+def create_visualization(data: dict[str, Any]) -> None:
+    """Create a 2x2 visualization of the synthetic retail sales data.
+
     2x2 figure -- ALL panels share x-axis = weeks 0-35.
 
     (0,0) Sales by store -- context solid, horizon dashed
@@ -139,6 +142,9 @@ def create_visualization(data: dict) -> None:
     (1,1) Covariate effect decomposition for Store A (stacked fill_between)
 
     Each panel has a conclusion annotation box explaining what the data shows.
+
+    Args:
+        data: The dictionary containing sales data, covariates, and components.
     """
     OUTPUT_DIR.mkdir(exist_ok=True)
 
@@ -160,7 +166,13 @@ def create_visualization(data: dict) -> None:
         y=1.01,
     )
 
-    def add_divider(ax, label_top=True):
+    def add_divider(ax: matplotlib.axes.Axes, label_top: bool = True) -> None:
+        """Add a vertical dashed line and background span to separate context and horizon.
+
+        Args:
+            ax: The matplotlib axes object to draw on.
+            label_top: Whether to add the "<- horizon ->" text label at the top.
+        """
         ax.axvline(CONTEXT_LEN - 0.5, color="#9ca3af", lw=1.3, ls="--", alpha=0.8)
         ax.axvspan(
             CONTEXT_LEN - 0.5, TOTAL_LEN - 0.5, alpha=0.06, color="grey", zorder=0
@@ -403,6 +415,7 @@ def create_visualization(data: dict) -> None:
 
 
 def demonstrate_api() -> None:
+    """Print the TimesFM 2.5 covariate API usage example."""
     print("\n" + "=" * 70)
     print("  TIMESFM COVARIATES API (TimesFM 2.5)")
     print("=" * 70)
@@ -429,6 +442,7 @@ point_fc, quant_fc = model.forecast_with_covariates(
 
 
 def explain_xreg_modes() -> None:
+    """Print an explanation of the different XReg modes available in TimesFM."""
     print("\n" + "=" * 70)
     print("  XREG MODES")
     print("=" * 70)
@@ -448,6 +462,7 @@ def explain_xreg_modes() -> None:
 
 
 def main() -> None:
+    """Run the TimesFM covariates example."""
     print("=" * 70)
     print("  TIMESFM COVARIATES (XREG) EXAMPLE")
     print("=" * 70)

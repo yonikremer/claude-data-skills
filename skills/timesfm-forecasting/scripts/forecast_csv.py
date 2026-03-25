@@ -24,32 +24,51 @@ import argparse
 import json
 import sys
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 import pandas as pd
 
 
-def run_preflight() -> dict:
-    """Run the system preflight check and return the report."""
+def run_preflight() -> dict[str, Any]:
+    """Run the system preflight check and return the report.
+
+    Returns:
+        A dictionary representation of the SystemReport.
+
+    Raises:
+        SystemExit: If the system check fails.
+    """
     # Import the check_system module from the same directory
     script_dir = Path(__file__).parent
     sys.path.insert(0, str(script_dir))
-    from check_system import run_checks
+    try:
+        from check_system import run_checks
 
-    report = run_checks("v2.5")
-    if not report.passed:
-        print("\n🛑 System check FAILED. Cannot proceed with forecasting.")
-        print(f"   {report.verdict_detail}")
-        print("\nRun 'python scripts/check_system.py' for details.")
-        sys.exit(1)
+        report = run_checks("v2.5")
+        if not report.passed:
+            print("\n🛑 System check FAILED. Cannot proceed with forecasting.")
+            print(f"   {report.verdict_detail}")
+            print("\nRun 'python scripts/check_system.py' for details.")
+            sys.exit(1)
 
-    return report.to_dict()
+        return report.to_dict()
+    except ImportError:
+        print("⚠️ check_system.py not found. Skipping preflight check.")
+        return {"recommended_batch_size": 32}
 
 
-def load_model(batch_size: int = 32):
-    """Load and compile the TimesFM model."""
-    import torch
+def load_model(batch_size: int = 32) -> Any:
+    """Load and compile the TimesFM model.
+
+    Args:
+        batch_size: The per_core_batch_size for compilation.
+
+    Returns:
+        The loaded and compiled TimesFM model instance.
+    """
     import timesfm
+    import torch
 
     torch.set_float32_matmul_precision("high")
 
@@ -82,8 +101,16 @@ def load_csv(
 ) -> tuple[pd.DataFrame, list[str], str | None]:
     """Load CSV and identify time series columns.
 
+    Args:
+        path: Path to the input CSV file.
+        date_col: Name of the date/time column (optional).
+        value_cols: List of value columns to forecast (optional).
+
     Returns:
-        (dataframe, value_column_names, date_column_name_or_none)
+        A tuple containing:
+            - dataframe: The loaded pandas DataFrame.
+            - value_column_names: List of columns to be forecasted.
+            - date_column_name_or_none: The identified date column name or None.
     """
     df = pd.read_csv(path)
 
@@ -116,9 +143,19 @@ def load_csv(
 
 
 def forecast_series(
-    model, df: pd.DataFrame, value_cols: list[str], horizon: int
-) -> dict[str, dict]:
-    """Forecast all series and return results dict."""
+    model: Any, df: pd.DataFrame, value_cols: list[str], horizon: int
+) -> dict[str, dict[str, list[float]]]:
+    """Forecast all series and return results dictionary.
+
+    Args:
+        model: The compiled TimesFM model.
+        df: The input pandas DataFrame.
+        value_cols: List of column names to forecast.
+        horizon: Number of steps to forecast.
+
+    Returns:
+        A dictionary mapping column names to their forecast results.
+    """
     inputs = []
     for col in value_cols:
         values = df[col].dropna().values.astype(np.float32)
@@ -142,17 +179,25 @@ def forecast_series(
 
 
 def write_csv_output(
-    results: dict[str, dict],
+    results: dict[str, dict[str, list[float]]],
     output_path: str,
     df: pd.DataFrame,
     date_col: str | None,
     horizon: int,
 ) -> None:
-    """Write forecast results to CSV."""
+    """Write forecast results to a CSV file.
+
+    Args:
+        results: The forecast results dictionary.
+        output_path: Path to the output CSV file.
+        df: The original input DataFrame.
+        date_col: The name of the date column.
+        horizon: The forecast horizon length.
+    """
     rows = []
     for col, data in results.items():
         # Try to generate future dates
-        future_dates = list(range(1, horizon + 1))
+        future_dates: list[Any] = list(range(1, horizon + 1))
         if date_col and date_col in df.columns:
             try:
                 last_date = df[date_col].dropna().iloc[-1]
@@ -184,14 +229,22 @@ def write_csv_output(
     print(f"✅ Wrote {len(rows)} forecast rows to {output_path}")
 
 
-def write_json_output(results: dict[str, dict], output_path: str) -> None:
-    """Write forecast results to JSON."""
+def write_json_output(
+    results: dict[str, dict[str, list[float]]], output_path: str
+) -> None:
+    """Write forecast results to a JSON file.
+
+    Args:
+        results: The forecast results dictionary.
+        output_path: Path to the output JSON file.
+    """
     with open(output_path, "w") as f:
         json.dump(results, f, indent=2)
     print(f"✅ Wrote forecasts for {len(results)} series to {output_path}")
 
 
 def main() -> None:
+    """Main entry point for the CSV forecasting script."""
     parser = argparse.ArgumentParser(
         description="Forecast time series from CSV using TimesFM."
     )

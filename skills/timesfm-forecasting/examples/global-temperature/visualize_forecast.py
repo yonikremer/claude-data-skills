@@ -28,6 +28,11 @@ OUTPUT_FILE = EXAMPLE_DIR / "output" / "forecast_visualization.png"
 
 
 def main() -> None:
+    """Run the TimesFM forecast visualization process.
+
+    Loads historical and forecast data, creates a comprehensive fan chart
+    with point forecasts and confidence intervals, and saves the plot as a PNG file.
+    """
     # Load historical data
     df = pd.read_csv(INPUT_FILE, parse_dates=["date"])
 

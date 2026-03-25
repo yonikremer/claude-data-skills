@@ -22,15 +22,33 @@ import re
 import shutil
 import sys
 from pathlib import Path
+from typing import Optional, Tuple
 
 
 def get_next_slide_number(slides_dir: Path) -> int:
-    existing = [int(m.group(1)) for f in slides_dir.glob("slide*.xml")
-                if (m := re.match(r"slide(\d+)\.xml", f.name))]
+    """Calculates the next available slide number based on existing XML files.
+
+    Args:
+        slides_dir: Path to the directory containing slide XML files.
+
+    Returns:
+        The next available integer slide number.
+    """
+    existing = [
+        int(m.group(1))
+        for f in slides_dir.glob("slide*.xml")
+        if (m := re.match(r"slide(\d+)\.xml", f.name))
+    ]
     return max(existing) + 1 if existing else 1
 
 
 def create_slide_from_layout(unpacked_dir: Path, layout_file: str) -> None:
+    """Creates a new empty slide based on a specific slide layout.
+
+    Args:
+        unpacked_dir: Root directory of the unpacked PPTX.
+        layout_file: Filename of the slide layout to use (e.g., 'slideLayout1.xml').
+    """
     slides_dir = unpacked_dir / "ppt" / "slides"
     rels_dir = slides_dir / "_rels"
     layouts_dir = unpacked_dir / "ppt" / "slideLayouts"
@@ -45,7 +63,7 @@ def create_slide_from_layout(unpacked_dir: Path, layout_file: str) -> None:
     dest_slide = slides_dir / dest
     dest_rels = rels_dir / f"{dest}.rels"
 
-    slide_xml = '''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    slide_xml = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <p:sld xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main">
   <p:cSld>
     <p:spTree>
@@ -67,14 +85,14 @@ def create_slide_from_layout(unpacked_dir: Path, layout_file: str) -> None:
   <p:clrMapOvr>
     <a:masterClrMapping/>
   </p:clrMapOvr>
-</p:sld>'''
+</p:sld>"""
     dest_slide.write_text(slide_xml, encoding="utf-8")
 
     rels_dir.mkdir(exist_ok=True)
-    rels_xml = f'''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+    rels_xml = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
   <Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout" Target="../slideLayouts/{layout_file}"/>
-</Relationships>'''
+</Relationships>"""
     dest_rels.write_text(rels_xml, encoding="utf-8")
 
     _add_to_content_types(unpacked_dir, dest)
@@ -84,10 +102,18 @@ def create_slide_from_layout(unpacked_dir: Path, layout_file: str) -> None:
     next_slide_id = _get_next_slide_id(unpacked_dir)
 
     print(f"Created {dest} from {layout_file}")
-    print(f'Add to presentation.xml <p:sldIdLst>: <p:sldId id="{next_slide_id}" r:id="{rid}"/>')
+    print(
+        f'Add to presentation.xml <p:sldIdLst>: <p:sldId id="{next_slide_id}" r:id="{rid}"/>'
+    )
 
 
 def duplicate_slide(unpacked_dir: Path, source: str) -> None:
+    """Duplicates an existing slide in the unpacked PPTX.
+
+    Args:
+        unpacked_dir: Root directory of the unpacked PPTX.
+        source: Filename of the source slide to duplicate (e.g., 'slide1.xml').
+    """
     slides_dir = unpacked_dir / "ppt" / "slides"
     rels_dir = slides_dir / "_rels"
 
@@ -124,10 +150,18 @@ def duplicate_slide(unpacked_dir: Path, source: str) -> None:
     next_slide_id = _get_next_slide_id(unpacked_dir)
 
     print(f"Created {dest} from {source}")
-    print(f'Add to presentation.xml <p:sldIdLst>: <p:sldId id="{next_slide_id}" r:id="{rid}"/>')
+    print(
+        f'Add to presentation.xml <p:sldIdLst>: <p:sldId id="{next_slide_id}" r:id="{rid}"/>'
+    )
 
 
 def _add_to_content_types(unpacked_dir: Path, dest: str) -> None:
+    """Registers the new slide in [Content_Types].xml.
+
+    Args:
+        unpacked_dir: Root directory of the unpacked PPTX.
+        dest: Filename of the new slide.
+    """
     content_types_path = unpacked_dir / "[Content_Types].xml"
     content_types = content_types_path.read_text(encoding="utf-8")
 
@@ -139,6 +173,15 @@ def _add_to_content_types(unpacked_dir: Path, dest: str) -> None:
 
 
 def _add_to_presentation_rels(unpacked_dir: Path, dest: str) -> str:
+    """Registers the new slide in presentation.xml.rels.
+
+    Args:
+        unpacked_dir: Root directory of the unpacked PPTX.
+        dest: Filename of the new slide.
+
+    Returns:
+        The new relationship ID (rId).
+    """
     pres_rels_path = unpacked_dir / "ppt" / "_rels" / "presentation.xml.rels"
     pres_rels = pres_rels_path.read_text(encoding="utf-8")
 
@@ -149,20 +192,38 @@ def _add_to_presentation_rels(unpacked_dir: Path, dest: str) -> str:
     new_rel = f'<Relationship Id="{rid}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide" Target="slides/{dest}"/>'
 
     if f"slides/{dest}" not in pres_rels:
-        pres_rels = pres_rels.replace("</Relationships>", f"  {new_rel}\n</Relationships>")
+        pres_rels = pres_rels.replace(
+            "</Relationships>", f"  {new_rel}\n</Relationships>"
+        )
         pres_rels_path.write_text(pres_rels, encoding="utf-8")
 
     return rid
 
 
 def _get_next_slide_id(unpacked_dir: Path) -> int:
+    """Calculates the next unique slide ID for presentation.xml.
+
+    Args:
+        unpacked_dir: Root directory of the unpacked PPTX.
+
+    Returns:
+        The next available integer slide ID.
+    """
     pres_path = unpacked_dir / "ppt" / "presentation.xml"
     pres_content = pres_path.read_text(encoding="utf-8")
     slide_ids = [int(m) for m in re.findall(r'<p:sldId[^>]*id="(\d+)"', pres_content)]
     return max(slide_ids) + 1 if slide_ids else 256
 
 
-def parse_source(source: str) -> tuple[str, str | None]:
+def parse_source(source: str) -> Tuple[str, Optional[str]]:
+    """Determines if the source is a layout or a slide file.
+
+    Args:
+        source: The source filename provided.
+
+    Returns:
+        A tuple of (type, filename_if_layout).
+    """
     if source.startswith("slideLayout") and source.endswith(".xml"):
         return ("layout", source)
 
@@ -177,19 +238,22 @@ if __name__ == "__main__":
         print("  slide2.xml        - duplicate an existing slide", file=sys.stderr)
         print("  slideLayout2.xml  - create from a layout template", file=sys.stderr)
         print("", file=sys.stderr)
-        print("To see available layouts: ls <unpacked_dir>/ppt/slideLayouts/", file=sys.stderr)
+        print(
+            "To see available layouts: ls <unpacked_dir>/ppt/slideLayouts/",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
-    unpacked_dir = Path(sys.argv[1])
-    source = sys.argv[2]
+    unpacked_dir_path = Path(sys.argv[1])
+    source_file = sys.argv[2]
 
-    if not unpacked_dir.exists():
-        print(f"Error: {unpacked_dir} not found", file=sys.stderr)
+    if not unpacked_dir_path.exists():
+        print(f"Error: {unpacked_dir_path} not found", file=sys.stderr)
         sys.exit(1)
 
-    source_type, layout_file = parse_source(source)
+    source_type, layout_filename = parse_source(source_file)
 
-    if source_type == "layout" and layout_file is not None:
-        create_slide_from_layout(unpacked_dir, layout_file)
+    if source_type == "layout" and layout_filename is not None:
+        create_slide_from_layout(unpacked_dir_path, layout_filename)
     else:
-        duplicate_slide(unpacked_dir, source)
+        duplicate_slide(unpacked_dir_path, source_file)

@@ -9,9 +9,11 @@ This template demonstrates:
 - Registration with Gymnasium
 """
 
+from typing import Any, Dict, Optional, Tuple
+
 import gymnasium as gym
-from gymnasium import spaces
 import numpy as np
+from gymnasium import spaces
 
 
 class CustomEnv(gym.Env):
@@ -27,15 +29,18 @@ class CustomEnv(gym.Env):
     """
 
     # Optional: Provide metadata for rendering modes
-    metadata = {"render_modes": ["human", "rgb_array"], "render_fps": 30}
+    metadata: Dict[str, Any] = {
+        "render_modes": ["human", "rgb_array"],
+        "render_fps": 30,
+    }
 
-    def __init__(self, grid_size=5, render_mode=None):
+    def __init__(self, grid_size: int = 5, render_mode: Optional[str] = None) -> None:
         """
         Initialize the environment.
 
         Args:
-            grid_size: Size of the grid world (grid_size x grid_size)
-            render_mode: How to render ('human', 'rgb_array', or None)
+            grid_size: Size of the grid world (grid_size x grid_size).
+            render_mode: How to render ('human', 'rgb_array', or None).
         """
         super().__init__()
 
@@ -56,36 +61,24 @@ class CustomEnv(gym.Env):
             dtype=np.float32,
         )
 
-        # Alternative observation spaces:
-        # 1. Discrete: spaces.Discrete(n)
-        # 2. Multi-discrete: spaces.MultiDiscrete([n1, n2, ...])
-        # 3. Multi-binary: spaces.MultiBinary(n)
-        # 4. Box (continuous): spaces.Box(low=, high=, shape=, dtype=np.float32)
-        # 5. Dict: spaces.Dict({"key1": space1, "key2": space2})
-
-        # For image observations (e.g., 84x84 RGB image):
-        # self.observation_space = spaces.Box(
-        #     low=0,
-        #     high=255,
-        #     shape=(3, 84, 84),  # (channels, height, width) - channel-first
-        #     dtype=np.uint8,
-        # )
-
         # Initialize state
-        self._agent_position = None
-        self._goal_position = None
+        self._agent_position: Optional[np.ndarray] = None
+        self._goal_position: Optional[np.ndarray] = None
 
-    def reset(self, seed=None, options=None):
+    def reset(
+        self, seed: Optional[int] = None, options: Optional[Dict[str, Any]] = None
+    ) -> Tuple[np.ndarray, Dict[str, Any]]:
         """
         Reset the environment to initial state.
 
         Args:
-            seed: Random seed for reproducibility
-            options: Additional options (optional)
+            seed: Random seed for reproducibility.
+            options: Additional options (optional).
 
         Returns:
-            observation: Initial observation
-            info: Additional information dictionary
+            A tuple containing:
+                - Initial observation as a NumPy array.
+                - Additional information dictionary.
         """
         # Set seed for reproducibility
         super().reset(seed=seed)
@@ -103,27 +96,33 @@ class CustomEnv(gym.Env):
 
         return observation, info
 
-    def step(self, action):
+    def step(self, action: int) -> Tuple[np.ndarray, float, bool, bool, Dict[str, Any]]:
         """
         Execute one step in the environment.
 
         Args:
-            action: Action to take
+            action: Action to take.
 
         Returns:
-            observation: New observation
-            reward: Reward for this step
-            terminated: Whether episode has ended (goal reached)
-            truncated: Whether episode was truncated (time limit, etc.)
-            info: Additional information dictionary
+            A tuple containing:
+                - New observation as a NumPy array.
+                - Reward for this step.
+                - Terminated: Whether episode has ended (goal reached).
+                - Truncated: Whether episode was truncated (time limit, etc.).
+                - Additional information dictionary.
         """
         # Map action to direction (0: up, 1: down, 2: left, 3: right)
-        direction = np.array([
-            [-1, 0],  # up
-            [1, 0],   # down
-            [0, -1],  # left
-            [0, 1],   # right
-        ])[action]
+        direction = np.array(
+            [
+                [-1, 0],  # up
+                [1, 0],  # down
+                [0, -1],  # left
+                [0, 1],  # right
+            ]
+        )[action]
+
+        if self._agent_position is None or self._goal_position is None:
+            raise RuntimeError("Environment must be reset before calling step().")
 
         # Update agent position (clip to stay within grid)
         self._agent_position = np.clip(
@@ -141,7 +140,7 @@ class CustomEnv(gym.Env):
         else:
             # Negative reward based on distance to goal (encourages efficiency)
             distance = np.linalg.norm(self._agent_position - self._goal_position)
-            reward = -0.1 * distance
+            reward = float(-0.1 * distance)
 
         # Episode not truncated in this example (no time limit)
         truncated = False
@@ -151,29 +150,27 @@ class CustomEnv(gym.Env):
 
         return observation, reward, terminated, truncated, info
 
-    def _get_obs(self):
+    def _get_obs(self) -> np.ndarray:
         """
         Get current observation.
 
         Returns:
-            observation: Current state as defined by observation_space
+            Current state observation as a NumPy array.
         """
-        # Return agent position as observation
+        if self._agent_position is None:
+            return np.zeros(self.observation_space.shape, dtype=np.float32)
         return self._agent_position.astype(np.float32)
 
-        # For dict observations:
-        # return {
-        #     "agent": self._agent_position.astype(np.float32),
-        #     "goal": self._goal_position.astype(np.float32),
-        # }
-
-    def _get_info(self):
+    def _get_info(self) -> Dict[str, Any]:
         """
         Get additional information (for debugging/logging).
 
         Returns:
-            info: Dictionary with additional information
+            Dictionary with additional environment information.
         """
+        if self._agent_position is None or self._goal_position is None:
+            return {}
+
         return {
             "agent_position": self._agent_position,
             "goal_position": self._goal_position,
@@ -182,14 +179,17 @@ class CustomEnv(gym.Env):
             ),
         }
 
-    def render(self):
+    def render(self) -> Optional[np.ndarray]:
         """
         Render the environment.
 
         Returns:
-            Rendered frame (if render_mode is 'rgb_array')
+            Rendered frame as an RGB array if mode is 'rgb_array', else None.
         """
         if self.render_mode == "human":
+            if self._agent_position is None or self._goal_position is None:
+                return None
+
             # Print simple text-based rendering
             grid = np.zeros((self.grid_size, self.grid_size), dtype=str)
             grid[:, :] = "."
@@ -200,23 +200,21 @@ class CustomEnv(gym.Env):
             for row in grid:
                 print(" ".join(row))
             print("=" * (self.grid_size * 2 + 1) + "\n")
+            return None
 
         elif self.render_mode == "rgb_array":
             # Return RGB array for video recording
             # This is a placeholder - implement proper rendering as needed
-            canvas = np.zeros((
-                self.grid_size * 50,
-                self.grid_size * 50,
-                3
-            ), dtype=np.uint8)
+            canvas = np.zeros(
+                (self.grid_size * 50, self.grid_size * 50, 3), dtype=np.uint8
+            )
             # Draw agent and goal on canvas
             # ... (implement visual rendering)
             return canvas
+        return None
 
-    def close(self):
-        """
-        Clean up environment resources.
-        """
+    def close(self) -> None:
+        """Clean up environment resources."""
         pass
 
 
@@ -229,10 +227,8 @@ gym.register(
 )
 
 
-def validate_environment():
-    """
-    Validate the custom environment with SB3's env_checker.
-    """
+def validate_environment() -> None:
+    """Validate the custom environment with SB3's env_checker."""
     from stable_baselines3.common.env_checker import check_env
 
     print("Validating custom environment...")
@@ -241,10 +237,8 @@ def validate_environment():
     print("Environment validation passed!")
 
 
-def test_environment():
-    """
-    Test the custom environment with random actions.
-    """
+def test_environment() -> None:
+    """Test the custom environment with random actions."""
     print("Testing environment with random actions...")
     env = CustomEnv(render_mode="human")
 
@@ -253,7 +247,7 @@ def test_environment():
     print(f"Initial info: {info}")
 
     for step in range(10):
-        action = env.action_space.sample()  # Random action
+        action = int(env.action_space.sample())  # Random action
         obs, reward, terminated, truncated, info = env.step(action)
 
         print(f"\nStep {step + 1}:")
@@ -272,11 +266,10 @@ def test_environment():
     env.close()
 
 
-def train_on_custom_env():
-    """
-    Train a PPO agent on the custom environment.
-    """
+def train_on_custom_env() -> None:
+    """Train a PPO agent on the custom environment."""
     from stable_baselines3 import PPO
+    from stable_baselines3.common.env_checker import check_env
 
     print("Training PPO agent on custom environment...")
 
@@ -284,7 +277,6 @@ def train_on_custom_env():
     env = CustomEnv()
 
     # Validate first
-    from stable_baselines3.common.env_checker import check_env
     check_env(env, warn=True)
 
     # Train agent
@@ -295,7 +287,7 @@ def train_on_custom_env():
     obs, info = env.reset()
     for _ in range(20):
         action, _states = model.predict(obs, deterministic=True)
-        obs, reward, terminated, truncated, info = env.step(action)
+        obs, reward, terminated, truncated, info = env.step(int(action))
         if terminated or truncated:
             print(f"Goal reached! Final reward: {reward}")
             break

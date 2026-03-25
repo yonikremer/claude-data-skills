@@ -24,10 +24,10 @@ from helpers.merge_runs import merge_runs as do_merge_runs
 from helpers.simplify_redlines import simplify_redlines as do_simplify_redlines
 
 SMART_QUOTE_REPLACEMENTS = {
-    "\u201c": "&#x201C;",  
-    "\u201d": "&#x201D;",  
-    "\u2018": "&#x2018;",  
-    "\u2019": "&#x2019;",  
+    "\u201c": "&#x201C;",
+    "\u201d": "&#x201D;",
+    "\u2018": "&#x2018;",
+    "\u2019": "&#x2019;",
 }
 
 
@@ -37,6 +37,17 @@ def unpack(
     merge_runs: bool = True,
     simplify_redlines: bool = True,
 ) -> tuple[None, str]:
+    """Unpacks an Office file (DOCX, PPTX, XLSX) for editing.
+
+    Args:
+        input_file (str): The path to the Office file to unpack.
+        output_directory (str): The directory where the files will be unpacked.
+        merge_runs (bool, optional): Whether to merge adjacent runs with identical formatting (DOCX only). Defaults to True.
+        simplify_redlines (bool, optional): Whether to merge adjacent tracked changes from the same author (DOCX only). Defaults to True.
+
+    Returns:
+        tuple[None, str]: A tuple containing None and a success or error message.
+    """
     input_path = Path(input_file)
     output_path = Path(output_directory)
     suffix = input_path.suffix.lower()
@@ -80,15 +91,25 @@ def unpack(
 
 
 def _pretty_print_xml(xml_file: Path) -> None:
+    """Pretty-prints an XML file.
+
+    Args:
+        xml_file (Path): The path to the XML file to pretty-print.
+    """
     try:
         content = xml_file.read_text(encoding="utf-8")
         dom = defusedxml.minidom.parseString(content)
         xml_file.write_bytes(dom.toprettyxml(indent="  ", encoding="utf-8"))
     except Exception:
-        pass  
+        pass
 
 
 def _escape_smart_quotes(xml_file: Path) -> None:
+    """Escapes smart quotes in an XML file.
+
+    Args:
+        xml_file (Path): The path to the XML file to escape smart quotes in.
+    """
     try:
         content = xml_file.read_text(encoding="utf-8")
         for char, entity in SMART_QUOTE_REPLACEMENTS.items():

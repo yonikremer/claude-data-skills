@@ -13,11 +13,19 @@ Example:
 import sys
 import zipfile
 from pathlib import Path
+from typing import Optional, Tuple
 
 
-def validate_skill(skill_path: Path) -> tuple[bool, str]:
-    """Basic validation of skill structure."""
+def validate_skill(skill_path: Path) -> Tuple[bool, str]:
+    """
+    Basic validation of skill structure.
 
+    Args:
+        skill_path: Path to the skill folder.
+
+    Returns:
+        A tuple of (is_valid, message).
+    """
     # Check SKILL.md exists
     skill_md = skill_path / "SKILL.md"
     if not skill_md.exists():
@@ -41,18 +49,20 @@ def validate_skill(skill_path: Path) -> tuple[bool, str]:
     return True, "Validation passed"
 
 
-def package_skill(skill_path: str, output_dir: str = None) -> Path | None:
+def package_skill(
+    skill_path_str: str, output_dir_str: Optional[str] = None
+) -> Optional[Path]:
     """
     Package a skill folder into a .skill file.
 
     Args:
-        skill_path: Path to the skill folder
-        output_dir: Optional output directory
+        skill_path_str: Path to the skill folder.
+        output_dir_str: Optional output directory.
 
     Returns:
-        Path to the created .skill file, or None if error
+        Path to the created .skill file, or None if error.
     """
-    skill_path = Path(skill_path).resolve()
+    skill_path = Path(skill_path_str).resolve()
 
     # Validate folder exists
     if not skill_path.exists():
@@ -73,8 +83,8 @@ def package_skill(skill_path: str, output_dir: str = None) -> Path | None:
 
     # Determine output location
     skill_name = skill_path.name
-    if output_dir:
-        output_path = Path(output_dir).resolve()
+    if output_dir_str:
+        output_path = Path(output_dir_str).resolve()
     else:
         output_path = Path.cwd()
 
@@ -83,13 +93,13 @@ def package_skill(skill_path: str, output_dir: str = None) -> Path | None:
 
     # Create the zip file
     try:
-        with zipfile.ZipFile(skill_filename, 'w', zipfile.ZIP_DEFLATED) as zipf:
-            for file_path in skill_path.rglob('*'):
+        with zipfile.ZipFile(skill_filename, "w", zipfile.ZIP_DEFLATED) as zipf:
+            for file_path in skill_path.rglob("*"):
                 if file_path.is_file():
                     # Skip hidden files and common junk
-                    if any(part.startswith('.') for part in file_path.parts):
+                    if any(part.startswith(".") for part in file_path.parts):
                         continue
-                    if file_path.name in ['__pycache__', '.DS_Store', 'Thumbs.db']:
+                    if file_path.name in ["__pycache__", ".DS_Store", "Thumbs.db"]:
                         continue
 
                     # Calculate relative path within the zip
@@ -105,20 +115,21 @@ def package_skill(skill_path: str, output_dir: str = None) -> Path | None:
         return None
 
 
-def main():
+def main() -> None:
+    """Main CLI entry point."""
     if len(sys.argv) < 2:
         print(__doc__)
         sys.exit(1)
 
-    skill_path = sys.argv[1]
-    output_dir = sys.argv[2] if len(sys.argv) > 2 else None
+    skill_path_str = sys.argv[1]
+    output_dir_str = sys.argv[2] if len(sys.argv) > 2 else None
 
-    print(f"Packaging skill: {skill_path}")
-    if output_dir:
-        print(f"   Output directory: {output_dir}")
+    print(f"Packaging skill: {skill_path_str}")
+    if output_dir_str:
+        print(f"   Output directory: {output_dir_str}")
     print()
 
-    result = package_skill(skill_path, output_dir)
+    result = package_skill(skill_path_str, output_dir_str)
     sys.exit(0 if result else 1)
 
 

@@ -9,21 +9,32 @@ Validates scientific presentations for common issues:
 - Basic format validation
 """
 
-import sys
-import os
 import argparse
 import subprocess
+import sys
 from pathlib import Path
-from typing import Dict, List, Tuple, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 import PyPDF2
 from pptx import Presentation
 
+
 class PresentationValidator:
-    """Validates presentations for common issues."""
-    
+    """Validates presentations for common issues.
+
+    Attributes:
+        SLIDE_GUIDELINES (Dict[int, Tuple[int, int, int]]): Recommended slide counts
+            by duration (min, recommended, max).
+        filepath (Path): Path to the presentation file.
+        duration (Optional[int]): Presentation duration in minutes.
+        file_type (str): Extension of the presentation file.
+        issues (List[str]): List of identified critical issues.
+        warnings (List[str]): List of identified warnings.
+        info (List[str]): List of general information items.
+    """
+
     # Recommended slide counts by duration (min, recommended, max)
-    SLIDE_GUIDELINES = {
+    SLIDE_GUIDELINES: Dict[int, Tuple[int, int, int]] = {
         5: (5, 6, 8),
         10: (8, 11, 14),
         15: (13, 16, 20),
@@ -32,210 +43,237 @@ class PresentationValidator:
         45: (32, 40, 50),
         60: (40, 52, 65),
     }
-    
-    def __init__(self, filepath: str, duration: Optional[int] = None):
-        self.filepath = Path(filepath)
-        self.duration = duration
-        self.file_type = self.filepath.suffix.lower()
-        self.issues = []
-        self.warnings = []
-        self.info = []
-        
-    def validate(self) -> Dict:
-        """Run all validations and return results."""
+
+    def __init__(self, filepath: str, duration: Optional[int] = None) -> None:
+        """Initialize the validator.
+
+        Args:
+            filepath (str): Path to the presentation file.
+            duration (Optional[int]): Presentation duration in minutes.
+        """
+        self.filepath: Path = Path(filepath)
+        self.duration: Optional[int] = duration
+        self.file_type: str = self.filepath.suffix.lower()
+        self.issues: List[str] = []
+        self.warnings: List[str] = []
+        self.info: List[str] = []
+
+    def validate(self) -> Dict[str, Any]:
+        """Run all validations and return results.
+
+        Returns:
+            Dict[str, Any]: A dictionary containing validation results including
+                filepath, file type, info, warnings, issues, and overall validity.
+        """
         print(f"Validating: {self.filepath.name}")
         print(f"File type: {self.file_type}")
         print("=" * 60)
-        
+
         # Check file exists
         if not self.filepath.exists():
             self.issues.append(f"File not found: {self.filepath}")
             return self._format_results()
-        
+
         # File size check
         self._check_file_size()
-        
+
         # Type-specific validation
-        if self.file_type == '.pdf':
+        if self.file_type == ".pdf":
             self._validate_pdf()
-        elif self.file_type in ['.pptx', '.ppt']:
+        elif self.file_type in [".pptx", ".ppt"]:
             self._validate_pptx()
-        elif self.file_type in ['.tex']:
+        elif self.file_type in [".tex"]:
             self._validate_latex()
         else:
             self.warnings.append(f"Unknown file type: {self.file_type}")
-        
+
         return self._format_results()
-    
-    def _check_file_size(self):
+
+    def _check_file_size(self) -> None:
         """Check if file size is reasonable."""
-        size_mb = self.filepath.stat().st_size / (1024 * 1024)
+        size_mb: float = self.filepath.stat().st_size / (1024 * 1024)
         self.info.append(f"File size: {size_mb:.2f} MB")
-        
+
         if size_mb > 100:
             self.issues.append(
-                f"File is very large ({size_mb:.1f} MB). "
-                "Consider compressing images."
+                f"File is very large ({size_mb:.1f} MB). Consider compressing images."
             )
         elif size_mb > 50:
             self.warnings.append(
-                f"File is large ({size_mb:.1f} MB). "
-                "May be slow to email or upload."
+                f"File is large ({size_mb:.1f} MB). May be slow to email or upload."
             )
-    
-    def _validate_pdf(self):
+
+    def _validate_pdf(self) -> None:
         """Validate PDF presentation."""
         try:
-            with open(self.filepath, 'rb') as f:
-                reader = PyPDF2.PdfReader(f)
-                num_pages = len(reader.pages)
-                
+            with open(self.filepath, "rb") as f:
+                reader: PyPDF2.PdfReader = PyPDF2.PdfReader(f)
+                num_pages: int = len(reader.pages)
+
                 self.info.append(f"Number of slides: {num_pages}")
-                
+
                 # Check slide count against duration
                 if self.duration:
                     self._check_slide_count(num_pages)
-                
+
                 # Get page size
-                first_page = reader.pages[0]
-                media_box = first_page.mediabox
-                width = float(media_box.width)
-                height = float(media_box.height)
-                
+                first_page: Any = reader.pages[0]
+                media_box: Any = first_page.mediabox
+                width: float = float(media_box.width)
+                height: float = float(media_box.height)
+
                 # Convert points to inches (72 points = 1 inch)
-                width_in = width / 72
-                height_in = height / 72
-                aspect = width / height
-                
+                width_in: float = width / 72
+                height_in: float = height / 72
+                aspect: float = width / height
+
                 self.info.append(
-                    f"Slide dimensions: {width_in:.1f}\" × {height_in:.1f}\" "
+                    f'Slide dimensions: {width_in:.1f}" × {height_in:.1f}" '
                     f"(aspect ratio: {aspect:.2f})"
                 )
-                
+
                 # Check common aspect ratios
-                if abs(aspect - 16/9) < 0.01:
+                if abs(aspect - 16 / 9) < 0.01:
                     self.info.append("Aspect ratio: 16:9 (widescreen)")
-                elif abs(aspect - 4/3) < 0.01:
+                elif abs(aspect - 4 / 3) < 0.01:
                     self.info.append("Aspect ratio: 4:3 (standard)")
                 else:
                     self.warnings.append(
                         f"Unusual aspect ratio: {aspect:.2f}. "
                         "Confirm this matches venue requirements."
                     )
-                
+
         except Exception as e:
             self.issues.append(f"Error reading PDF: {str(e)}")
-    
-    def _validate_pptx(self):
+
+    def _validate_pptx(self) -> None:
         """Validate PowerPoint presentation."""
         try:
-            prs = Presentation(self.filepath)
-            num_slides = len(prs.slides)
-            
+            prs: Presentation = Presentation(self.filepath)
+            num_slides: int = len(prs.slides)
+
             self.info.append(f"Number of slides: {num_slides}")
-            
+
             # Check slide count against duration
             if self.duration:
                 self._check_slide_count(num_slides)
-            
+
             # Get slide dimensions
-            width_inches = prs.slide_width / 914400  # EMU to inches
-            height_inches = prs.slide_height / 914400
-            aspect = prs.slide_width / prs.slide_height
-            
+            width_inches: float = prs.slide_width / 914400  # EMU to inches
+            height_inches: float = prs.slide_height / 914400
+            aspect: float = prs.slide_width / prs.slide_height
+
             self.info.append(
-                f"Slide dimensions: {width_inches:.1f}\" × {height_inches:.1f}\" "
+                f'Slide dimensions: {width_inches:.1f}" × {height_inches:.1f}" '
                 f"(aspect ratio: {aspect:.2f})"
             )
-            
+
             # Check fonts and text
             self._check_pptx_content(prs)
-            
+
         except Exception as e:
             self.issues.append(f"Error reading PowerPoint: {str(e)}")
-    
-    def _check_pptx_content(self, prs):
-        """Check PowerPoint content for common issues."""
-        small_text_slides = []
-        many_bullets_slides = []
-        
+
+    def _check_pptx_content(self, prs: Any) -> None:
+        """Check PowerPoint content for common issues.
+
+        Args:
+            prs (Any): The PowerPoint presentation object.
+        """
+        small_text_slides: List[int] = []
+        many_bullets_slides: List[int] = []
+
         for idx, slide in enumerate(prs.slides, start=1):
             for shape in slide.shapes:
                 if not shape.has_text_frame:
                     continue
-                
-                text_frame = shape.text_frame
-                
+
+                text_frame: Any = shape.text_frame
+
                 # Check for small fonts
                 for paragraph in text_frame.paragraphs:
                     for run in paragraph.runs:
                         if run.font.size and run.font.size.pt < 18:
                             small_text_slides.append(idx)
                             break
-                
+
                 # Check for too many bullets
-                bullet_count = sum(1 for p in text_frame.paragraphs if p.level == 0)
+                bullet_count: int = sum(
+                    1 for p in text_frame.paragraphs if p.level == 0
+                )
                 if bullet_count > 6:
                     many_bullets_slides.append(idx)
-        
+
         # Report issues
         if small_text_slides:
-            unique_slides = sorted(set(small_text_slides))
+            unique_slides: List[int] = sorted(set(small_text_slides))
             self.warnings.append(
                 f"Small text (<18pt) found on slides: {unique_slides[:5]}"
                 + (" ..." if len(unique_slides) > 5 else "")
             )
-        
+
         if many_bullets_slides:
             unique_slides = sorted(set(many_bullets_slides))
             self.warnings.append(
                 f"Many bullets (>6) on slides: {unique_slides[:5]}"
                 + (" ..." if len(unique_slides) > 5 else "")
             )
-    
-    def _validate_latex(self):
+
+    def _validate_latex(self) -> None:
         """Validate LaTeX Beamer presentation."""
         self.info.append("LaTeX source file detected")
-        
+
         # Try to compile
         if self._try_compile_latex():
             self.info.append("LaTeX compilation: SUCCESS")
-            
+
             # If PDF was generated, validate it
-            pdf_path = self.filepath.with_suffix('.pdf')
+            pdf_path: Path = self.filepath.with_suffix(".pdf")
             if pdf_path.exists():
-                pdf_validator = PresentationValidator(str(pdf_path), self.duration)
-                pdf_results = pdf_validator.validate()
-                
+                pdf_validator: PresentationValidator = PresentationValidator(
+                    str(pdf_path), self.duration
+                )
+                pdf_results: Dict[str, Any] = pdf_validator.validate()
+
                 # Merge results
-                self.info.extend(pdf_results['info'])
-                self.warnings.extend(pdf_results['warnings'])
-                self.issues.extend(pdf_results['issues'])
+                self.info.extend(pdf_results["info"])
+                self.warnings.extend(pdf_results["warnings"])
+                self.issues.extend(pdf_results["issues"])
         else:
-            self.issues.append(
-                "LaTeX compilation failed. Check .log file for errors."
-            )
-    
+            self.issues.append("LaTeX compilation failed. Check .log file for errors.")
+
     def _try_compile_latex(self) -> bool:
-        """Try to compile LaTeX file."""
+        """Try to compile LaTeX file.
+
+        Returns:
+            bool: True if compilation was successful, False otherwise.
+        """
         try:
             # Try pdflatex
-            result = subprocess.run(
-                ['pdflatex', '-interaction=nonstopmode', self.filepath.name],
+            result: subprocess.CompletedProcess = subprocess.run(
+                ["pdflatex", "-interaction=nonstopmode", self.filepath.name],
                 cwd=self.filepath.parent,
                 capture_output=True,
-                timeout=60
+                timeout=60,
             )
             return result.returncode == 0
         except (subprocess.TimeoutExpired, FileNotFoundError):
             return False
-    
-    def _check_slide_count(self, num_slides: int):
-        """Check if slide count is appropriate for duration."""
+
+    def _check_slide_count(self, num_slides: int) -> None:
+        """Check if slide count is appropriate for duration.
+
+        Args:
+            num_slides (int): The actual number of slides in the presentation.
+        """
+        min_slides: int
+        rec_slides: int
+        max_slides: int
+
         if self.duration not in self.SLIDE_GUIDELINES:
             # Find nearest duration
-            durations = sorted(self.SLIDE_GUIDELINES.keys())
-            nearest = min(durations, key=lambda x: abs(x - self.duration))
+            durations: List[int] = sorted(self.SLIDE_GUIDELINES.keys())
+            nearest: int = min(durations, key=lambda x: abs(x - self.duration))
             min_slides, rec_slides, max_slides = self.SLIDE_GUIDELINES[nearest]
             self.info.append(
                 f"Using guidelines for {nearest}-minute talk "
@@ -243,12 +281,12 @@ class PresentationValidator:
             )
         else:
             min_slides, rec_slides, max_slides = self.SLIDE_GUIDELINES[self.duration]
-        
+
         self.info.append(
             f"Recommended slides for {self.duration}-minute talk: "
             f"{min_slides}-{max_slides} (optimal: ~{rec_slides})"
         )
-        
+
         if num_slides < min_slides:
             self.warnings.append(
                 f"Fewer slides ({num_slides}) than recommended ({min_slides}-{max_slides}). "
@@ -260,52 +298,58 @@ class PresentationValidator:
                 "Likely to run over time."
             )
         else:
-            self.info.append(
-                f"Slide count ({num_slides}) is within recommended range."
-            )
-    
-    def _format_results(self) -> Dict:
-        """Format validation results."""
+            self.info.append(f"Slide count ({num_slides}) is within recommended range.")
+
+    def _format_results(self) -> Dict[str, Any]:
+        """Format validation results.
+
+        Returns:
+            Dict[str, Any]: A dictionary containing formatted results.
+        """
         return {
-            'filepath': str(self.filepath),
-            'file_type': self.file_type,
-            'info': self.info,
-            'warnings': self.warnings,
-            'issues': self.issues,
-            'valid': len(self.issues) == 0
+            "filepath": str(self.filepath),
+            "file_type": self.file_type,
+            "info": self.info,
+            "warnings": self.warnings,
+            "issues": self.issues,
+            "valid": len(self.issues) == 0,
         }
 
 
-def print_results(results: Dict):
-    """Print validation results in a readable format."""
+def print_results(results: Dict[str, Any]) -> None:
+    """Print validation results in a readable format.
+
+    Args:
+        results (Dict[str, Any]): The validation results to print.
+    """
     print()
     print("=" * 60)
     print("VALIDATION RESULTS")
     print("=" * 60)
-    
+
     # Print info
-    if results['info']:
+    if results["info"]:
         print("\n📋 Information:")
-        for item in results['info']:
+        for item in results["info"]:
             print(f"  • {item}")
-    
+
     # Print warnings
-    if results['warnings']:
+    if results["warnings"]:
         print("\n⚠️  Warnings:")
-        for item in results['warnings']:
+        for item in results["warnings"]:
             print(f"  • {item}")
-    
+
     # Print issues
-    if results['issues']:
+    if results["issues"]:
         print("\n❌ Issues:")
-        for item in results['issues']:
+        for item in results["issues"]:
             print(f"  • {item}")
-    
+
     # Overall status
     print("\n" + "=" * 60)
-    if results['valid']:
+    if results["valid"]:
         print("✅ Validation PASSED")
-        if results['warnings']:
+        if results["warnings"]:
             print(f"   ({len(results['warnings'])} warning(s) found)")
     else:
         print("❌ Validation FAILED")
@@ -313,15 +357,16 @@ def print_results(results: Dict):
     print("=" * 60)
 
 
-def main():
-    parser = argparse.ArgumentParser(
-        description='Validate scientific presentations',
+def main() -> None:
+    """Main entry point for CLI usage."""
+    parser: argparse.ArgumentParser = argparse.ArgumentParser(
+        description="Validate scientific presentations",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  %(prog)s presentation.pdf --duration 15
-  %(prog)s slides.pptx --duration 45
-  %(prog)s beamer_talk.tex --duration 20
+  python validate_presentation.py presentation.pdf --duration 15
+  python validate_presentation.py slides.pptx --duration 45
+  python validate_presentation.py beamer_talk.tex --duration 20
 
 Supported file types:
   - PDF (.pdf)
@@ -334,46 +379,42 @@ Validation checks:
   - Slide dimensions
   - Font sizes (PowerPoint)
   - LaTeX compilation (Beamer)
-        """
+        """,
     )
-    
+
     parser.add_argument(
-        'filepath',
-        help='Path to presentation file (PDF, PPTX, or TEX)'
+        "filepath", help="Path to presentation file (PDF, PPTX, or TEX)"
     )
-    
+
     parser.add_argument(
-        '--duration', '-d',
-        type=int,
-        help='Presentation duration in minutes'
+        "--duration", "-d", type=int, help="Presentation duration in minutes"
     )
-    
+
     parser.add_argument(
-        '--quiet', '-q',
-        action='store_true',
-        help='Only show issues and warnings'
+        "--quiet", "-q", action="store_true", help="Only show issues and warnings"
     )
-    
-    args = parser.parse_args()
-    
+
+    args: argparse.Namespace = parser.parse_args()
+
     # Validate
-    validator = PresentationValidator(args.filepath, args.duration)
-    results = validator.validate()
-    
+    validator: PresentationValidator = PresentationValidator(
+        args.filepath, args.duration
+    )
+    results: Dict[str, Any] = validator.validate()
+
     # Print results
     if args.quiet:
         # Only show warnings and issues
-        if results['warnings'] or results['issues']:
+        if results["warnings"] or results["issues"]:
             print_results(results)
         else:
             print("✅ No issues found")
     else:
         print_results(results)
-    
+
     # Exit with appropriate code
-    sys.exit(0 if results['valid'] else 1)
+    sys.exit(0 if results["valid"] else 1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
-

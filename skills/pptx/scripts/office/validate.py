@@ -22,7 +22,11 @@ from pathlib import Path
 from validators import DOCXSchemaValidator, PPTXSchemaValidator, RedliningValidator
 
 
-def main():
+def main() -> None:
+    """Main entry point for the Office document validation tool.
+
+    Parses command-line arguments, sets up validators, and runs validation.
+    """
     parser = argparse.ArgumentParser(description="Validate Office document XML files")
     parser.add_argument(
         "path",
@@ -84,7 +88,12 @@ def main():
             ]
             if original_file:
                 validators.append(
-                    RedliningValidator(unpacked_dir, original_file, verbose=args.verbose, author=args.author)  
+                    RedliningValidator(
+                        unpacked_dir,
+                        original_file,
+                        verbose=args.verbose,
+                        author=args.author,
+                    )
                 )
         case ".pptx":
             validators = [

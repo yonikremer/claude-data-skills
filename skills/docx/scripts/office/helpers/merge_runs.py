@@ -9,11 +9,21 @@ Also:
 """
 
 from pathlib import Path
+from typing import Any, List, Optional, Tuple, Union
 
 import defusedxml.minidom
 
 
-def merge_runs(input_dir: str) -> tuple[int, str]:
+def merge_runs(input_dir: Union[str, Path]) -> Tuple[int, str]:
+    """
+    Merge adjacent runs with identical formatting in a DOCX document.
+
+    Args:
+        input_dir: Path to the unpacked DOCX directory.
+
+    Returns:
+        A tuple of (merge_count, message).
+    """
     doc_xml = Path(input_dir) / "word" / "document.xml"
 
     if not doc_xml.exists():
@@ -39,12 +49,20 @@ def merge_runs(input_dir: str) -> tuple[int, str]:
         return 0, f"Error: {e}"
 
 
+def _find_elements(root: Any, tag: str) -> List[Any]:
+    """
+    Find elements with a specific tag name in the DOM.
 
+    Args:
+        root: The root element to search from.
+        tag: The tag name to look for.
 
-def _find_elements(root, tag: str) -> list:
+    Returns:
+        A list of matching elements.
+    """
     results = []
 
-    def traverse(node):
+    def traverse(node: Any) -> None:
         if node.nodeType == node.ELEMENT_NODE:
             name = node.localName or node.tagName
             if name == tag or name.endswith(f":{tag}"):
@@ -56,7 +74,17 @@ def _find_elements(root, tag: str) -> list:
     return results
 
 
-def _get_child(parent, tag: str):
+def _get_child(parent: Any, tag: str) -> Optional[Any]:
+    """
+    Get the first child element with a specific tag name.
+
+    Args:
+        parent: The parent element.
+        tag: The tag name to look for.
+
+    Returns:
+        The first matching child element, or None if not found.
+    """
     for child in parent.childNodes:
         if child.nodeType == child.ELEMENT_NODE:
             name = child.localName or child.tagName
@@ -65,7 +93,17 @@ def _get_child(parent, tag: str):
     return None
 
 
-def _get_children(parent, tag: str) -> list:
+def _get_children(parent: Any, tag: str) -> List[Any]:
+    """
+    Get all child elements with a specific tag name.
+
+    Args:
+        parent: The parent element.
+        tag: The tag name to look for.
+
+    Returns:
+        A list of matching child elements.
+    """
     results = []
     for child in parent.childNodes:
         if child.nodeType == child.ELEMENT_NODE:
@@ -75,7 +113,17 @@ def _get_children(parent, tag: str) -> list:
     return results
 
 
-def _is_adjacent(elem1, elem2) -> bool:
+def _is_adjacent(elem1: Any, elem2: Any) -> bool:
+    """
+    Check if two elements are adjacent in the DOM.
+
+    Args:
+        elem1: The first element.
+        elem2: The second element.
+
+    Returns:
+        True if they are adjacent, False otherwise.
+    """
     node = elem1.nextSibling
     while node:
         if node == elem2:
@@ -88,24 +136,42 @@ def _is_adjacent(elem1, elem2) -> bool:
     return False
 
 
+def _remove_elements(root: Any, tag: str) -> None:
+    """
+    Remove all elements with a specific tag name.
 
-
-def _remove_elements(root, tag: str):
+    Args:
+        root: The root element to search from.
+        tag: The tag name of elements to remove.
+    """
     for elem in _find_elements(root, tag):
         if elem.parentNode:
             elem.parentNode.removeChild(elem)
 
 
-def _strip_run_rsid_attrs(root):
+def _strip_run_rsid_attrs(root: Any) -> None:
+    """
+    Remove RSID attributes from all run elements.
+
+    Args:
+        root: The root element to search from.
+    """
     for run in _find_elements(root, "r"):
         for attr in list(run.attributes.values()):
             if "rsid" in attr.name.lower():
                 run.removeAttribute(attr.name)
 
 
+def _merge_runs_in(container: Any) -> int:
+    """
+    Merge adjacent runs within a specific container.
 
+    Args:
+        container: The container element (e.g., paragraph).
 
-def _merge_runs_in(container) -> int:
+    Returns:
+        The number of merges performed.
+    """
     merge_count = 0
     run = _first_child_run(container)
 
@@ -125,14 +191,32 @@ def _merge_runs_in(container) -> int:
     return merge_count
 
 
-def _first_child_run(container):
+def _first_child_run(container: Any) -> Optional[Any]:
+    """
+    Find the first child run element.
+
+    Args:
+        container: The container element.
+
+    Returns:
+        The first child run, or None if not found.
+    """
     for child in container.childNodes:
         if child.nodeType == child.ELEMENT_NODE and _is_run(child):
             return child
     return None
 
 
-def _next_element_sibling(node):
+def _next_element_sibling(node: Any) -> Optional[Any]:
+    """
+    Find the next sibling that is an element.
+
+    Args:
+        node: The reference node.
+
+    Returns:
+        The next sibling element, or None if not found.
+    """
     sibling = node.nextSibling
     while sibling:
         if sibling.nodeType == sibling.ELEMENT_NODE:
@@ -141,7 +225,16 @@ def _next_element_sibling(node):
     return None
 
 
-def _next_sibling_run(node):
+def _next_sibling_run(node: Any) -> Optional[Any]:
+    """
+    Find the next sibling that is a run element.
+
+    Args:
+        node: The reference node.
+
+    Returns:
+        The next sibling run, or None if not found.
+    """
     sibling = node.nextSibling
     while sibling:
         if sibling.nodeType == sibling.ELEMENT_NODE:
@@ -151,12 +244,31 @@ def _next_sibling_run(node):
     return None
 
 
-def _is_run(node) -> bool:
+def _is_run(node: Any) -> bool:
+    """
+    Check if a node is a run element.
+
+    Args:
+        node: The node to check.
+
+    Returns:
+        True if it is a run, False otherwise.
+    """
     name = node.localName or node.tagName
     return name == "r" or name.endswith(":r")
 
 
-def _can_merge(run1, run2) -> bool:
+def _can_merge(run1: Any, run2: Any) -> bool:
+    """
+    Check if two runs can be merged (have identical properties).
+
+    Args:
+        run1: The first run.
+        run2: The second run.
+
+    Returns:
+        True if they can be merged, False otherwise.
+    """
     rpr1 = _get_child(run1, "rPr")
     rpr2 = _get_child(run2, "rPr")
 
@@ -164,10 +276,17 @@ def _can_merge(run1, run2) -> bool:
         return False
     if rpr1 is None:
         return True
-    return rpr1.toxml() == rpr2.toxml()  
+    return rpr1.toxml() == rpr2.toxml()
 
 
-def _merge_run_content(target, source):
+def _merge_run_content(target: Any, source: Any) -> None:
+    """
+    Move content from source run to target run.
+
+    Args:
+        target: The target run.
+        source: The source run.
+    """
     for child in list(source.childNodes):
         if child.nodeType == child.ELEMENT_NODE:
             name = child.localName or child.tagName
@@ -175,7 +294,13 @@ def _merge_run_content(target, source):
                 target.appendChild(child)
 
 
-def _consolidate_text(run):
+def _consolidate_text(run: Any) -> None:
+    """
+    Consolidate adjacent text elements within a run.
+
+    Args:
+        run: The run element.
+    """
     t_elements = _get_children(run, "t")
 
     for i in range(len(t_elements) - 1, 0, -1):

@@ -21,13 +21,26 @@ import defusedxml.minidom
 
 from validators import DOCXSchemaValidator, PPTXSchemaValidator, RedliningValidator
 
+
 def pack(
     input_directory: str,
     output_file: str,
     original_file: str | None = None,
     validate: bool = True,
-    infer_author_func=None,
+    infer_author_func: callable | None = None,
 ) -> tuple[None, str]:
+    """Packs a directory into a DOCX, PPTX, or XLSX file.
+
+    Args:
+        input_directory (str): The directory to pack.
+        output_file (str): The path to the output Office file.
+        original_file (str, optional): The original file for validation comparison. Defaults to None.
+        validate (bool, optional): Whether to run validation with auto-repair. Defaults to True.
+        infer_author_func (callable, optional): A function to infer the author for validation. Defaults to None.
+
+    Returns:
+        tuple[None, str]: A tuple containing None and a success or error message.
+    """
     input_dir = Path(input_directory)
     output_path = Path(output_file)
     suffix = output_path.suffix.lower()
@@ -70,8 +83,19 @@ def _run_validation(
     unpacked_dir: Path,
     original_file: Path,
     suffix: str,
-    infer_author_func=None,
+    infer_author_func: callable | None = None,
 ) -> tuple[bool, str | None]:
+    """Runs validation on the unpacked directory.
+
+    Args:
+        unpacked_dir (Path): The directory containing the unpacked files.
+        original_file (Path): The original Office file for comparison.
+        suffix (str): The file extension suffix (e.g., '.docx').
+        infer_author_func (callable, optional): A function to infer the author. Defaults to None.
+
+    Returns:
+        tuple[bool, str | None]: A tuple containing a success flag and an optional output message.
+    """
     output_lines = []
     validators = []
 
@@ -106,6 +130,14 @@ def _run_validation(
 
 
 def _condense_xml(xml_file: Path) -> None:
+    """Condenses an XML file by removing unnecessary whitespace and comments.
+
+    Args:
+        xml_file (Path): The path to the XML file to condense.
+
+    Raises:
+        Exception: If parsing the XML file fails.
+    """
     try:
         with open(xml_file, encoding="utf-8") as f:
             dom = defusedxml.minidom.parse(f)

@@ -28,6 +28,11 @@ OUTPUT_FILE = Path(__file__).parent / "output" / "animation_data.json"
 
 
 def main() -> None:
+    """Run the TimesFM animation data generation process.
+
+    Loads temperature anomaly data, iterates through increasing context lengths,
+    generates forecasts using TimesFM, and saves the results to a JSON file.
+    """
     print("=" * 60)
     print("  TIMESFM ANIMATION DATA GENERATOR")
     print("  Dynamic horizon - forecasts always reach 2025-12")
@@ -79,8 +84,8 @@ def main() -> None:
         )
 
         # Truncate to actual horizon
-        point = point[0][:horizon]
-        quantiles = quantiles[0, :horizon, :]
+        point_fc = point[0][:horizon]
+        quantiles_fc = quantiles[0, :horizon, :]
 
         # Determine forecast dates
         last_date = historical_dates[-1]
@@ -99,11 +104,11 @@ def main() -> None:
             "historical_dates": [d.strftime("%Y-%m") for d in historical_dates],
             "historical_values": historical_values.tolist(),
             "forecast_dates": [d.strftime("%Y-%m") for d in forecast_dates],
-            "point_forecast": point.tolist(),
-            "q10": quantiles[:, 0].tolist(),
-            "q20": quantiles[:, 1].tolist(),
-            "q80": quantiles[:, 7].tolist(),
-            "q90": quantiles[:, 8].tolist(),
+            "point_forecast": point_fc.tolist(),
+            "q10": quantiles_fc[:, 0].tolist(),
+            "q20": quantiles_fc[:, 1].tolist(),
+            "q80": quantiles_fc[:, 7].tolist(),
+            "q90": quantiles_fc[:, 8].tolist(),
         }
 
         animation_steps.append(step_data)
@@ -111,7 +116,7 @@ def main() -> None:
         # Show summary
         print(f"   Last date: {historical_dates[-1].strftime('%Y-%m')}")
         print(f"   Forecast to: {forecast_dates[-1].strftime('%Y-%m')}")
-        print(f"   Forecast mean: {point.mean():.3f}°C")
+        print(f"   Forecast mean: {point_fc.mean():.3f}°C")
 
     # Create output
     output = {
@@ -135,12 +140,12 @@ def main() -> None:
     with open(OUTPUT_FILE, "w") as f:
         json.dump(output, f, indent=2)
 
-    print(f"\n" + "=" * 60)
+    print("\n" + "=" * 60)
     print("  ✅ ANIMATION DATA COMPLETE")
     print("=" * 60)
     print(f"\n📁 Output: {OUTPUT_FILE}")
     print(f"   Total steps: {len(animation_steps)}")
-    print(f"   Each forecast extends to 2025-12")
+    print("   Each forecast extends to 2025-12")
 
 
 if __name__ == "__main__":

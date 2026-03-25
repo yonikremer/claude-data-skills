@@ -21,7 +21,12 @@ import tempfile
 from pathlib import Path
 
 
-def get_soffice_env() -> dict:
+def get_soffice_env() -> dict[str, str]:
+    """Gets the environment variables required to run soffice.
+
+    Returns:
+        A dictionary of environment variables.
+    """
     env = os.environ.copy()
     env["SAL_USE_VCLPLUGIN"] = "svp"
 
@@ -33,15 +38,28 @@ def get_soffice_env() -> dict:
 
 
 def run_soffice(args: list[str], **kwargs) -> subprocess.CompletedProcess:
+    """Runs the soffice command with the given arguments.
+
+    Args:
+        args: List of command-line arguments.
+        **kwargs: Additional keyword arguments for subprocess.run.
+
+    Returns:
+        The result of the subprocess run.
+    """
     env = get_soffice_env()
     return subprocess.run(["soffice"] + args, env=env, **kwargs)
-
 
 
 _SHIM_SO = Path(tempfile.gettempdir()) / "lo_socket_shim.so"
 
 
 def _needs_shim() -> bool:
+    """Checks if the AF_UNIX socket shim is needed.
+
+    Returns:
+        True if the shim is needed, False otherwise.
+    """
     try:
         s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
         s.close()
@@ -51,6 +69,11 @@ def _needs_shim() -> bool:
 
 
 def _ensure_shim() -> Path:
+    """Ensures that the AF_UNIX socket shim shared library exists.
+
+    Returns:
+        The path to the shared library.
+    """
     if _SHIM_SO.exists():
         return _SHIM_SO
 
@@ -63,7 +86,6 @@ def _ensure_shim() -> Path:
     )
     src.unlink()
     return _SHIM_SO
-
 
 
 _SHIM_SOURCE = r"""
@@ -176,8 +198,8 @@ int close(int fd) {
 """
 
 
-
 if __name__ == "__main__":
     import sys
+
     result = run_soffice(sys.argv[1:])
     sys.exit(result.returncode)

@@ -18,7 +18,6 @@ from __future__ import annotations
 import argparse
 import json
 import os
-import platform
 import shutil
 import struct
 import sys
@@ -72,6 +71,15 @@ MODEL_PROFILES: dict[str, dict[str, Any]] = {
 
 @dataclass
 class CheckResult:
+    """Represents the result of a single system check.
+
+    Attributes:
+        name: The name of the check (e.g., "RAM", "GPU").
+        status: The status of the check ("pass", "warn", "fail").
+        detail: Detailed explanation of the result.
+        value: The measured value or system information.
+    """
+
     name: str
     status: str  # "pass", "warn", "fail"
     detail: str
@@ -79,14 +87,27 @@ class CheckResult:
 
     @property
     def icon(self) -> str:
+        """Return a visual icon based on the status."""
         return {"pass": "✅", "warn": "⚠️", "fail": "🛑"}.get(self.status, "❓")
 
     def __str__(self) -> str:
+        """Return a human-readable string representation of the check result."""
         return f"[{self.name:<10}] {self.value:<40} {self.icon} {self.status.upper()}"
 
 
 @dataclass
 class SystemReport:
+    """Represents a full system requirements report.
+
+    Attributes:
+        model: The name of the TimesFM model version being checked.
+        checks: A list of individual CheckResult objects.
+        verdict: A short summary verdict of the report.
+        verdict_detail: Detailed summary verdict information.
+        recommended_batch_size: Suggested batch size based on resources.
+        mode: The detected execution mode ("cpu", "gpu", "mps").
+    """
+
     model: str
     checks: list[CheckResult] = field(default_factory=list)
     verdict: str = ""
@@ -96,9 +117,11 @@ class SystemReport:
 
     @property
     def passed(self) -> bool:
+        """Return True if all checks passed (no 'fail' status)."""
         return all(c.status != "fail" for c in self.checks)
 
     def to_dict(self) -> dict[str, Any]:
+        """Convert the report to a dictionary for JSON output."""
         return {
             "model": self.model,
             "passed": self.passed,
@@ -124,7 +147,11 @@ class SystemReport:
 
 
 def _get_total_ram_gb() -> float:
-    """Return total physical RAM in GB, cross-platform."""
+    """Return total physical RAM in GB, cross-platform.
+
+    Returns:
+        Total RAM in gigabytes.
+    """
     try:
         if sys.platform == "linux":
             with open("/proc/meminfo") as f:
@@ -167,11 +194,15 @@ def _get_total_ram_gb() -> float:
         pass
 
     # Fallback: use struct to estimate (unreliable)
-    return struct.calcsize("P") * 8 / 8  # placeholder
+    return float(struct.calcsize("P") * 8 / 8)  # placeholder
 
 
 def _get_available_ram_gb() -> float:
-    """Return available RAM in GB."""
+    """Return available RAM in GB, cross-platform.
+
+    Returns:
+        Available RAM in gigabytes.
+    """
     try:
         if sys.platform == "linux":
             with open("/proc/meminfo") as f:
@@ -220,7 +251,14 @@ def _get_available_ram_gb() -> float:
 
 
 def check_ram(profile: dict[str, Any]) -> CheckResult:
-    """Check if system has enough RAM."""
+    """Check if the system has enough RAM based on the model profile.
+
+    Args:
+        profile: The model requirement profile dictionary.
+
+    Returns:
+        A CheckResult object indicating the outcome of the RAM check.
+    """
     total = _get_total_ram_gb()
     available = _get_available_ram_gb()
     min_ram = profile["min_ram_gb"]
@@ -260,40 +298,59 @@ def check_ram(profile: dict[str, Any]) -> CheckResult:
 
 
 def check_gpu() -> CheckResult:
-    """Check GPU availability and VRAM."""
-    # Try CUDA first
-    import torch
+    """Check GPU availability and VRAM using PyTorch.
 
-    if torch.cuda.is_available():
-        name = torch.cuda.get_device_name(0)
-        vram = torch.cuda.get_device_properties(0).total_memory / (1024**3)
+    Returns:
+        A CheckResult object indicating GPU status and VRAM if applicable.
+    """
+    # Try CUDA first
+    try:
+        import torch
+
+        if torch.cuda.is_available():
+            name = torch.cuda.get_device_name(0)
+            vram = torch.cuda.get_device_properties(0).total_memory / (1024**3)
+            return CheckResult(
+                name="GPU",
+                status="pass",
+                detail=f"{name} with {vram:.1f} GB VRAM detected.",
+                value=f"{name} | VRAM: {vram:.1f} GB",
+            )
+        elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+            return CheckResult(
+                name="GPU",
+                status="pass",
+                detail="Apple Silicon MPS backend available. Uses unified memory.",
+                value="Apple Silicon MPS",
+            )
+        else:
+            return CheckResult(
+                name="GPU",
+                status="warn",
+                detail=(
+                    "No GPU detected. TimesFM will run on CPU (slower but functional). "
+                    "Install CUDA-enabled PyTorch for GPU acceleration."
+                ),
+                value="None (CPU only)",
+            )
+    except ImportError:
         return CheckResult(
             name="GPU",
-            status="pass",
-            detail=f"{name} with {vram:.1f} GB VRAM detected.",
-            value=f"{name} | VRAM: {vram:.1f} GB",
-        )
-    elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
-        return CheckResult(
-            name="GPU",
-            status="pass",
-            detail="Apple Silicon MPS backend available. Uses unified memory.",
-            value="Apple Silicon MPS",
-        )
-    else:
-        return CheckResult(
-            name="GPU",
-            status="warn",
-            detail=(
-                "No GPU detected. TimesFM will run on CPU (slower but functional). "
-                "Install CUDA-enabled PyTorch for GPU acceleration."
-            ),
-            value="None (CPU only)",
+            status="fail",
+            detail="PyTorch not installed. Cannot check GPU status.",
+            value="torch missing",
         )
 
 
 def check_disk(profile: dict[str, Any]) -> CheckResult:
-    """Check available disk space for model download."""
+    """Check available disk space for model download in the HF cache directory.
+
+    Args:
+        profile: The model requirement profile dictionary.
+
+    Returns:
+        A CheckResult object indicating the outcome of the disk space check.
+    """
     # Check HuggingFace cache dir or home dir
     hf_cache = os.environ.get("HF_HOME", os.path.expanduser("~/.cache/huggingface"))
     cache_dir = Path(hf_cache)
@@ -326,7 +383,11 @@ def check_disk(profile: dict[str, Any]) -> CheckResult:
 
 
 def check_python() -> CheckResult:
-    """Check Python version >= 3.10."""
+    """Check if the Python version meets the requirement (>= 3.10).
+
+    Returns:
+        A CheckResult object indicating the outcome of the Python version check.
+    """
     version = sys.version.split()[0]
     major, minor = sys.version_info[:2]
 
@@ -347,16 +408,32 @@ def check_python() -> CheckResult:
 
 
 def check_package(pkg_name: str, import_name: str | None = None) -> CheckResult:
-    """Check if a Python package is installed."""
-    import_name = import_name or pkg_name
-    mod = __import__(import_name)
-    version = getattr(mod, "__version__", "unknown")
-    return CheckResult(
-        name=pkg_name,
-        status="pass",
-        detail=f"{pkg_name} {version} is installed.",
-        value=f"Installed ({version})",
-    )
+    """Check if a specific Python package is installed and readable.
+
+    Args:
+        pkg_name: The name of the package to check (e.g., "timesfm").
+        import_name: The name used to import the package (defaults to pkg_name).
+
+    Returns:
+        A CheckResult object indicating if the package is installed.
+    """
+    try:
+        import_name = import_name or pkg_name
+        mod = __import__(import_name)
+        version = getattr(mod, "__version__", "unknown")
+        return CheckResult(
+            name=pkg_name,
+            status="pass",
+            detail=f"{pkg_name} {version} is installed.",
+            value=f"Installed ({version})",
+        )
+    except ImportError:
+        return CheckResult(
+            name=pkg_name,
+            status="fail",
+            detail=f"{pkg_name} is NOT installed.",
+            value="Not found",
+        )
 
 
 # ---------------------------------------------------------------------------
@@ -365,7 +442,14 @@ def check_package(pkg_name: str, import_name: str | None = None) -> CheckResult:
 
 
 def recommend_batch_size(report: SystemReport) -> int:
-    """Recommend per_core_batch_size based on available resources."""
+    """Recommend a safe per_core_batch_size based on detected system resources.
+
+    Args:
+        report: The system report containing GPU and RAM information.
+
+    Returns:
+        An integer representing the recommended batch size.
+    """
     total_ram = _get_total_ram_gb()
 
     # Check if GPU is available
@@ -414,7 +498,14 @@ def recommend_batch_size(report: SystemReport) -> int:
 
 
 def run_checks(model_version: str = "v2.5") -> SystemReport:
-    """Run all system checks and return a report."""
+    """Run all mandatory system checks for TimesFM.
+
+    Args:
+        model_version: The model version key from MODEL_PROFILES.
+
+    Returns:
+        A SystemReport object containing results of all checks.
+    """
     profile = MODEL_PROFILES[model_version]
     report = SystemReport(model=profile["name"])
 
@@ -456,9 +547,13 @@ def run_checks(model_version: str = "v2.5") -> SystemReport:
 
 
 def print_report(report: SystemReport) -> None:
-    """Print a human-readable report to stdout."""
+    """Print a human-readable summary of the system report to stdout.
+
+    Args:
+        report: The SystemReport object to print.
+    """
     print(f"\n{'=' * 50}")
-    print(f"  TimesFM System Requirements Check")
+    print("  TimesFM System Requirements Check")
     print(f"  Model: {report.model}")
     print(f"{'=' * 50}\n")
 
@@ -473,6 +568,7 @@ def print_report(report: SystemReport) -> None:
 
 
 def main() -> None:
+    """Entry point for the system checker CLI."""
     parser = argparse.ArgumentParser(
         description="Check system requirements for TimesFM."
     )

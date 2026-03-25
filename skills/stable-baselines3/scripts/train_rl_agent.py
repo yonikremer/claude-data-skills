@@ -9,42 +9,46 @@ This template demonstrates best practices for:
 - Model saving and loading
 """
 
-import gymnasium as gym
 from stable_baselines3 import PPO
+from stable_baselines3.common.base_class import BaseAlgorithm
 from stable_baselines3.common.env_util import make_vec_env
 from stable_baselines3.common.callbacks import (
     EvalCallback,
     CheckpointCallback,
     CallbackList,
 )
-from stable_baselines3.common.vec_env import SubprocVecEnv, VecNormalize
+from stable_baselines3.common.vec_env import SubprocVecEnv
 import os
+from typing import Type
 
 
 def train_agent(
-    env_id="CartPole-v1",
-    algorithm=PPO,
-    policy="MlpPolicy",
-    n_envs=4,
-    total_timesteps=100000,
-    eval_freq=10000,
-    save_freq=10000,
-    log_dir="./logs/",
-    save_path="./models/",
-):
+    env_id: str = "CartPole-v1",
+    algorithm: Type[BaseAlgorithm] = PPO,
+    policy: str = "MlpPolicy",
+    n_envs: int = 4,
+    total_timesteps: int = 100000,
+    eval_freq: int = 10000,
+    save_freq: int = 10000,
+    log_dir: str = "./logs/",
+    save_path: str = "./models/",
+) -> BaseAlgorithm:
     """
     Train an RL agent with best practices.
 
     Args:
-        env_id: Gymnasium environment ID
-        algorithm: SB3 algorithm class (PPO, SAC, DQN, etc.)
-        policy: Policy type ("MlpPolicy", "CnnPolicy", "MultiInputPolicy")
-        n_envs: Number of parallel environments
-        total_timesteps: Total training timesteps
-        eval_freq: Frequency of evaluation (in timesteps)
-        save_freq: Frequency of model checkpoints (in timesteps)
-        log_dir: Directory for logs and TensorBoard
-        save_path: Directory for model checkpoints
+        env_id: Gymnasium environment ID.
+        algorithm: SB3 algorithm class (PPO, SAC, DQN, etc.).
+        policy: Policy type ("MlpPolicy", "CnnPolicy", "MultiInputPolicy").
+        n_envs: Number of parallel environments.
+        total_timesteps: Total training timesteps.
+        eval_freq: Frequency of evaluation (in timesteps).
+        save_freq: Frequency of model checkpoints (in timesteps).
+        log_dir: Directory for logs and TensorBoard.
+        save_path: Directory for model checkpoints.
+
+    Returns:
+        The trained Stable Baselines3 model.
     """
     # Create directories
     os.makedirs(log_dir, exist_ok=True)

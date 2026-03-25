@@ -5,9 +5,11 @@ This template provides a complete boilerplate for building a LightningDataModule
 with all essential methods and best practices for data handling.
 """
 
+from typing import Any, Dict, Optional, Tuple
+
 import lightning as L
-from torch.utils.data import Dataset, DataLoader, random_split
 import torch
+from torch.utils.data import DataLoader, Dataset, random_split
 
 
 class CustomDataset(Dataset):
@@ -17,13 +19,13 @@ class CustomDataset(Dataset):
     Replace this with your actual dataset implementation.
     """
 
-    def __init__(self, data_path, transform=None):
+    def __init__(self, data_path: str, transform: Optional[Any] = None) -> None:
         """
         Initialize the dataset.
 
         Args:
-            data_path: Path to data directory
-            transform: Optional transforms to apply
+            data_path: Path to data directory.
+            transform: Optional transforms to apply.
         """
         self.data_path = data_path
         self.transform = transform
@@ -36,19 +38,24 @@ class CustomDataset(Dataset):
         self.data = torch.randn(1000, 3, 224, 224)
         self.labels = torch.randint(0, 10, (1000,))
 
-    def __len__(self):
-        """Return the size of the dataset."""
+    def __len__(self) -> int:
+        """
+        Return the size of the dataset.
+
+        Returns:
+            The number of items in the dataset.
+        """
         return len(self.data)
 
-    def __getitem__(self, idx):
+    def __getitem__(self, idx: int) -> Tuple[torch.Tensor, torch.Tensor]:
         """
         Get a single item from the dataset.
 
         Args:
-            idx: Index of the item
+            idx: Index of the item.
 
         Returns:
-            Tuple of (data, label)
+            Tuple of (data, label).
         """
         sample = self.data[idx]
         label = self.labels[idx]
@@ -69,11 +76,11 @@ class TemplateDataModule(L.LightningDataModule):
     3. Create dataloaders (train/val/test/predict_dataloader)
 
     Args:
-        data_dir: Directory containing the data
-        batch_size: Batch size for dataloaders
-        num_workers: Number of workers for data loading
-        train_val_split: Train/validation split ratio
-        pin_memory: Whether to pin memory for faster GPU transfer
+        data_dir: Directory containing the data.
+        batch_size: Batch size for dataloaders.
+        num_workers: Number of workers for data loading.
+        train_val_split: Train/validation split ratio.
+        pin_memory: Whether to pin memory for faster GPU transfer.
     """
 
     def __init__(
@@ -83,19 +90,19 @@ class TemplateDataModule(L.LightningDataModule):
         num_workers: int = 4,
         train_val_split: float = 0.8,
         pin_memory: bool = True,
-    ):
+    ) -> None:
         super().__init__()
 
         # Save hyperparameters
         self.save_hyperparameters()
 
         # Initialize as None (will be set in setup)
-        self.train_dataset = None
-        self.val_dataset = None
-        self.test_dataset = None
-        self.predict_dataset = None
+        self.train_dataset: Optional[Dataset] = None
+        self.val_dataset: Optional[Dataset] = None
+        self.test_dataset: Optional[Dataset] = None
+        self.predict_dataset: Optional[Dataset] = None
 
-    def prepare_data(self):
+    def prepare_data(self) -> None:
         """
         Download and prepare data.
 
@@ -117,7 +124,7 @@ class TemplateDataModule(L.LightningDataModule):
 
         pass
 
-    def setup(self, stage: str = None):
+    def setup(self, stage: Optional[str] = None) -> None:
         """
         Create datasets for each stage.
 
@@ -125,7 +132,7 @@ class TemplateDataModule(L.LightningDataModule):
         Set state here (e.g., self.train_dataset = ...).
 
         Args:
-            stage: Current stage ('fit', 'validate', 'test', or 'predict')
+            stage: Current stage ('fit', 'validate', 'test', or 'predict').
         """
         # Define transforms
         train_transform = self._get_train_transforms()
@@ -164,12 +171,12 @@ class TemplateDataModule(L.LightningDataModule):
                 self.hparams.data_dir, transform=test_transform
             )
 
-    def _get_train_transforms(self):
+    def _get_train_transforms(self) -> Optional[Any]:
         """
         Define training transforms/augmentations.
 
         Returns:
-            Training transforms
+            Training transforms.
         """
         # Example with torchvision:
         # from torchvision import transforms
@@ -182,12 +189,12 @@ class TemplateDataModule(L.LightningDataModule):
 
         return None
 
-    def _get_test_transforms(self):
+    def _get_test_transforms(self) -> Optional[Any]:
         """
         Define test/validation transforms (no augmentation).
 
         Returns:
-            Test/validation transforms
+            Test/validation transforms.
         """
         # Example with torchvision:
         # from torchvision import transforms
@@ -198,15 +205,15 @@ class TemplateDataModule(L.LightningDataModule):
 
         return None
 
-    def train_dataloader(self):
+    def train_dataloader(self) -> DataLoader:
         """
         Create training dataloader.
 
         Returns:
-            Training DataLoader
+            Training DataLoader.
         """
         return DataLoader(
-            self.train_dataset,
+            self.train_dataset,  # type: ignore
             batch_size=self.hparams.batch_size,
             shuffle=True,
             num_workers=self.hparams.num_workers,
@@ -215,15 +222,15 @@ class TemplateDataModule(L.LightningDataModule):
             drop_last=True,  # Drop last incomplete batch
         )
 
-    def val_dataloader(self):
+    def val_dataloader(self) -> DataLoader:
         """
         Create validation dataloader.
 
         Returns:
-            Validation DataLoader
+            Validation DataLoader.
         """
         return DataLoader(
-            self.val_dataset,
+            self.val_dataset,  # type: ignore
             batch_size=self.hparams.batch_size,
             shuffle=False,
             num_workers=self.hparams.num_workers,
@@ -231,29 +238,29 @@ class TemplateDataModule(L.LightningDataModule):
             persistent_workers=True if self.hparams.num_workers > 0 else False,
         )
 
-    def test_dataloader(self):
+    def test_dataloader(self) -> DataLoader:
         """
         Create test dataloader.
 
         Returns:
-            Test DataLoader
+            Test DataLoader.
         """
         return DataLoader(
-            self.test_dataset,
+            self.test_dataset,  # type: ignore
             batch_size=self.hparams.batch_size,
             shuffle=False,
             num_workers=self.hparams.num_workers,
         )
 
-    def predict_dataloader(self):
+    def predict_dataloader(self) -> DataLoader:
         """
         Create prediction dataloader.
 
         Returns:
-            Prediction DataLoader
+            Prediction DataLoader.
         """
         return DataLoader(
-            self.predict_dataset,
+            self.predict_dataset,  # type: ignore
             batch_size=self.hparams.batch_size,
             shuffle=False,
             num_workers=self.hparams.num_workers,
@@ -261,32 +268,32 @@ class TemplateDataModule(L.LightningDataModule):
 
     # Optional: State management for checkpointing
 
-    def state_dict(self):
+    def state_dict(self) -> Dict[str, Any]:
         """
         Save DataModule state for checkpointing.
 
         Returns:
-            State dictionary
+            State dictionary.
         """
         return {"train_val_split": self.hparams.train_val_split}
 
-    def load_state_dict(self, state_dict):
+    def load_state_dict(self, state_dict: Dict[str, Any]) -> None:
         """
         Restore DataModule state from checkpoint.
 
         Args:
-            state_dict: State dictionary
+            state_dict: State dictionary.
         """
         self.hparams.train_val_split = state_dict["train_val_split"]
 
     # Optional: Teardown for cleanup
 
-    def teardown(self, stage: str = None):
+    def teardown(self, stage: Optional[str] = None) -> None:
         """
         Cleanup after training/testing/prediction.
 
         Args:
-            stage: Current stage ('fit', 'validate', 'test', or 'predict')
+            stage: Current stage ('fit', 'validate', 'test', or 'predict').
         """
         # Clean up resources
         if stage == "fit":
@@ -316,8 +323,10 @@ if __name__ == "__main__":
     train_loader = dm.train_dataloader()
     val_loader = dm.val_dataloader()
 
-    print(f"Train dataset size: {len(dm.train_dataset)}")
-    print(f"Validation dataset size: {len(dm.val_dataset)}")
+    if dm.train_dataset:
+        print(f"Train dataset size: {len(dm.train_dataset)}")
+    if dm.val_dataset:
+        print(f"Validation dataset size: {len(dm.val_dataset)}")
     print(f"Train batches: {len(train_loader)}")
     print(f"Validation batches: {len(val_loader)}")
 

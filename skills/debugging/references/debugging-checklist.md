@@ -12,10 +12,13 @@ Follow these steps one by one. Do not skip any.
 - [ ] What are the exact steps or inputs?
 - [ ] Write a small script that only shows this error.
 
-## 3. Check the Data
-- [ ] Print the variables right before the error.
-- [ ] Are they the right type? (e.g., is it a String when it should be a Number?)
-- [ ] Are they empty or None?
+## 3. Use the Debugger (Step-by-Step)
+- [ ] Insert `import pdb; pdb.set_trace()` before the error.
+- [ ] Run the code.
+- [ ] Use `p <variable>` to see what's actually there.
+- [ ] Use `n` to see which line breaks the logic.
+- [ ] Is it a type error? (e.g., is it a String when it should be a Number?)
+- [ ] Is it empty or `None`?
 
 ## 4. Look for Simple Mistakes
 - [ ] Any typos in variable names?

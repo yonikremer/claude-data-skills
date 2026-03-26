@@ -11,15 +11,16 @@ This skill helps you find and fix errors in your code using a simple, guided pro
 
 1. **Ask for the error**: What exactly happened?
 2. **Follow the checklist**: Use [debugging-checklist.md](references/debugging-checklist.md) to go through the steps.
-3. **Be systematic**: Only change one thing at a time.
-4. **Print everything**: Use print statements to see what's happening inside the code.
+3. **Use the Debugger**: For Python, use `pdb`. Follow the [python-pdb-guide.md](references/python-pdb-guide.md) for commands.
+4. **Be systematic**: Only change one thing at a time.
+5. **Inspect the Data**: Stop guessing! Use breakpoints to see exactly what's inside the code.
 
 ## Key Debugging Commands
 
-- **Python**: `print(variable_name)` or `print(type(variable_name))`
+- **Python (Debugger)**: `import pdb; pdb.set_trace()`
 - **JavaScript**: `console.log(variable_name)`
 - **Shell**: `echo $VARIABLE_NAME`
 
 ## Important Rule
 
-**If you don't understand why something is happening, do NOT guess.** Read the code again and add more print statements.
+**If you don't understand why something is happening, do NOT guess.** Read the code again and use the debugger to step through it line by line.

@@ -42,8 +42,9 @@ skills/[library-name]/
 ### Phase 4: Registration & Validation
 
 1. **Update Marketplace**: Add the new skill path to `.claude-plugin/marketplace.json`.
-2. **Commit**: Use `git` to track the new skill.
-3. **Verify**: Test the skill by asking a question that requires its usage.
+2. **Update Skills Index**: Add the skill name and description to the root-level `SKILLS.md` file.
+3. **Commit**: Use `git` to track the new skill and the updated index.
+4. **Verify**: Test the skill by asking a question that requires its usage.
 
 ## Workflow: Database to Skill Creation
 

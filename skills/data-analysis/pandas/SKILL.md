@@ -11,8 +11,7 @@ Before loading data, you MUST assess system memory. Pandas is memory-hungry (typ
 1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
 2. **Apply Thresholds**:
    - **< 100MB**: Use standard `pd.read_csv()`.
-   - **100MB - 1GB**: Use `pd.read_csv(engine='pyarrow')` or `dtype` optimization.
-   - **> 1GB**: **STOP.** Recommend `polars` or `dask` instead.
+   - **100MB+**: Use `polars` or `dask` instead.
 
 ## Strict Idioms & Version Locking (v2.0+)
 

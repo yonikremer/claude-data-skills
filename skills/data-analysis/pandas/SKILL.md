@@ -1,6 +1,6 @@
 ---
 name: pandas
-description: Analyzes and transforms tabular data using DataFrames. Use for data cleaning, merging, and time-series analysis. CRITICAL: Always run `get-available-resources` first for files > 100MB.
+description: Use when analyzing and transforming tabular data. Ideal for data cleaning, merging, and time-series analysis. CRITICAL: Always run `get-available-resources` first for files > 100MB.
 ---
 # pandas
 
@@ -27,6 +27,7 @@ Before loading data, you MUST assess system memory. Pandas is memory-hungry (typ
 4. **Datetime Parsing**: Don't use `parse_dates` on huge files without specifying the format; it's slow. Use `pd.to_datetime(..., format=...)` after loading.
 
 ## References (Load on demand)
+- `references/api-reference.md` — Formal signatures and docstrings for top 10 functions.
 - `references/indexing-selection.md` — Deep dive into loc/iloc and boolean masks.
 - `references/time-series.md` — Resampling, rolling windows, and timezone handling.
 - `references/performance.md` — Memory optimization and PyArrow integration.

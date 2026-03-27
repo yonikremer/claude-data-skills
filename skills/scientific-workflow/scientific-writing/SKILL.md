@@ -1,6 +1,6 @@
 ---
 name: scientific-writing
-description: Drafts scientific manuscripts using a research-first two-stage process. Use for writing research papers, journal submissions, and IMRAD-structured reports. Do NOT use for bulleted summaries or for non-academic writing.
+description: Use when drafting scientific manuscripts using a research-first two-stage process. Ideal for writing research papers, journal submissions, and IMRAD-structured reports. Do NOT use for bulleted summaries or for non-academic writing.
 allowed-tools: Read Write Edit Bash
 ---
 # Scientific Writing

@@ -1,8 +1,25 @@
 ---
 name: dotenv
-description: Manages configuration and secrets using environment variables and .env files. Use when handling database credentials or API keys in applications. Do NOT use for storing large datasets (use s3) or for version control (use git).
+description: Use when managing configuration and secrets using environment variables and `.env` files. Ideal for handling database credentials, API keys, and app configuration across environments. CRITICAL: Never commit `.env` files to version control.
 ---
-# dotenv and Config Management
+# Dotenv and Config Management
+
+## ⚠️ Mandatory Pre-flight: Security Check
+
+Handling secrets requires extreme caution to prevent leaks.
+
+1. **Verify `.gitignore`**: Ensure `.env` is listed.
+2. **Scan for Hardcodes**: Check the codebase for raw API keys or passwords before migrating to `.env`.
+3. **Template Sync**: Ensure a `.env.example` file is updated with all required keys.
+
+## Common Pitfalls (The "Wall of Shame")
+
+1. **Committing `.env`**: The most common security failure. Always use a `.gitignore`.
+2. **Environment Overrides**: Forgetting that system environment variables override values in `.env` by default in `load_dotenv`.
+3. **Implicit Typing**: Environment variables are ALWAYS strings. Use `int()`, `bool()`, or Pydantic for proper typing.
+
+## References (Load on demand)
+- `references/api-reference.md` — Formal signatures for `python-dotenv` functions.
 
 ## Quick Start
 

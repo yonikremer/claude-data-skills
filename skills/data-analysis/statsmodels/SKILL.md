@@ -1,8 +1,30 @@
 ---
 name: statsmodels
-description: Implements statistical models for rigorous inference and diagnostics. Use for econometrics, time series (ARIMA), and detailed coefficient tables. Do NOT use for guided test selection (use statistical-analysis-academic) or for simple regression (use scikit-learn).
+description: Use when implementing statistical models for rigorous inference, hypothesis testing, and diagnostics. Ideal for econometrics, time series (ARIMA), and detailed coefficient tables. CRITICAL: Always check model assumptions and diagnostics before interpreting results.
 ---
 # Statsmodels: Statistical Modeling and Econometrics
+
+## ⚠️ Mandatory Pre-flight: Resource Check
+
+Large-scale statistical modeling (especially with many exogenous variables or large time series) can be memory-intensive.
+
+1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
+2. **Matrix Operations**: Ensure your RAM can handle the design matrix ($N \times K$). For very large $N$, consider sub-sampling or using Dask-ML.
+3. **Convergence**: High-dimensional models may fail to converge. Check for optimization warnings in the results.
+
+## Common Pitfalls (The "Wall of Shame")
+
+1. **Forgetting the Constant**: `sm.OLS` does NOT include an intercept by default. You MUST use `sm.add_constant(X)`.
+2. **Ignoring p-values**: Over-interpreting coefficients without checking statistical significance.
+3. **Endogeneity**: Using OLS when variables are correlated with the error term. Consider Instrumental Variables (IV).
+
+## References (Load on demand)
+- `references/api-reference.md` — Formal signatures and docstrings for core functions.
+- `references/linear_models.md` — Detailed coverage of OLS, WLS, and GLS.
+- `references/glm.md` — Complete guide to generalized linear models.
+- `references/discrete_choice.md` — Logit, Probit, and Count models.
+- `references/time_series.md` — ARIMA, SARIMAX, and VAR guidance.
+- `references/stats_diagnostics.md` — Comprehensive testing and diagnostics.
 
 ## Overview
 

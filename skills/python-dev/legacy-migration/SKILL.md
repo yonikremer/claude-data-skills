@@ -1,6 +1,6 @@
 ---
 name: legacy-migration
-description: Migrates legacy codebases (C#, MATLAB) to modern Python (3.9+). Use when translating business logic, mathematical models, or data pipelines into idiomatic Python.
+description: Use when migrating legacy codebases (C#, MATLAB) to modern Python (3.9+). Ideal for translating business logic, mathematical models, or data pipelines into idiomatic Python.
 ---
 
 # Legacy Migration (C# & MATLAB to Modern Python)

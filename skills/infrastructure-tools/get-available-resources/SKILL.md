@@ -1,6 +1,6 @@
 ---
 name: get-available-resources
-description: Detects and reports available system resources like CPU, GPU, and memory. Use at the start of intensive tasks to inform computational strategy. Do NOT use for general system monitoring or for profiling specific code blocks.
+description: Use when detecting and reporting available system resources like CPU, GPU, and memory. Ideal for informing computational strategy at the start of intensive tasks. Do NOT use for general system monitoring or for profiling specific code blocks.
 ---
 # Get Available Resources
 

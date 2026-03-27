@@ -1,6 +1,6 @@
 ---
 name: scholar-evaluation
-description: Systematically evaluates scholarly work across methodology and contribution dimensions. Use when assessing research rigor or scoring paper quality. Do NOT use for formal peer review writing (use peer-review) or for general critical thinking (use scientific-critical-thinking).
+description: Use when systematically evaluating scholarly work across methodology and contribution dimensions. Ideal for assessing research rigor or scoring paper quality. Do NOT use for formal peer review writing (use peer-review) or for general critical thinking (use scientific-critical-thinking).
 ---
 # Scholar Evaluation
 

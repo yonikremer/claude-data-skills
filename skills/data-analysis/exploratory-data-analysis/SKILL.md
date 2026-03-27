@@ -1,6 +1,6 @@
 ---
 name: exploratory-data-analysis
-description: Performs comprehensive exploratory analysis on scientific and business data. Use for deep structural analysis, data quality checks, profiling, and categorical hierarchies. CRITICAL: Run `get-available-resources` first for datasets > 500MB.
+description: Use when performing comprehensive exploratory analysis on scientific and business data. Ideal for deep structural analysis, data quality checks, profiling, and categorical hierarchies. CRITICAL: Run `get-available-resources` first for datasets > 500MB.
 ---
 # Exploratory Data Analysis
 

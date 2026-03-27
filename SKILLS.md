@@ -2,6 +2,14 @@
 
 This repository contains a comprehensive set of "skills"—structured documentation, scripts, and references that guide an AI agent in specialized domains like data analysis, machine learning, and scientific writing.
 
+## Standardized Gold Standard
+
+All skills in this repository follow a unified architectural standard:
+1.  **Discovery-Optimized Frontmatter**: Descriptions start with "Use when..." to trigger correct loading by AI agents.
+2.  **Mandatory Pre-flight Checks**: Resource detection logic to prevent OOM and system freezes.
+3.  **API References**: Detailed `references/api-reference.md` files with formal signatures and docstrings extracted directly from the libraries.
+4.  **Wall of Shame**: Common pitfalls and anti-patterns to avoid.
+
 ## Available Skills
 
 ### Core Workflow

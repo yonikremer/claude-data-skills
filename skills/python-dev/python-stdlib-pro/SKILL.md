@@ -1,6 +1,6 @@
 ---
 name: python-stdlib-pro
-description: Advanced usage of Python's standard library (Pathlib, itertools, collections, contextlib). Use for high-performance data manipulation, robust resource management, and complex text parsing.
+description: Use when applying advanced patterns from Python's standard library (Pathlib, itertools, collections, contextlib). Ideal for high-performance data manipulation, robust resource management, and complex text parsing.
 ---
 # Python Standard Library Pro
 

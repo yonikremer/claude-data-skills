@@ -1,6 +1,6 @@
 ---
 name: numpy
-description: Performs numerical computing and vectorized math using arrays. Use for fast array manipulation, binary data buffers, and linear algebra. CRITICAL: Run `get-available-resources` for arrays > 10^7 elements to prevent OOM.
+description: Use when performing numerical computing, vectorized math, or fast array manipulation. Ideal for linear algebra, binary data buffers, and high-performance scientific workflows. CRITICAL: Run `get-available-resources` for arrays > 10^7 elements to prevent OOM.
 ---
 # NumPy
 
@@ -31,6 +31,9 @@ arr = rng.standard_normal((100, 100))
 1. **Python Loops**: Using `for x in arr:` is 100x slower than vectorized `np.sin(arr)`.
 2. **Implicit Copies**: Functions like `flatten()` or "fancy indexing" (`arr[[1, 2]]`) create copies. Use `ravel()` or slicing for views.
 3. **Array Concatenation in Loops**: `np.append` or `np.concatenate` in a loop is $O(N^2)$. Pre-allocate with `np.empty()` and fill.
+
+## References (Load on demand)
+- `references/api-reference.md` — Formal signatures and docstrings for core functions.
 
 ## Array Creation
 

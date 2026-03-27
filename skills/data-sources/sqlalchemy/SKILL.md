@@ -1,8 +1,25 @@
 ---
 name: sqlalchemy
-description: Provides database-agnostic access and ORM capabilities. Use when managing connection pools or building apps requiring a unified API across databases. Do NOT use for one-off SQL queries (use sql-queries) or for simple pandas-to-SQL.
+description: Use when needing database-agnostic access, connection pooling, or ORM capabilities. Ideal for building robust database applications and managing complex relational schemas. CRITICAL: Always use bound parameters via `text()` to prevent SQL injection.
 ---
 # SQLAlchemy
+
+## ⚠️ Mandatory Pre-flight: Resource Check
+
+SQLAlchemy manages connections via a pool, which can consume database server resources.
+
+1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
+2. **Pool Sizing**: Monitor the number of open connections. For high-concurrency, adjust `pool_size` and `max_overflow` to prevent "Too many connections" errors.
+3. **Engine Lifecycle**: Ensure the `Engine` is created once per application lifecycle, not per request.
+
+## Common Pitfalls (The "Wall of Shame")
+
+1. **SQL Injection**: Concatenating strings to build queries. Always use `text("... :param").bindparams(param=val)`.
+2. **Missing `commit()`**: In SQLAlchemy 2.0, writes must be explicitly committed unless using an autocommit context like `engine.begin()`.
+3. **N+1 Queries**: When using the ORM, failing to use `joinedload` or `subqueryload` for relationships leads to excessive database roundtrips.
+
+## References (Load on demand)
+- `references/api-reference.md` — Formal signatures for SQLAlchemy Core and ORM.
 
 ## Overview
 

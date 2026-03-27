@@ -1,8 +1,26 @@
 ---
 name: s3
-description: Manages data storage and retrieval on AWS S3 and compatible services. Use when reading/writing files in a data lake or streaming large datasets. Do NOT use for local file operations (use pathlib) or for version control (use git).
+description: Use when managing data storage and retrieval on AWS S3 or compatible services (MinIO, R2). Ideal for data lake operations, streaming large datasets, and secure file sharing. CRITICAL: Always use the appropriate credential provider and verify bucket permissions.
 ---
 # S3
+
+## ⚠️ Mandatory Pre-flight: Resource Check
+
+S3 operations involve network I/O and sometimes local disk I/O (for downloads).
+
+1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
+2. **Network Bandwidth**: For files > 1GB, check your local bandwidth. Downloading multi-GB files to the agent's environment can be slow.
+3. **IAM Permissions**: Ensure the `AWS_ACCESS_KEY_ID` has `s3:GetObject`, `s3:ListBucket`, or `s3:PutObject` permissions as needed.
+
+## Common Pitfalls (The "Wall of Shame")
+
+1. **Hardcoded Credentials**: Never hardcode keys in scripts. Use environment variables or `~/.aws/credentials`.
+2. **Missing `s3fs`**: `pd.read_csv('s3://...')` will fail if the `s3fs` package is not installed.
+3. **List Limit**: `list_objects_v2` returns only 1000 items. Use a `Paginator` for large buckets.
+4. **Endpoint Mismatch**: When using MinIO or R2, ensure `endpoint_url` is passed to the client.
+
+## References (Load on demand)
+- `references/api-reference.md` — Formal signatures for boto3 S3 client and resource.
 
 ## Installation
 

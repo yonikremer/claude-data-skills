@@ -1,6 +1,6 @@
 ---
 name: data-visualization
-description: Generates high-quality visualizations and provides design guidance. Use for creating charts from DataFrames/Queries and applying accessibility principles. Plotly is the primary recommendation.
+description: Use when generating high-quality visualizations or applying design guidance to charts. Ideal for matching data relationships to chart types and ensuring accessibility. CRITICAL: Always provide specific, insight-driven titles and labeled axes with units.
 ---
 # Data Visualization
 
@@ -54,5 +54,7 @@ fig.write_image("output.pdf", width=800, height=500, scale=2)
 - **Hierarchy**: Use color to highlight the most important series; use grey for others.
 
 ## References (Load on demand)
+- `skills/visualization/plotly/references/api-reference.md` — Plotly API signatures.
+- `skills/visualization/seaborn/references/api-reference.md` — Seaborn API signatures.
 - `skills/scientific-visualization/references/plotly_examples.md` — Complex subplots and error bands.
 - `skills/scientific-visualization/references/color_palettes.md` — Colorblind-safe hex codes.

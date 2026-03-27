@@ -1,6 +1,6 @@
 ---
 name: data-validation
-description: Enforces data quality, schemas, and analytical methodology. Use for technical schema enforcement (Pandera/Pydantic) and QAing analyses for bias and accuracy.
+description: Use when enforcing data quality, schemas, and analytical methodology. Ideal for technical schema enforcement (Pandera/Pydantic) and QAing analyses for bias and accuracy.
 ---
 # Data Validation
 

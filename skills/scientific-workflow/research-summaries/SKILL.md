@@ -1,6 +1,6 @@
 ---
 name: research-summaries
-description: Generates professional research summaries in two formats: Detailed Technical (for Confluence) and High-Level Executive (for Department Emails). Use to communicate findings, methodologies, and insights.
+description: Use when generating professional research summaries in formats like Detailed Technical (for Confluence) or High-Level Executive (for Department Emails). Ideal for communicating findings, methodologies, and insights.
 ---
 # Research Summaries
 

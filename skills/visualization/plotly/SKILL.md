@@ -1,10 +1,30 @@
 ---
 name: plotly
-description: Creates interactive and publication-quality visualizations with zoom and hover capabilities. This is the primary recommendation for all data visualization tasks, including exploratory analysis, dashboards, and static figures for reports.
+description: Use when creating interactive, publication-quality visualizations with zoom and hover capabilities. Primary recommendation for exploratory analysis, dashboards, and static figures. CRITICAL: For large datasets (>50k points), use `Scattergl` or `go.Scattergl` for WebGL acceleration.
 ---
 # Plotly
 
-Plotly is the primary recommended library for creating both interactive and high-quality static visualizations. It supports 40+ chart types and is ideal for everything from quick exploratory analysis to final publication figures.
+## ⚠️ Mandatory Pre-flight: Resource Check
+
+Interactive plots with tens of thousands of points can freeze the browser or the agent's environment.
+
+1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
+2. **WebGL Strategy**: For scatter plots > 10,000 points, use `px.scatter(..., render_mode='webgl')` or `go.Scattergl`.
+3. **Data Volume**: If the dataset is > 100MB, downsample or aggregate before plotting to maintain interactivity.
+
+## Common Pitfalls (The "Wall of Shame")
+
+1. **Over-plotting**: Plotting too many series makes the legend unusable. Group small categories into "Other".
+2. **Missing `kaleido`**: `fig.write_image` will fail if the `kaleido` package is not installed.
+3. **JSON Serialization**: Plotly figures can be massive. If saving to HTML, use `include_plotlyjs='cdn'` to reduce file size.
+
+## References (Load on demand)
+- `references/api-reference.md` — Formal signatures and docstrings for core functions.
+- `reference/plotly-express.md` — High-level API for quick visualizations.
+- `reference/graph-objects.md` — Low-level API for fine-grained control.
+- `reference/chart-types.md` — Complete catalog of 40+ chart types with examples.
+- `reference/layouts-styling.md` — Subplots, templates, colors, customization.
+- `reference/export-interactivity.md` — Export options and interactive features.
 
 ## Quick Start
 

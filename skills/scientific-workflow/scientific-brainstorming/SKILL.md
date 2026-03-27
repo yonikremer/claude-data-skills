@@ -1,6 +1,6 @@
 ---
 name: scientific-brainstorming
-description: Facilitates creative research ideation and interdisciplinary exploration. Use for open-ended brainstorming or identifying research gaps. Do NOT use for formulating testable hypotheses from data (use hypothesis-generation).
+description: Use when facilitating creative research ideation and interdisciplinary exploration. Ideal for open-ended brainstorming or identifying research gaps. Do NOT use for formulating testable hypotheses from data (use hypothesis-generation).
 ---
 # Scientific Brainstorming
 

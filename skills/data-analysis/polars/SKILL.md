@@ -1,6 +1,6 @@
 ---
 name: polars
-description: High-performance DataFrame library with a parallel Apache Arrow backend. Use for 1GB-100GB datasets where pandas is too slow. CRITICAL: Use `lazy` mode and `streaming` for datasets approaching RAM limits.
+description: Use when working with large tabular datasets (1GB-100GB+) where pandas is too slow or memory-constrained. Leverages a parallel Apache Arrow backend for extreme performance. CRITICAL: Use `lazy` mode and `streaming` for datasets approaching RAM limits.
 ---
 # Polars
 
@@ -28,6 +28,7 @@ Polars is extremely fast but can easily consume all available CPU and RAM if not
 3. **Using `&` instead of `,` in filters**: While `df.filter((pl.col("a") > 1) & (pl.col("b") < 2))` works, `df.filter(pl.col("a") > 1, pl.col("b") < 2)` is more idiomatic and allows for better optimization.
 
 ## References (Load on demand)
+- `references/api-reference.md` — Formal signatures and docstrings for core functions.
 - `references/core_concepts.md` — Expressions, contexts, and the query optimizer.
 - `references/pandas_migration.md` — Direct syntax mapping for Pandas users.
 - `references/io_guide.md` — Optimized reading for Parquet, CSV, and SQL.

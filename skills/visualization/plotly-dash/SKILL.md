@@ -1,6 +1,6 @@
 ---
 name: plotly-dash
-description: Builds interactive web dashboards and data applications. Use when creating complex reactive UIs with charts and sliders. Do NOT use for simple static plots (use plotly) or for basic notebook interactivity (use jupyter).
+description: Use when building interactive web dashboards and data applications. Ideal for creating complex reactive UIs with charts and sliders. Do NOT use for simple static plots (use plotly) or for basic notebook interactivity (use jupyter).
 ---
 # Plotly Dash
 

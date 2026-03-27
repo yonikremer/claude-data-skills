@@ -1,6 +1,6 @@
 ---
 name: sql-queries
-description: Generates and optimizes SQL across major dialects (Postgres, Snowflake, BigQuery, DuckDB). Use for writing complex joins, CTEs, and translating natural language to performant SQL.
+description: Use when generating and optimizing SQL across major dialects (Postgres, Snowflake, BigQuery, DuckDB). Ideal for writing complex joins, CTEs, and translating natural language to performant SQL.
 ---
 # SQL Queries & Generation
 

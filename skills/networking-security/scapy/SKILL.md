@@ -1,6 +1,6 @@
 ---
 name: scapy
-description: Interactive packet manipulation, sniffing, and crafting using Scapy. Use for network discovery, protocol research, and low-level network security analysis. CRITICAL: Run `get-available-resources` for high-volume packet capture.
+description: Use when performing interactive packet manipulation, sniffing, and crafting using Scapy. Ideal for network discovery, protocol research, and low-level network security analysis. CRITICAL: Run `get-available-resources` for high-volume packet capture.
 ---
 # Scapy (Network Research)
 

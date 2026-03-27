@@ -1,6 +1,6 @@
 ---
 name: pymc
-description: Builds and samples Bayesian models using probabilistic programming. Use for hierarchical models, MCMC inference, and posterior checks. Do NOT use for standard frequentist statistics (use statsmodels) or for simple linear regression (use scikit-learn).
+description: Use when building and sampling Bayesian models using probabilistic programming. Ideal for hierarchical models, MCMC inference, and posterior checks. Do NOT use for standard frequentist statistics (use statsmodels) or for simple linear regression (use scikit-learn).
 ---
 # PyMC Bayesian Modeling
 

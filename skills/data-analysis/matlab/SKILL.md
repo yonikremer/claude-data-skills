@@ -1,6 +1,6 @@
 ---
 name: matlab
-description: Provides matrix operations, data analysis, and scientific computing using MATLAB/Octave syntax. Use when writing scientific scripts or converting between MATLAB and Python. Do NOT use for general purpose application development (use standard Python).
+description: Use when providing matrix operations, data analysis, and scientific computing using MATLAB/Octave syntax. Ideal for writing scientific scripts or converting between MATLAB and Python. Do NOT use for general purpose application development (use standard Python).
 compatibility: Requires either MATLAB or Octave to be installed for testing, but not required for just generating scripts.
 ---
 # MATLAB/Octave Scientific Computing

@@ -1,6 +1,6 @@
 ---
 name: wireshark-extensions
-description: Develop custom Wireshark protocol dissectors using Lua. Use for reverse engineering custom protocols, network debugging, and packet analysis automation.
+description: Use when developing custom Wireshark protocol dissectors using Lua. Ideal for reverse engineering custom protocols, network debugging, and packet analysis automation.
 ---
 
 # Wireshark Extensions (Lua Dissectors)

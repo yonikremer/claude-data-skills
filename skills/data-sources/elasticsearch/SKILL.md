@@ -1,10 +1,16 @@
 ---
 name: elasticsearch
-description: Interact with Elasticsearch using both Python client and ES|QL (curl-based) for querying, indexing, data management, and cluster health checks.
+description: Use when querying, indexing, or managing data in Elasticsearch using the Python client or ES|QL. Triggers include requests to fetch documents, perform aggregations, or manage cluster health.
 ---
 # Elasticsearch (8.x) - Merged Capabilities
 
 This skill combines the power of the Elasticsearch Python client for robust data operations with the flexibility of ES|QL via cURL for advanced querying and direct API interaction.
+
+## Mandatory Pre-flight
+
+1. **Check Connectivity:** Ensure `ELASTIC_URL` and `ELASTIC_API_KEY` are set and valid.
+2. **Identify Index:** Confirm the target index exists and you have the necessary permissions.
+3. **Verify Mapping:** For ES|QL queries, always retrieve the index mapping first to ensure correct field usage.
 
 ## Authentication and Setup
 
@@ -218,3 +224,7 @@ When query execution fails, the script returns:
 - Type mismatch → Use type conversion functions (TO_STRING, TO_INTEGER, etc.)
 - Syntax error → Review ES|QL reference for correct syntax
 - No results → Check time range and filter conditions
+
+## API Reference
+
+See [API Reference](references/api-reference.md) for core Python client functions.

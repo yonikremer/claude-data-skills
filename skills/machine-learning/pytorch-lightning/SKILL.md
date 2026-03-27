@@ -1,8 +1,32 @@
 ---
 name: pytorch-lightning
-description: Organizes PyTorch code for scalable deep learning training. Use when implementing LightningModules, multi-GPU training, and complex callbacks. Do NOT use for simple machine learning (use scikit-learn) or for low-level PyTorch research.
+description: Use when organizing PyTorch code for scalable deep learning training. Ideal for implementing LightningModules, multi-GPU training, and complex callbacks. CRITICAL: Monitor GPU memory and use appropriate strategies (DDP, FSDP) for large models.
 ---
 # PyTorch Lightning
+
+## ⚠️ Mandatory Pre-flight: Resource Check
+
+Deep learning training is extremely resource-intensive.
+
+1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
+2. **Accelerator Selection**: Use `accelerator="gpu"` if a GPU is available. Use `devices="auto"` to automatically detect available devices.
+3. **Batch Size**: Monitor GPU memory usage. If OOM occurs, decrease `batch_size` or use `accumulate_grad_batches`.
+
+## Common Pitfalls (The "Wall of Shame")
+
+1. **Manual `.cuda()` calls**: Never use `.to("cuda")` or `.cuda()` inside a `LightningModule`. Lightning handles device placement automatically.
+2. **Logging in Loops**: Avoid heavy logging inside `training_step` unless using `on_step=False, on_epoch=True`.
+3. **State Syncing**: Forgetting to sync metrics across GPUs when using DDP. Use `self.log(..., sync_dist=True)`.
+
+## References (Load on demand)
+- `references/api-reference.md` — Formal signatures and docstrings for core functions.
+- `references/lightning_module.md` — Comprehensive LightningModule guide (methods, hooks, properties).
+- `references/trainer.md` — Trainer configuration and parameters.
+- `references/data_module.md` — LightningDataModule patterns and methods.
+- `references/callbacks.md` — Built-in and custom callbacks.
+- `references/logging.md` — Logger integrations and usage.
+- `references/distributed_training.md` — DDP, FSDP, DeepSpeed comparison and setup.
+- `references/best_practices.md` — Common patterns, tips, and pitfalls.
 
 ## Overview
 

@@ -1,6 +1,6 @@
 ---
 name: jupyter
-description: Manages interactive development within Jupyter notebooks. Use for prototyping and visualization. CRITICAL: Follow "Notebook Hygiene" standards (modularity, variable cleanup, and linear flow).
+description: Use when managing interactive development within Jupyter notebooks. Ideal for prototyping and visualization. CRITICAL: Follow "Notebook Hygiene" standards (modularity, variable cleanup, and linear flow).
 ---
 # Jupyter
 

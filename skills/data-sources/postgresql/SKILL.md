@@ -1,11 +1,24 @@
 ---
 name: postgresql
-description: Interact with PostgreSQL databases. Use for querying, managing tables, and understanding database structure. Requires environment variables for connection.
+description: Use when querying, managing tables, or performing administrative tasks on a PostgreSQL database. Triggers include requests to fetch data, insert/update records, or analyze database schema.
 ---
 
 # PostgreSQL Database Interaction
 
 This skill provides guidance and best practices for interacting with PostgreSQL databases.
+
+## Mandatory Pre-flight
+
+1. **Verify Credentials:** Ensure all `POSTGRES_*` environment variables are set and accessible.
+2. **Connectivity Check:** Confirm the database host is reachable from the current environment.
+3. **Schema Awareness:** Identify the target schema (defaulting to `public`) before constructing queries.
+
+## Common Pitfalls
+
+- **Quoting:** Forgetting to quote case-sensitive table or column names, or using single quotes for identifiers instead of double quotes.
+- **Connection Leaks:** Not closing database connections or cursors properly in scripts.
+- **SQL Injection:** Constructing queries using string formatting instead of parameterized queries (use `%s` placeholders with `psycopg2`).
+- **Search Path:** Relying on the default `search_path` instead of using the fully qualified table name `DATABASE.SCHEMA.TABLE`.
 
 ## Setup and Connection
 
@@ -55,3 +68,7 @@ WHERE
 ```
 
 **Note:** Always ensure that table and column names are properly quoted if they contain special characters or are case-sensitive. The `DATABASE_NAME` should also be quoted.
+
+## API Reference
+
+See [API Reference](references/api-reference.md) for core functions and usage.

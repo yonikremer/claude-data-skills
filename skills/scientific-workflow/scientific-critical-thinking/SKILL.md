@@ -1,6 +1,6 @@
 ---
 name: scientific-critical-thinking
-description: Evaluates scientific claims and evidence design validity. Use for assessing experimental designs, identifying biases, and grading evidence quality. Do NOT use for formal peer review writing (use peer-review).
+description: Use when evaluating scientific claims and evidence design validity. Ideal for assessing experimental designs, identifying biases, and grading evidence quality. Do NOT use for formal peer review writing (use peer-review).
 allowed-tools: Read Write Edit Bash
 ---
 # Scientific Critical Thinking

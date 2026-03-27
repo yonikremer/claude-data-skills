@@ -1,6 +1,6 @@
 ---
 name: stable-baselines3
-description: Provides production-ready reinforcement learning algorithms with a clean API. Use for standard RL experiments and quick prototyping. Do NOT use for high-performance parallel training (use pufferlib) or for custom neural network research.
+description: Use when providing production-ready reinforcement learning algorithms with a clean API. Ideal for standard RL experiments and quick prototyping. Do NOT use for high-performance parallel training (use pufferlib) or for custom neural network research.
 ---
 # Stable Baselines3
 

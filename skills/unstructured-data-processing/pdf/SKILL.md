@@ -1,6 +1,6 @@
 ---
 name: pdf
-description: Extracts text, merges, splits, and manipulates PDF files. Use when reading PDF tables, filling forms, or performing OCR on scanned documents. Do NOT use for Word documents (use docx) or for creating complex layouts from scratch (use reportlab).
+description: Use when extracting text, merging, splitting, and manipulating PDF files. Ideal for reading PDF tables, filling forms, or performing OCR on scanned documents. Do NOT use for Word documents (use docx) or for creating complex layouts from scratch (use reportlab).
 ---
 # PDF Processing Guide
 

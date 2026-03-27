@@ -1,9 +1,24 @@
 ---
 name: query-optimization
-description: Best practices for optimizing SQL query performance across various database systems. Use when writing queries for large datasets, troubleshooting slow execution times, or designing high-performance database schemas.
+description: Use when writing SQL queries for large datasets, troubleshooting slow execution times, or designing high-performance database schemas. Ideal for indexing strategies, join optimization, and execution plan analysis. CRITICAL: Always use `EXPLAIN` or `EXPLAIN ANALYZE` to identify bottlenecks before making changes.
 ---
 
 # SQL Query Optimization (Best Practices)
+
+## ⚠️ Mandatory Pre-flight: Resource Check
+
+Large queries can lock tables or consume all available database memory/CPU.
+
+1. **Production Safety**: Never run `EXPLAIN ANALYZE` on a potentially massive query in a production environment without a `LIMIT`. `EXPLAIN ANALYZE` actually executes the query.
+2. **Locking**: Be aware that some optimization operations (like creating an index) can lock the table for writes.
+
+## Common Pitfalls (The "Wall of Shame")
+
+1. **Index Suppression**: Using a function on a column in the `WHERE` clause (e.g., `WHERE DATE(created_at) = '2023-01-01'`) prevents the database from using an index on `created_at`.
+2. **N+1 Problem**: Executing many small queries instead of one large join or bulk fetch.
+3. **Implicit Type Conversion**: Comparing a string column to a number (`WHERE string_col = 123`) can cause the database to ignore the index.
+
+## Overview
 
 This skill provides essential techniques for writing efficient, high-performance SQL queries.
 

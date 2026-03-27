@@ -1,6 +1,6 @@
 ---
 name: refactoring
-description: Improves code quality and restructures Python codebases using automated tools. Use when cleaning up legacy scripts or applying project-wide formatting. Do NOT use for initial feature implementation or for version control (use git).
+description: Use when improving code quality and restructuring Python codebases using automated tools. Ideal for cleaning up legacy scripts or applying project-wide formatting. Do NOT use for initial feature implementation or for version control (use git).
 ---
 # Refactoring and Large-Scale Fixing
 

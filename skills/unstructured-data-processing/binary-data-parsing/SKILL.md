@@ -1,6 +1,6 @@
 ---
 name: binary-data-parsing
-description: Parses and manipulates raw binary data and custom file formats. Use when working with sensor outputs, legacy binary formats, or bit-level protocols. Do NOT use for standard columnar formats (use pandas) or for identifying unknown file types (use data-format-detection).
+description: Use when parsing and manipulating raw binary data and custom file formats. Ideal for working with sensor outputs, legacy binary formats, or bit-level protocols. Do NOT use for standard columnar formats (use pandas) or for identifying unknown file types (use data-format-detection).
 ---
 # Binary Data Parsing
 

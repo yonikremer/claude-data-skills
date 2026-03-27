@@ -1,6 +1,6 @@
 ---
 name: data-context-extractor
-description: Extracts warehouse schemas and tribal knowledge to generate tailored data skills. Use when setting up a new data context or updating metric definitions. Do NOT use for general data exploration (use explore-data) or for writing SQL (use write-query).
+description: Use when extracting warehouse schemas and tribal knowledge to generate tailored data skills. Ideal for setting up a new data context or updating metric definitions. Do NOT use for general data exploration (use explore-data) or for writing SQL (use write-query).
 ---
 # Data Context Extractor
 

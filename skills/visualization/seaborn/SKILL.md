@@ -1,8 +1,28 @@
 ---
 name: seaborn
-description: Creates statistical visualizations with attractive defaults and pandas integration. Use for quick exploration of distributions and relationships. Do NOT use for interactive plots (use plotly) or for publication-ready multi-panel figures (use scientific-visualization).
+description: Use when creating statistical visualizations with attractive defaults and pandas integration. Ideal for quick exploration of distributions and relationships. CRITICAL: For large datasets, use `histplot` or `kdeplot` with caution as they can be slow to compute.
 ---
 # Seaborn Statistical Visualization
+
+## ⚠️ Mandatory Pre-flight: Resource Check
+
+Statistical plots like KDEs or pairplots on large datasets can be extremely slow and memory-intensive.
+
+1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
+2. **Sampling Strategy**: If the dataset has > 100,000 rows, use `.sample(n=10000)` before plotting to ensure fast rendering.
+3. **`pairplot` Warning**: Avoid `pairplot` for more than 10 variables, as it creates $N^2$ subplots.
+
+## Common Pitfalls (The "Wall of Shame")
+
+1. **Unstructured Data**: Seaborn works best with "long-form" (tidy) data. If your data is wide, use `df.melt()`.
+2. **Overlapping Labels**: Categorical plots with many categories often have overlapping x-axis labels. Use `plt.xticks(rotation=45)`.
+3. **Confusion with `plt.show()`**: Seaborn is built on Matplotlib. If plots don't appear in a script, ensure `import matplotlib.pyplot as plt` and `plt.show()` are used.
+
+## References (Load on demand)
+- `references/api-reference.md` — Formal signatures and docstrings for core functions.
+- `references/function_reference.md` — Comprehensive listing of all seaborn functions.
+- `references/objects_interface.md` — Detailed guide to the modern seaborn.objects API.
+- `references/examples.md` — Common use cases and code patterns.
 
 ## Overview
 

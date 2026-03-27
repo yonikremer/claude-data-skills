@@ -1,6 +1,6 @@
 ---
 name: log-parsing
-description: Parses structured and unstructured log files into DataFrames for analysis. Use when processing syslog, access logs, or application logs. Do NOT use for real-time monitoring (use elasticsearch) or for simple text search (use regex).
+description: Use when parsing structured and unstructured log files into DataFrames for analysis. Ideal for processing syslog, access logs, or application logs. Do NOT use for real-time monitoring (use elasticsearch) or for simple text search (use regex).
 ---
 # Log Parsing
 

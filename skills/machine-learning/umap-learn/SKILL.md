@@ -1,6 +1,6 @@
 ---
 name: umap-learn
-description: Performs non-linear dimensionality reduction for visualization and clustering. Use when visualizing high-dimensional data or manifold learning. Do NOT use for linear reduction (use PCA in scikit-learn) or for simple scaling (use scikit-learn).
+description: Use when performing non-linear dimensionality reduction for visualization and clustering. Ideal for visualizing high-dimensional data or manifold learning. Do NOT use for linear reduction (use PCA in scikit-learn) or for simple scaling (use scikit-learn).
 ---
 # UMAP-Learn
 

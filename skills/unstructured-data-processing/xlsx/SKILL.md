@@ -1,7 +1,28 @@
 ---
 name: xlsx
-description: Manages creation, editing, and analysis of spreadsheet files (.xlsx, .csv). Use when processing messy tabular data or generating reports for Excel users. Do NOT use for database pipelines (use sqlalchemy) or for high-volume processing (use dask).
+description: Use when managing creation, editing, and analysis of Excel spreadsheet files (.xlsx, .csv). Ideal for processing messy tabular data and generating professional reports. CRITICAL: Use formulas for dynamic calculations and always run `recalc.py` after modifications.
 ---
+# XLSX creation, editing, and analysis
+
+## ⚠️ Mandatory Pre-flight: Resource Check
+
+Large Excel files can be extremely memory-intensive to load and process.
+
+1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
+2. **Strategy**:
+   - **Files < 50MB**: Use `openpyxl` for formatting or `pandas` for data.
+   - **Files > 100MB**: Use `read_only=True` in `openpyxl` or `chunksize` in `pandas`.
+3. **LibreOffice**: Ensure `recalc.py` has access to `soffice` for formula recalculation.
+
+## Common Pitfalls (The "Wall of Shame")
+
+1. **Hardcoding Calculations**: Calculating values in Python and writing them as constants. Always use Excel formulas (e.g., `=SUM(A1:A10)`).
+2. **Missing Recalculation**: Modifying values with `openpyxl` but forgetting to run `recalc.py`. Formulas will show old values.
+3. **`data_only=True` Loss**: Opening a workbook with `data_only=True` and saving it will permanently destroy all formulas.
+
+## References (Load on demand)
+- `references/api-reference.md` — Formal signatures for openpyxl and pandas Excel functions.
+
 # Requirements for Outputs
 
 ## All Excel files

@@ -1,8 +1,27 @@
 ---
 name: pptx
-description: Creates, reads, and modifies PowerPoint (.pptx) presentations. Use when building slide decks, pitch decks, or extracting text from slides. Do NOT use for Word documents (use docx) or for LaTeX-based presentations (use beamer).
+description: Use when creating, reading, or modifying PowerPoint (.pptx) presentations. Ideal for building professional slide decks, extracting text from slides, or automating presentation workflows. CRITICAL: Always use platform-native primitives for visual assets and ensure high-contrast accessibility.
 ---
 # PPTX Skill
+
+## ⚠️ Mandatory Pre-flight: Resource Check
+
+Generating many slide images or processing multi-hundred slide decks can be resource-intensive.
+
+1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
+2. **Visual QA**: Use subagents for visual inspection of generated slides to catch overlapping elements or low-contrast text.
+3. **Dependencies**: Ensure `libreoffice` and `poppler` are available for PDF and image conversion tasks.
+
+## Common Pitfalls (The "Wall of Shame")
+
+1. **Text-Only Slides**: Creating boring, unengaging slides without visual elements.
+2. **Low Contrast**: Using light text on light backgrounds (or vice-versa). Always verify readability.
+3. **Implicit Overlaps**: Adding too much content to a single slide, causing elements to collide. Use multiple slides instead.
+
+## References (Load on demand)
+- `references/api-reference.md` — Formal signatures for `python-pptx` classes and methods.
+- `references/editing.md` — Detailed guide for editing and creating from templates.
+- `references/pptxgenjs.md` — Creating presentations from scratch using JavaScript.
 
 ## Quick Reference
 

@@ -1,10 +1,31 @@
 ---
 name: geopandas
-description: Analyzes geospatial vector data including shapefiles and GeoJSON. Use for spatial joins, coordinate transformations, and choropleth mapping. Do NOT use for raster data analysis (use rasterio) or for non-spatial tabular data (use pandas).
+description: Use when analyzing geospatial vector data (Shapefiles, GeoJSON, GeoPackage). Ideal for spatial joins, coordinate transformations, and choropleth mapping. CRITICAL: For large datasets (>100k rows), use spatial indexing and Parquet format.
 ---
 # GeoPandas
 
-GeoPandas extends pandas to enable spatial operations on geometric types. It combines the capabilities of pandas and shapely for geospatial data analysis.
+## ⚠️ Mandatory Pre-flight: Resource Check
+
+Geospatial operations (especially joins and overlays) are CPU and memory intensive.
+
+1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
+2. **Spatial Indexing**: Always ensure `rtree` or `pygeos`/`shapely` 2.0+ is installed for fast spatial queries.
+3. **Memory Management**: For very large datasets, read only a bounding box (`bbox`) or a subset of columns.
+
+## Common Pitfalls (The "Wall of Shame")
+
+1. **CRS Mismatch**: Performing a `sjoin` on layers with different CRS results in empty or incorrect results. Always `to_crs()` first.
+2. **Measuring in Degrees**: Calculating area or distance in `EPSG:4326` (degrees) is incorrect. Reproject to a metric CRS (e.g., UTM) first.
+3. **Invalid Geometries**: Self-intersecting polygons cause topological errors. Use `gdf.is_valid` and `gdf.make_valid()`.
+
+## References (Load on demand)
+- `references/api-reference.md` — Formal signatures and docstrings for core functions.
+- `references/data-structures.md` — GeoSeries and GeoDataFrame fundamentals.
+- `references/data-io.md` — Reading/writing files, PostGIS, Parquet.
+- `references/geometric-operations.md` — Buffer, simplify, affine transforms.
+- `references/spatial-analysis.md` — Joins, overlay, dissolve, clipping.
+- `references/visualization.md` — Plotting, choropleth maps, interactive maps.
+- `references/crs-management.md` — Coordinate reference systems and projections.
 
 ## Installation
 

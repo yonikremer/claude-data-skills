@@ -1,6 +1,6 @@
 ---
 name: scikit-learn
-description: Machine learning in Python. Use for classification, regression, clustering, and dimensionality reduction. CRITICAL: Check CPU cores for `n_jobs` and memory for large arrays.
+description: Use when building classical machine learning models for classification, regression, clustering, or dimensionality reduction. Ideal for tabular data and production-ready ML pipelines. CRITICAL: Check CPU cores for `n_jobs` and memory for large arrays.
 ---
 # scikit-learn
 
@@ -40,6 +40,7 @@ A model is not finished until these diagnostics are reported:
 4. **Default Hyperparameters**: Assuming defaults are optimal. Always run at least a small `RandomizedSearchCV`.
 
 ## References (Load on demand)
+- `references/api-reference.md` — Formal signatures and docstrings for core functions.
 - `references/quick_reference.md` — API signatures for all common estimators.
 - `references/model_selection.md` — Detailed guide on GridSearch and cross-validation.
 - `references/unsupervised_learning.md` — Clustering (K-Means, DBSCAN) and PCA.

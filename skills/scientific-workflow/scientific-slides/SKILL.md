@@ -1,6 +1,6 @@
 ---
 name: scientific-slides
-description: Builds research-focused slide decks for conferences and seminars. Use for seminar talks, thesis defenses, or conference presentations. Do NOT use for general business decks (use pptx) or for one-off charts (use create-viz).
+description: Use when building research-focused slide decks for conferences and seminars. Ideal for seminar talks, thesis defenses, or conference presentations. Do NOT use for general business decks (use pptx) or for one-off charts (use create-viz).
 allowed-tools: Read Write Edit Bash
 ---
 # Scientific Slides

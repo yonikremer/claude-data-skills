@@ -1,6 +1,6 @@
 ---
 name: sql-syntax-and-functions
-description: Comprehensive SQL syntax and function guide for writing complex queries across PostgreSQL, MySQL, SQLite, and Oracle. Use for complex data transformations, DDL/DML operations, and advanced analytical queries.
+description: Use when writing complex SQL queries across PostgreSQL, MySQL, SQLite, and Oracle. Ideal for complex data transformations, DDL/DML operations, and advanced analytical queries.
 ---
 
 # SQL Syntax and Functions (Core Guide)

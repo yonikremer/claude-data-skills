@@ -1,6 +1,6 @@
 ---
 name: peer-review
-description: Provides structured evaluation for manuscript and grant reviews. Use when writing formal peer reviews or checking compliance with reporting standards. Do NOT use for evaluating evidence quality (use scientific-critical-thinking) or for quantitative scoring (use scholar-evaluation).
+description: Use when providing structured evaluation for manuscript and grant reviews. Ideal for writing formal peer reviews or checking compliance with reporting standards. Do NOT use for evaluating evidence quality (use scientific-critical-thinking) or for quantitative scoring (use scholar-evaluation).
 allowed-tools: Read Write Edit Bash
 ---
 # Scientific Critical Evaluation and Peer Review

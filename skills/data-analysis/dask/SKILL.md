@@ -1,8 +1,31 @@
 ---
 name: dask
-description: Scales pandas and NumPy workflows to larger-than-RAM datasets or clusters. Use when data exceeds memory or requires parallel file processing. Do NOT use for in-memory speed (use polars) or for out-of-core analytics on a single machine (use vaex).
+description: Use when scaling pandas or NumPy workflows to larger-than-RAM datasets or clusters. Ideal for parallel file processing and distributed computation. CRITICAL: Always perform a resource check before loading data-intensive workloads.
 ---
 # Dask
+
+## ⚠️ Mandatory Pre-flight: Resource Check
+
+Dask is designed for larger-than-RAM data, but it still requires careful memory management to avoid worker crashes.
+
+1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
+2. **Cluster Sizing**: Ensure your `n_workers` and `memory_limit` per worker are balanced. A good rule of thumb is 4GB+ per worker.
+3. **Chunking**: Aim for chunk sizes of ~100MB. Too small = high overhead; too large = OOM.
+
+## Common Pitfalls (The "Wall of Shame")
+
+1. **Eager Loading**: Never use `pd.read_csv()` and then `dd.from_pandas()`. Use `dd.read_csv()` directly.
+2. **Ignoring the Dashboard**: The Dask dashboard (usually at port 8787) is critical for spotting unaligned chunks or memory bottlenecks.
+3. **Excessive `compute()` calls**: Calling `.compute()` too early or too often pulls all data into the client's RAM. Use `.persist()` instead if you need to keep data in worker memory.
+
+## References (Load on demand)
+- `references/api-reference.md` — Formal signatures and docstrings for core functions.
+- `references/dataframes.md` - Complete Dask DataFrame guide.
+- `references/arrays.md` - Complete Dask Array guide.
+- `references/bags.md` - Complete Dask Bag guide.
+- `references/futures.md` - Complete Dask Futures and distributed computing guide.
+- `references/schedulers.md` - Complete scheduler selection and configuration guide.
+- `references/best-practices.md` - Comprehensive performance optimization and troubleshooting.
 
 ## Overview
 

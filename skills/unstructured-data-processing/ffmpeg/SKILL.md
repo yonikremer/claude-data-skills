@@ -1,6 +1,6 @@
 ---
 name: ffmpeg
-description: Processes and transforms audio, video, and image files using the FFmpeg CLI. Use for media conversion, compression, stream extraction, and complex filtering.
+description: Use when processing and transforming audio, video, and image files using the FFmpeg CLI. Ideal for media conversion, compression, stream extraction, and complex filtering.
 ---
 # FFmpeg
 

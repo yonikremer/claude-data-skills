@@ -1,6 +1,6 @@
 ---
 name: statistical-analysis
-description: Performs statistical testing, trend analysis, and business metric investigation. Use for hypothesis testing (t-test, ANOVA), A/B test analysis, and answering complex data questions with rigorous methodology.
+description: Use when performing statistical testing, trend analysis, and business metric investigation. Ideal for hypothesis testing (t-test, ANOVA), A/B test analysis, and answering complex data questions with rigorous methodology.
 ---
 # Statistical Analysis
 

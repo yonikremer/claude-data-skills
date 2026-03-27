@@ -1,6 +1,6 @@
 ---
 name: timesfm-forecasting
-description: Performs zero-shot time series forecasting using foundation models. Use for univariate forecasting (sales, weather, sensors) without custom training. Do NOT use for multivariate forecasting or when a custom-trained model is required.
+description: Use when performing zero-shot time series forecasting using foundation models. Ideal for univariate forecasting (sales, weather, sensors) without custom training. Do NOT use for multivariate forecasting or when a custom-trained model is required.
 allowed-tools: Read Write Edit Bash
 ---
 # TimesFM Forecasting

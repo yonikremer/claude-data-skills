@@ -147,6 +147,11 @@ skills/infrastructure-tools/get-available-resources/scripts/__init__.py
 skills/infrastructure-tools/get-available-resources/scripts/detect_resources.py
 skills/infrastructure-tools/git/SKILL.md
 skills/infrastructure-tools/git/__init__.py
+skills/infrastructure-tools/gitlab/SKILL.md
+skills/infrastructure-tools/gitlab/__init__.py
+skills/infrastructure-tools/gitlab/references/commands-detailed.md
+skills/infrastructure-tools/gitlab/references/quick-reference.md
+skills/infrastructure-tools/gitlab/references/troubleshooting.md
 skills/infrastructure-tools/jupyter/SKILL.md
 skills/infrastructure-tools/jupyter/__init__.py
 skills/infrastructure-tools/windows-cli/SKILL.md

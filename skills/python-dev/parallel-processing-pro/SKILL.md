@@ -1,8 +1,27 @@
 ---
 name: parallel-processing-pro
-description: Accelerates data tasks using Multithreading (I/O) and Multiprocessing (CPU). Use for parallel S3 downloads, batch API calls, and heavy numerical processing.
+description: Use when accelerating data tasks through Multithreading (I/O-bound) or Multiprocessing (CPU-bound). Ideal for parallel S3 downloads, batch API calls, and heavy numerical processing. CRITICAL: Understand the GIL and pick the right strategy for the bottleneck.
 ---
 # Parallel Processing Pro
+
+## ⚠️ Mandatory Pre-flight: Resource Check
+
+Parallelizing a task can multiply memory and CPU usage by the number of workers.
+
+1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
+2. **Worker Selection**: 
+   - **CPU-bound**: Set `max_workers = logical_cores - 1` to prevent system freezing.
+   - **I/O-bound**: `max_workers` can be $2 \times$ or $4 \times$ `logical_cores` depending on latency.
+3. **Shared Memory**: Be cautious with large datasets in `Multiprocessing`. Each worker may spawn a copy of the data, potentially causing an OOM.
+
+## Common Pitfalls (The "Wall of Shame")
+
+1. **Threading for Math**: Attempting to use `threading` or `ThreadPoolExecutor` for CPU-intensive tasks. The GIL ensures only one thread executes Python bytecode at a time.
+2. **Over-parallelization**: Spawning hundreds of threads/processes for small tasks. The overhead of spawning and context switching often exceeds the time saved.
+3. **Pickle Errors**: Passing non-picklable objects (like active database connections or open file handles) to a `ProcessPoolExecutor`.
+
+## References (Load on demand)
+- `references/api-reference.md` — Formal signatures for multiprocessing and concurrent.futures.
 
 ## 1. Choosing the Strategy
 

@@ -1,8 +1,23 @@
 ---
 name: scientific-visualization
-description: Creates publication-ready multi-panel figures with journal-specific styling. Use when preparing figures for Nature, Science, or Cell submissions. Plotly is the primary modern recommendation for both interactive and static publication figures.
+description: Use when creating publication-ready multi-panel figures with journal-specific styling (Nature, Science, Cell). Ideal for ensuring colorblind accessibility, correct resolution, and vector export. CRITICAL: Always use descriptive, insight-driven titles and labeled axes with units.
 ---
 # Scientific Visualization
+
+## ⚠️ Mandatory Pre-flight: Resource Check
+
+High-resolution raster exports and complex multi-panel vector figures can be memory-intensive.
+
+1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
+2. **Export Strategy**: Use vector formats (PDF, SVG) by default. For raster (PNG, TIFF), ensure DPI is at least 300.
+3. **Library Choice**: Use **Plotly** for interactive exploration and modern static figures. Use **Seaborn/Matplotlib** for complex, highly-customized multi-panel layouts.
+
+## References (Load on demand)
+- `skills/visualization/plotly/references/api-reference.md` — Plotly API signatures.
+- `skills/visualization/seaborn/references/api-reference.md` — Seaborn API signatures.
+- `references/publication_guidelines.md` — Comprehensive best practices and checklists.
+- `references/color_palettes.md` — Colorblind-friendly specifications.
+- `references/journal_requirements.md` — Specifics for Nature, Science, Cell, etc.
 
 ## Overview
 

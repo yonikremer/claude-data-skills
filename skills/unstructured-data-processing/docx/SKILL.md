@@ -1,8 +1,25 @@
 ---
 name: docx
-description: Creates, reads, and manipulates Word (.docx) documents with professional formatting. Use when generating reports, memos, or templates in Word format. Do NOT use for PDFs (use pdf), spreadsheets (use xlsx), or Google Docs.
+description: Use when creating, reading, or manipulating Word (.docx) documents with professional formatting. Ideal for generating reports, memos, or templates. CRITICAL: Set page size explicitly and use `recalc.py` if the document contains embedded Excel objects or fields.
 ---
 # DOCX creation, editing, and analysis
+
+## ⚠️ Mandatory Pre-flight: Resource Check
+
+Large Word documents with many high-resolution images can consume significant memory and disk space.
+
+1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
+2. **Image Optimization**: For documents with many images, ensure they are compressed or properly scaled to prevent bloated file sizes.
+3. **Dependencies**: Ensure `pandoc`, `libreoffice`, and `poppler` are available for conversion and extraction tasks.
+
+## Common Pitfalls (The "Wall of Shame")
+
+1. **Manual ZIP Manipulation**: Attempting to edit XML inside the DOCX ZIP without proper unpacking/repacking. Always use the 3-step workflow (Unpack → Edit → Pack).
+2. **Missing Page Size**: Forgetting to set page size explicitly in `docx-js`, leading to inconsistent results between US Letter and A4.
+3. **Unicode Bullets**: Manually inserting bullet characters instead of using the numbering configuration.
+
+## References (Load on demand)
+- `references/api-reference.md` — Formal signatures for `docx-js` components and methods.
 
 ## Overview
 

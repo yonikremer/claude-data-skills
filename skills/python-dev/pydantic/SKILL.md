@@ -1,10 +1,25 @@
 ---
 name: pydantic
-description: Validates and manages data structures using Python type annotations. Use for defining schemas, validating API responses, and ensuring structured data integrity. Do NOT use for heavy numerical arrays (use numpy).
+description: Use when validating and managing data structures using Python type annotations. Ideal for defining schemas, validating API responses, and ensuring structured data integrity. CRITICAL: Use `BaseModel` for complex nested schemas and `TypeAdapter` for simple types.
 ---
 # Pydantic (V2)
 
-Pydantic is the most widely used data validation library for Python. It enforces type hints at runtime and provides user-friendly errors when data is invalid.
+## ⚠️ Mandatory Pre-flight: Resource Check
+
+Validating massive datasets or extremely complex schemas can consume significant CPU and RAM.
+
+1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
+2. **Strategy**: For extremely large datasets, consider batching validation or use Polars/Pandas for bulk validation.
+3. **Large Models**: Monitor memory usage when working with large nested models (e.g., LLM prompts).
+
+## Common Pitfalls (The "Wall of Shame")
+
+1. **Implicit Coercion**: Forgetting that Pydantic will often coerce types (e.g., "123" -> 123) by default. Use `strict=True` to prevent this.
+2. **Mutable Defaults**: Using a list or dict as a default value (`friends: List[int] = []`). Pydantic handles this correctly, but it's a common footgun in general Python.
+3. **Inefficient Parsing**: Using `model_validate` repeatedly on single items in a loop. Use a `TypeAdapter` for collections.
+
+## References (Load on demand)
+- `references/api-reference.md` — Formal signatures for Pydantic core classes and decorators.
 
 ## Core Concepts
 

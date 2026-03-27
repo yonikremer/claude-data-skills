@@ -1,9 +1,32 @@
 ---
 name: transformers
-description: Works with pre-trained transformer models for NLP, vision, and audio tasks. Use for text generation, classification, translation, and fine-tuning. Do NOT use for standard machine learning (use scikit-learn) or for simple text processing (use regex).
-compatibility: Some features require an Huggingface token
+description: Use when working with pre-trained transformer models for NLP, vision, and audio tasks. Ideal for text generation, classification, translation, and fine-tuning. CRITICAL: Monitor VRAM usage and use 4-bit/8-bit quantization for large models on consumer GPUs.
 ---
 # Transformers
+
+## ⚠️ Mandatory Pre-flight: Resource Check
+
+Large Language Models (LLMs) and other transformers are extremely VRAM-intensive.
+
+1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
+2. **VRAM Estimation**: 
+   - 7B Model (float16) ≈ 14GB VRAM.
+   - 7B Model (4-bit) ≈ 5GB VRAM.
+3. **Quantization Strategy**: Use `bitsandbytes` for 4-bit loading if VRAM < 16GB for 7B+ models.
+
+## Common Pitfalls (The "Wall of Shame")
+
+1. **CPU Inference**: Loading a large model on CPU is 10-100x slower. Always use `device_map="auto"` or `.to("cuda")`.
+2. **Missing Tokenizer Config**: Using the wrong tokenizer for a model leads to garbage output. Always use `AutoTokenizer.from_pretrained(model_id)`.
+3. **Max Length Truncation**: Forgetting to set `max_length` or `truncation=True` can lead to index errors or infinite loops in generation.
+
+## References (Load on demand)
+- `references/api-reference.md` — Formal signatures and docstrings for core functions.
+- `references/pipelines.md` — All supported tasks and optimization.
+- `references/models.md` — Loading, saving, and configuration.
+- `references/generation.md` — Text generation strategies and parameters.
+- `references/training.md` — Fine-tuning with Trainer API.
+- `references/tokenizers.md` — Tokenization and preprocessing.
 
 ## Overview
 

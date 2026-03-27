@@ -1,10 +1,25 @@
 ---
 name: pytest
-description: Writes and executes Python tests with clean syntax and powerful fixtures. Use for unit testing, integration testing, and ensuring code quality. Do NOT use for basic scripts that don't require verification.
+description: Use when writing or executing Python tests for unit, integration, or functional testing. Ideal for ensuring code quality and preventing regressions through clean syntax and powerful fixtures. CRITICAL: Always use descriptive test names and leverage fixtures for reusable setup logic.
 ---
 # Pytest
 
-Pytest is the standard testing framework for Python, offering a simple syntax, powerful fixtures, and detailed failure reports.
+## ⚠️ Mandatory Pre-flight: Resource Check
+
+Large test suites, especially integration tests with databases or external APIs, can be slow and resource-intensive.
+
+1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
+2. **Parallel Execution**: If the system has multiple cores and the test suite is large (>50 tests), consider using `pytest-xdist` with `-n auto`.
+3. **Database Isolation**: Ensure that tests requiring a database use a dedicated test instance to avoid data corruption.
+
+## Common Pitfalls (The "Wall of Shame")
+
+1. **State Leakage**: Tests that depend on the output of previous tests. Use fixtures with appropriate scopes to ensure isolation.
+2. **Hardcoded Paths**: Tests that only run on the developer's machine. Use `tmp_path` fixture or `pathlib` for environment-agnostic paths.
+3. **Slow Setup**: Repeating expensive setup in every test function. Use `module` or `session` scoped fixtures.
+
+## References (Load on demand)
+- `references/api-reference.md` — Formal signatures for pytest decorators and functions.
 
 ## Getting Started
 

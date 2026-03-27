@@ -1,6 +1,6 @@
 ---
 name: build-dashboard
-description: Builds interactive HTML dashboards with KPI cards, charts, and tables. Use when creating shareable executive overviews or multi-chart reports with browser-based filtering. Do NOT use for permanent web applications (use plotly-dash) or for simple single-chart visualizations (use create-viz).
+description: Use when building interactive HTML dashboards with KPI cards, charts, and tables. Ideal for creating shareable executive overviews or multi-chart reports with browser-based filtering. Do NOT use for permanent web applications (use plotly-dash) or for simple single-chart visualizations (use create-viz).
 argument-hint: "<description> [data source]"
 ---
 # /build-dashboard - Build Interactive Dashboards

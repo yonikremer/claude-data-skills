@@ -1,6 +1,6 @@
 ---
 name: cli-scripts
-description: Converts Python scripts into professional command-line tools. Use when creating scripts with arguments, subcommands, and input validation. Do NOT use for simple one-off file operations (use windows-cli) or for complex data pipelines (use dask).
+description: Use when converting Python scripts into professional command-line tools. Ideal for creating scripts with arguments, subcommands, and input validation. Do NOT use for simple one-off file operations (use windows-cli) or for complex data pipelines (use dask).
 ---
 # CLI Scripts
 

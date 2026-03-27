@@ -1,6 +1,6 @@
 ---
 name: python2-migration
-description: Migrates legacy Python 2 code to Python 3. Use when modernizing old scripts or reading Python 2-specific data files. Do NOT use for general refactoring (use refactoring) or for new project development.
+description: Use when migrating legacy Python 2 code to Python 3. Ideal for modernizing old scripts or reading Python 2-specific data files. Do NOT use for general refactoring (use refactoring) or for new project development.
 ---
 # Python 2 → Python 3 Migration
 

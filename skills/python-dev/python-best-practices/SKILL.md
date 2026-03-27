@@ -1,6 +1,6 @@
 ---
 name: python-best-practices
-description: Enforces PEP-8, idiomatic Python (Pythonic), and formatting standards. Use to ensure code quality, readability, and to avoid common pitfalls. Tests and coverage are recommended for production but optional for fast research scripts.
+description: Use when enforcing PEP-8, idiomatic Python (Pythonic), and formatting standards. Ideal for ensuring code quality, readability, and avoiding common pitfalls. Tests and coverage are recommended for production but optional for fast research scripts.
 ---
 # Python Best Practices & Standards
 

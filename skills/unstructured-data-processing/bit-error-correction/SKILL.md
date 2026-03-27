@@ -1,6 +1,6 @@
 ---
 name: bit-error-correction
-description: Detects and repairs corrupted data using error-correcting codes (ECC). Use for recovering data from noisy channels, damaged storage, or corrupted binary streams using Hamming, Reed-Solomon, and CRCs.
+description: Use when detecting and repairing corrupted data using error-correcting codes (ECC). Ideal for recovering data from noisy channels, damaged storage, or corrupted binary streams using Hamming, Reed-Solomon, and CRCs.
 ---
 # Bit Error Correction (ECC)
 

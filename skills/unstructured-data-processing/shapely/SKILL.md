@@ -1,11 +1,27 @@
 ---
 name: shapely
-description: Planar geometric manipulation and analysis using Shapely. Use for buffering, intersections, area/length calculations, and spatial predicates (contains, within, intersects).
+description: Use when performing planar geometric manipulation and spatial analysis. Ideal for buffering, intersections, area/length calculations, and spatial predicates (contains, within, intersects). CRITICAL: Ensure all geometries are valid before performing complex spatial operations.
 ---
 
 # Shapely (Geometric Analysis)
 
-Shapely is a Python library for manipulation and analysis of planar geometric objects. It's built on GEOS and is widely used for spatial analysis.
+## ⚠️ Mandatory Pre-flight: Resource Check
+
+Complex spatial operations (like unions of many polygons) can be CPU and memory intensive.
+
+1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
+2. **Spatial Indexing**: If performing many point-in-polygon tests, use a spatial index (e.g., `STRtree`) for a 100x speedup.
+3. **Geometry Simplification**: For extremely large geometries, consider using `.simplify()` before complex operations.
+
+## Common Pitfalls (The "Wall of Shame")
+
+1. **Incorrect Order**: Using (lat, long) instead of (long, lat). Shapely is strictly (x, y).
+2. **Self-Intersecting Polygons**: Polygons must be simple and valid. Use `geom.is_valid` and `make_valid()` if needed.
+3. **Ignoring Units**: Buffer distance units depend on the coordinate system of the data.
+
+## References (Load on demand)
+- `references/api-reference.md` — Formal signatures for Shapely core classes and operations.
+- `references/shapely-common-ops.md` — Comprehensive list of predicates, constructors, and measurements.
 
 ## Core Concepts
 

@@ -1,0 +1,10 @@
+LICENSE
+README.md
+pyproject.toml
+claude_data_skills.egg-info/PKG-INFO
+claude_data_skills.egg-info/SOURCES.txt
+claude_data_skills.egg-info/dependency_links.txt
+claude_data_skills.egg-info/entry_points.txt
+claude_data_skills.egg-info/requires.txt
+claude_data_skills.egg-info/top_level.txt
+skills/__init__.py

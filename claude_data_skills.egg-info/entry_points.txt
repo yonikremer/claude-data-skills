@@ -1,0 +1,2 @@
+[console_scripts]
+stdlib-demo = skills.python_dev.python_stdlib_pro.scripts.stdlib_demo:main

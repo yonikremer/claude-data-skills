@@ -16,6 +16,7 @@ A professional-grade collection of data science, analysis, and engineering skill
 - **⚡ Superpowers Workflow**: Integrated skills for brainstorming, TDD, systematic debugging, and plan execution.
 - **🛡️ Data Safety First**: Built-in guardrails to prevent accidental data loss or corruption during autonomous execution.
 - **📊 Modern Visualization**: First-class support for Plotly and Dash, ensuring interactive and high-quality data stories.
+- **🧠 Autonomous Logic Recovery**: A process-driven migration framework for C#, MATLAB, and legacy Python using instrumentation and TDD.
 - **🧠 ML-Ready**: Pre-configured patterns for PyTorch, Scikit-Learn, and Transformers.
 - **📁 Unstructured Data Support**: Advanced parsing for PDF, DOCX, XLSX, and binary formats.
 - **🔄 Legacy Migration**: Specialized patterns for migrating C# and MATLAB code to modern Python.
@@ -61,7 +62,7 @@ skills/
 ├── data-analysis/          # Dask, Polars, Pandas, Geopandas
 ├── data-sources/           # PostgreSQL, Elasticsearch, S3, SQL
 ├── machine-learning/       # PyMC, PyTorch-Lightning, Scikit-Learn
-├── python-dev/             # Stdlib Pro, Legacy Migration, Refactoring
+├── python-dev/             # Stdlib Pro, Legacy Migration, Autonomous Logic Recovery, Refactoring
 ├── scientific-workflow/    # Scholar Evaluation, Visualization
 └── unstructured-data/      # PDF, DOCX, XLSX, Binary
 ```

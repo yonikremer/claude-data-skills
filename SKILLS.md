@@ -44,6 +44,7 @@ This repository contains a comprehensive set of "skills"—structured documentat
 - **data-validation**: Enforces data quality, schemas, and analytical methodology.
 - **get-available-resources**: Detects and reports available system resources (CPU, GPU, memory).
 - **git**: Manages source code version control and collaborative workflows.
+- **gitlab**: Expert guidance for using the GitLab CLI (glab) to manage issues, MRs, and pipelines.
 - **jupyter**: Manages interactive development within Jupyter notebooks.
 - **windows-cli**: Executes file and system operations using Windows cmd and PowerShell.
 

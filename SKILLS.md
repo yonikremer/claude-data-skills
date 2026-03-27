@@ -4,6 +4,21 @@ This repository contains a comprehensive set of "skills"—structured documentat
 
 ## Available Skills
 
+### Core Workflow
+#### Planning
+- **brainstorming**: Turns ideas into fully formed designs and specs through collaborative dialogue.
+- **writing-plans**: Generates bite-sized, TDD-ready implementation plans from specifications.
+
+#### Execution & Testing
+- **executing-plans**: Structured execution of implementation plans with review checkpoints.
+- **systematic-debugging**: Root-cause focused debugging process for resolving technical issues reliably.
+- **test-driven-development**: Strict Red-Green-Refactor workflow for robust code implementation.
+- **verification-before-completion**: Mandatory evidence-based verification before claiming task completion.
+
+#### Maintenance & Meta
+- **using-superpowers**: Fundamental rules and priorities for skill discovery and application.
+- **writing-skills**: TDD-based process for creating and refining persistent agent skills.
+
 ### Data Analysis
 - **dask**: Scales pandas and NumPy workflows to larger-than-RAM datasets or clusters.
 - **exploratory-data-analysis**: Performs comprehensive exploratory analysis on scientific and business data.
@@ -16,7 +31,8 @@ This repository contains a comprehensive set of "skills"—structured documentat
 - **statsmodels**: Implements statistical models for rigorous inference and diagnostics.
 
 ### Data Sources
-- **elasticsearch**: Queries and indexes data in Elasticsearch 8.x.
+- **elasticsearch**: Queries and indexes data using both Python client and ES|QL (cURL).
+- **postgresql**: Newly added skill for interacting with PostgreSQL databases including complex queries.
 - **query-optimization**: Best practices for optimizing SQL query performance.
 - **s3**: Manages data storage and retrieval on AWS S3 and compatible services.
 - **sql-queries**: Generates and optimizes SQL across major dialects (Postgres, Snowflake, BigQuery, DuckDB).
@@ -29,7 +45,6 @@ This repository contains a comprehensive set of "skills"—structured documentat
 - **get-available-resources**: Detects and reports available system resources (CPU, GPU, memory).
 - **git**: Manages source code version control and collaborative workflows.
 - **jupyter**: Manages interactive development within Jupyter notebooks.
-- **skill-engineering**: Analyzes local libraries/codebases and generates new Claude Code skills.
 - **windows-cli**: Executes file and system operations using Windows cmd and PowerShell.
 
 ### Machine Learning
@@ -52,6 +67,7 @@ This repository contains a comprehensive set of "skills"—structured documentat
 - **cli-scripts**: Converts Python scripts into professional command-line tools.
 - **debugging**: Step-by-step debugging for errors, bugs, or unexpected behavior.
 - **dotenv**: Manages configuration and secrets using environment variables and .env files.
+- **legacy-migration**: Migrates legacy codebases (C#, MATLAB) to modern Python (3.9+).
 - **parallel-processing-pro**: Accelerates data tasks using Multithreading (I/O) and Multiprocessing (CPU).
 - **pydantic**: Validates and manages data structures using Python type annotations.
 - **pytest**: Writes and executes Python tests with clean syntax and powerful fixtures.
@@ -90,4 +106,4 @@ This repository contains a comprehensive set of "skills"—structured documentat
 - **seaborn**: Creates statistical visualizations with attractive defaults.
 
 ---
-*For details on how to create or extend these skills, see the [skill-engineering](skills/infrastructure-tools/skill-engineering/SKILL.md) documentation.*
+*For details on how to create or extend these skills, see the [writing-skills](skills/core-workflow/maintenance-and-meta/writing-skills/SKILL.md) documentation.*

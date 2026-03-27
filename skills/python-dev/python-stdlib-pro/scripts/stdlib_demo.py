@@ -1,5 +1,4 @@
 import os
-import shutil
 import tempfile
 from pathlib import Path
 from collections import Counter, deque
@@ -9,7 +8,6 @@ from functools import lru_cache, partial
 from dataclasses import dataclass, field, asdict
 import bisect
 import heapq
-import json
 
 def test_pathlib():
     print("Testing Pathlib...")
@@ -60,7 +58,7 @@ def test_contextlib():
     with suppress(FileNotFoundError):
         os.remove('non_existent_random_file_12345.txt')
     
-    with ExitStack() as stack:
+    with ExitStack():
         # Just testing the stack mechanism
         pass
     print("Contextlib: OK")
@@ -89,9 +87,9 @@ def test_dataclasses():
 
 def test_performance_tools():
     print("Testing Performance Tools...")
-    l = [10, 20, 30]
-    bisect.insort(l, 25)
-    assert l == [10, 20, 25, 30]
+    my_list = [10, 20, 30]
+    bisect.insort(my_list, 25)
+    assert my_list == [10, 20, 25, 30]
     
     data = [1, 5, 2, 8, 3]
     assert heapq.nlargest(2, data) == [8, 5]

@@ -1,0 +1,6 @@
+recursive-include skills *.md *.json *.txt *.py
+include LICENSE
+include README.md
+include SKILLS.md
+include requirements.txt
+include pyproject.toml

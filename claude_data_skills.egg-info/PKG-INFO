@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: claude-data-skills
-Version: 0.1.0
+Version: 0.2.0
 Summary: A comprehensive collection of data science, analysis, and engineering skills and scripts.
 Author-email: Yoni Kremer <yoni.kremer@example.com>
 License: MIT
@@ -81,15 +81,17 @@ A professional-grade collection of data science, analysis, and engineering skill
 
 ## Overview
 
-`claude-data-skills` is a comprehensive library designed to enhance AI-assisted data workflows. It provides a structured collection of "skills"—reusable, idiomatic patterns and scripts for everything from advanced standard library usage to complex machine learning pipelines.
+`claude-data-skills` is a comprehensive library designed to enhance AI-assisted data workflows. It provides a structured collection of "skills"—reusable, idiomatic patterns and scripts for everything from advanced standard library usage to complex machine learning pipelines and professional development workflows.
 
 ## Key Features
 
 - **🚀 Professional Stdlib Usage**: High-performance patterns for `pathlib`, `itertools`, `collections`, and `contextlib`.
+- **⚡ Superpowers Workflow**: Integrated skills for brainstorming, TDD, systematic debugging, and plan execution.
 - **🛡️ Data Safety First**: Built-in guardrails to prevent accidental data loss or corruption during autonomous execution.
 - **📊 Modern Visualization**: First-class support for Plotly and Dash, ensuring interactive and high-quality data stories.
 - **🧠 ML-Ready**: Pre-configured patterns for PyTorch, Scikit-Learn, and Transformers.
 - **📁 Unstructured Data Support**: Advanced parsing for PDF, DOCX, XLSX, and binary formats.
+- **🔄 Legacy Migration**: Specialized patterns for migrating C# and MATLAB code to modern Python.
 
 ## Installation
 
@@ -128,9 +130,11 @@ test_pathlib()
 
 ```text
 skills/
+├── core-workflow/          # Brainstorming, TDD, Debugging, Plans
 ├── data-analysis/          # Dask, Polars, Pandas, Geopandas
+├── data-sources/           # PostgreSQL, Elasticsearch, S3, SQL
 ├── machine-learning/       # PyMC, PyTorch-Lightning, Scikit-Learn
-├── python-dev/             # Stdlib Pro, Debugging, Refactoring
+├── python-dev/             # Stdlib Pro, Legacy Migration, Refactoring
 ├── scientific-workflow/    # Scholar Evaluation, Visualization
 └── unstructured-data/      # PDF, DOCX, XLSX, Binary
 ```

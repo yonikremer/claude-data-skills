@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Professional Data Science & Research toolkit optimized for Open-Source LLMs, featuring resource-aware skills and idiomatic Python best practices.",
-    "version": "2.4.0"
+    "version": "2.4.1"
   },
   "plugins": [
     {
@@ -15,6 +15,7 @@
       "source": "./",
       "strict": false,
       "skills": [
+        "./skills/infrastructure-tools/api-skill-creator",
         "./skills/dask",
         "./skills/docx",
         "./skills/exploratory-data-analysis",

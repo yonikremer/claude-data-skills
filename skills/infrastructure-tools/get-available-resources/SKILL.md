@@ -14,12 +14,12 @@ Use this skill proactively before any computationally intensive task:
 
 - **Before data analysis**: Determine if datasets can be loaded into memory or require out-of-core processing
 - **Before model training**: Check if GPU acceleration is available and which backend to use
-- **Before parallel processing**: Identify optimal number of workers for joblib, multiprocessing, or Dask
+- **Before parallel processing**: Identify optimal number of workers for joblib or multiprocessing
 - **Before large file operations**: Verify sufficient disk space and appropriate storage strategies
 - **At project initialization**: Understand baseline capabilities for making architectural decisions
 
 **Example scenarios:**
-- "Help me analyze this 50GB genomics dataset" → Use this skill first to determine if Dask/Zarr are needed
+- "Help me analyze this 50GB genomics dataset" → Use this skill first to determine if Polars/Zarr are needed
 - "Train a neural network on this data" → Use this skill to detect available GPUs and backends
 - "Process 10,000 files in parallel" → Use this skill to determine optimal worker count
 - "Run a computationally intensive simulation" → Use this skill to understand resource constraints
@@ -97,11 +97,11 @@ The skill generates a `.claude_resources.json` file in the current working direc
     "parallel_processing": {
       "strategy": "high_parallelism",
       "suggested_workers": 6,
-      "libraries": ["joblib", "multiprocessing", "dask"]
+      "libraries": ["joblib", "multiprocessing"]
     },
     "memory_strategy": {
       "strategy": "moderate_memory",
-      "libraries": ["dask", "zarr"],
+      "libraries": ["zarr"],
       "note": "Consider chunking for datasets > 2GB"
     },
     "gpu_acceleration": {
@@ -122,13 +122,13 @@ The skill generates a `.claude_resources.json` file in the current working direc
 The skill generates context-aware recommendations:
 
 **Parallel Processing Recommendations:**
-- **High parallelism (8+ cores)**: Use Dask, joblib, or multiprocessing with workers = cores - 2
+- **High parallelism (8+ cores)**: Use joblib or multiprocessing with workers = cores - 2
 - **Moderate parallelism (4-7 cores)**: Use joblib or multiprocessing with workers = cores - 1
 - **Sequential (< 4 cores)**: Prefer sequential processing to avoid overhead
 
 **Memory Strategy Recommendations:**
-- **Memory constrained (< 4GB available)**: Use Zarr, Dask, or H5py for out-of-core processing
-- **Moderate memory (4-16GB available)**: Use Dask/Zarr for datasets > 2GB
+- **Memory constrained (< 4GB available)**: Use Zarr or H5py for out-of-core processing
+- **Moderate memory (4-16GB available)**: Use Polars/Zarr for datasets > 2GB
 - **Memory abundant (> 16GB available)**: Can load most datasets into memory directly
 
 **GPU Acceleration Recommendations:**
@@ -170,12 +170,11 @@ with open('.claude_resources.json', 'r') as f:
 # Check parallel processing strategy
 if resources['recommendations']['parallel_processing']['strategy'] == 'high_parallelism':
     n_jobs = resources['recommendations']['parallel_processing']['suggested_workers']
-    # Use joblib, Dask, or multiprocessing with n_jobs workers
+    # Use joblib or multiprocessing with n_jobs workers
 
 # Check memory strategy
 if resources['recommendations']['memory_strategy']['strategy'] == 'memory_constrained':
-    # Use Dask, Zarr, or H5py for out-of-core processing
-    import dask.array as da
+    # Use Zarr or H5py for out-of-core processing
     # Load data in chunks
 
 # Check GPU availability
@@ -194,9 +193,9 @@ memory_available_gb = resources['memory']['available_gb']
 dataset_size_gb = 10
 
 if dataset_size_gb > memory_available_gb * 0.5:
-    # Dataset is large relative to memory, use Dask
-    import dask.dataframe as dd
-    df = dd.read_csv('large_file.csv')
+    # Dataset is large relative to memory, use Polars
+    import polars as pl
+    df = pl.scan_csv('large_file.csv').collect()
 else:
     # Dataset fits in memory, use pandas
     import pandas as pd
@@ -268,4 +267,3 @@ All other functionality uses Python standard library modules (json, os, platform
 - Memory readings are snapshots; actual available memory changes constantly
 - Close other applications before detection for accurate "available" memory
 - Consider running detection multiple times and averaging results
-

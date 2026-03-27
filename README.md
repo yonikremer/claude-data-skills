@@ -12,14 +12,15 @@ A professional-grade collection of data science, analysis, and engineering skill
 
 ## Key Features
 
-- **🚀 Professional Stdlib Usage**: High-performance patterns for `pathlib`, `itertools`, `collections`, and `contextlib`.
+- **🚀 Professional Python Core**: Unified expert guide for PEP-8, Pydantic, Pytest, and high-performance parallelism.
+- **📊 Data Analysis Pro**: Consolidated power-user guide for NumPy, Pandas, and Polars. Unified strategy for scaling from KB to 100GB+.
 - **⚡ Superpowers Workflow**: Integrated skills for brainstorming, TDD, systematic debugging, and plan execution.
 - **🛡️ Data Safety First**: Built-in guardrails to prevent accidental data loss or corruption during autonomous execution.
-- **📊 Modern Visualization**: First-class support for Plotly and Dash, ensuring interactive and high-quality data stories.
-- **🧠 Autonomous Logic Recovery**: A process-driven migration framework for C#, MATLAB, and legacy Python using instrumentation and TDD.
-- **🧠 ML-Ready**: Pre-configured patterns for PyTorch, Scikit-Learn, and Transformers.
-- **📁 Unstructured Data Support**: Advanced parsing for PDF, DOCX, XLSX, and binary formats.
-- **🔄 Legacy Migration**: Specialized patterns for migrating C# and MATLAB code to modern Python.
+- **📈 Visualization Pro**: Expert guide for Plotly (interactive), Dash (dashboards), and Seaborn (static stats).
+- **🗄️ Database Pro**: Unified access for SQL (Postgres), SQLAlchemy (ORM), Elasticsearch, and S3.
+- **📁 Document Processing Pro**: Consolidated expert guide for PDF, Word (DOCX), Excel (XLSX), and PowerPoint (PPTX).
+- **🔬 Scientific Research Suite**: Unified guide for the entire scientific lifecycle: brainstorming, writing (IMRAD), and peer review.
+- **🔄 Legacy Migration Suite**: Specialized patterns for migrating C#, MATLAB, and Python 2 code to modern Python (3.9+).
 
 ## Installation
 
@@ -59,12 +60,12 @@ test_pathlib()
 ```text
 skills/
 ├── core-workflow/          # Brainstorming, TDD, Debugging, Plans
-├── data-analysis/          # Dask, Polars, Pandas, Geopandas
-├── data-sources/           # PostgreSQL, Elasticsearch, S3, SQL
-├── machine-learning/       # PyMC, PyTorch-Lightning, Scikit-Learn
-├── python-dev/             # Stdlib Pro, Legacy Migration, Autonomous Logic Recovery, Refactoring
-├── scientific-workflow/    # Scholar Evaluation, Visualization
-└── unstructured-data/      # PDF, DOCX, XLSX, Binary
+├── data-analysis/          # Data Analysis Pro (NumPy, Pandas, Polars), Geopandas
+├── data-sources/           # Database Pro (Postgres, SQLAlchemy, ES, S3)
+├── machine-learning/       # ML-Classical, ML-Deep-Learning, PyMC
+├── python-dev/             # Python Core Pro, Legacy Migration Suite, Logic Recovery
+├── scientific-workflow/    # Scientific Research Suite
+└── unstructured-data/      # Document Processing Pro, Binary Data Parsing
 ```
 
 ## License

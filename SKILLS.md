@@ -28,24 +28,15 @@ All skills in this repository follow a unified architectural standard:
 - **writing-skills**: TDD-based process for creating and refining persistent agent skills.
 
 ### Data Analysis
-- **dask**: Scales pandas and NumPy workflows to larger-than-RAM datasets or clusters.
+- **data-analysis-pro**: Consolidated power-user guide for NumPy, Pandas, and Polars. Unified strategy for scaling from KB to 100GB+.
 - **exploratory-data-analysis**: Performs comprehensive exploratory analysis on scientific and business data.
 - **geopandas**: Analyzes geospatial vector data including shapefiles and GeoJSON.
 - **matlab**: Provides matrix operations, data analysis, and scientific computing using MATLAB/Octave syntax.
-- **numpy**: Performs numerical computing and vectorized math using arrays.
-- **pandas**: Analyzes and transforms tabular data using DataFrames.
-- **polars**: High-performance DataFrame library with a parallel Apache Arrow backend.
 - **statistical-analysis**: Performs statistical testing, trend analysis, and business metric investigation.
 - **statsmodels**: Implements statistical models for rigorous inference and diagnostics.
 
 ### Data Sources
-- **elasticsearch**: Queries and indexes data using both Python client and ES|QL (cURL).
-- **postgresql**: Newly added skill for interacting with PostgreSQL databases including complex queries.
-- **query-optimization**: Best practices for optimizing SQL query performance.
-- **s3**: Manages data storage and retrieval on AWS S3 and compatible services.
-- **sql-queries**: Generates and optimizes SQL across major dialects (Postgres, Snowflake, BigQuery, DuckDB).
-- **sql-syntax-and-functions**: Comprehensive SQL syntax and function guide across major databases.
-- **sqlalchemy**: Provides database-agnostic access and ORM capabilities.
+- **database-pro**: Consolidated expert guide for SQL (queries/schemas), SQLAlchemy (ORM), PostgreSQL, Elasticsearch (search/indexing), and S3 (object storage).
 
 ### Infrastructure Tools
 - **data-context-extractor**: Extracts warehouse schemas and tribal knowledge to generate tailored data skills.
@@ -57,14 +48,11 @@ All skills in this repository follow a unified architectural standard:
 - **windows-cli**: Executes file and system operations using Windows cmd and PowerShell.
 
 ### Machine Learning
-- **anomaly-detection**: Identifies unusual patterns or outliers in data.
+- **ml-classical**: Consolidated expert guide for Scikit-Learn, UMAP (dimensionality reduction), and Anomaly Detection.
+- **ml-deep-learning**: Consolidated expert guide for PyTorch Lightning (scalable training) and Transformers (Hugging Face).
 - **pymc**: Builds and samples Bayesian models using probabilistic programming.
-- **pytorch-lightning**: Organizes PyTorch code for scalable deep learning training.
-- **scikit-learn**: Machine learning in Python (classification, regression, clustering).
 - **stable-baselines3**: Provides production-ready reinforcement learning algorithms.
 - **timesfm-forecasting**: Performs zero-shot time series forecasting using foundation models.
-- **transformers**: Works with pre-trained transformer models for NLP, vision, and audio tasks.
-- **umap-learn**: Performs non-linear dimensionality reduction for visualization and clustering.
 
 ### Networking & Security
 - **log-parsing**: Parses structured and unstructured log files into DataFrames for analysis.
@@ -73,46 +61,22 @@ All skills in this repository follow a unified architectural standard:
 - **wireshark-extensions**: Develop custom Wireshark protocol dissectors using Lua.
 
 ### Python Development
-- **cli-scripts**: Converts Python scripts into professional command-line tools.
-- **debugging**: Step-by-step debugging for errors, bugs, or unexpected behavior.
-- **dotenv**: Manages configuration and secrets using environment variables and .env files.
-- **legacy-migration**: Migrates legacy codebases (C#, MATLAB) to modern Python (3.9+).
-- **parallel-processing-pro**: Accelerates data tasks using Multithreading (I/O) and Multiprocessing (CPU).
-- **pydantic**: Validates and manages data structures using Python type annotations.
-- **pytest**: Writes and executes Python tests with clean syntax and powerful fixtures.
-- **python-best-practices**: Enforces PEP-8, idiomatic Python, and formatting standards.
-- **python-stdlib-pro**: Advanced usage of Python's standard library (Pathlib, Regex, JSON).
-- **python2-migration**: Migrates legacy Python 2 code to Python 3.
-- **refactoring**: Improves code quality and restructures Python codebases using automated tools.
+- **python-core-pro**: Consolidated expert guide for Best Practices (PEP-8), Pydantic (Type Safety), Pytest (Testing), and Parallel Processing.
+- **legacy-migration-suite**: Consolidated guide for migrating from Python 2, C#, or MATLAB to modern Python (3.9+).
 
 ### Scientific Workflow
-- **peer-review**: Provides structured evaluation for manuscript and grant reviews.
-- **research-summaries**: Generates technical and executive research summaries.
-- **scholar-evaluation**: Systematically evaluates scholarly work across methodology and contribution.
-- **scientific-brainstorming**: Facilitates creative research ideation and interdisciplinary exploration.
-- **scientific-critical-thinking**: Evaluates scientific claims and evidence design validity.
-- **scientific-schematics**: Creates publication-quality scientific diagrams and architectures.
-- **scientific-slides**: Builds research-focused slide decks for conferences and seminars.
-- **scientific-visualization**: Creates publication-ready multi-panel figures.
-- **scientific-writing**: Drafts scientific manuscripts using a research-first two-stage process.
+- **scientific-research-suite**: Consolidated expert guide for the complete scientific lifecycle: brainstorming, research design, critical thinking, writing (IMRAD), and peer review.
 
 ### Unstructured Data Processing
 - **binary-data-parsing**: Parses and manipulates raw binary data and custom file formats.
 - **bit-error-correction**: Detects and repairs corrupted data using error-correcting codes (ECC).
 - **data-format-detection**: Identifies the format and encoding of unknown binary files.
-- **docx**: Creates, reads, and manipulates Word (.docx) documents.
+- **document-processing-pro**: Consolidated expert guide for PDF, Word (DOCX), Excel (XLSX), and PowerPoint (PPTX).
 - **ffmpeg**: Processes and transforms audio, video, and image files.
-- **pdf**: Extracts text, merges, splits, and manipulates PDF files.
-- **pptx**: Creates, reads, and modifies PowerPoint (.pptx) presentations.
 - **shapely**: Planar geometric manipulation and analysis.
-- **xlsx**: Manages creation, editing, and analysis of spreadsheet files (.xlsx, .csv).
 
 ### Visualization
-- **build-dashboard**: Builds interactive HTML dashboards with KPI cards, charts, and tables.
-- **data-visualization**: Generates high-quality visualizations and provides design guidance.
-- **plotly**: Creates interactive and publication-quality visualizations (Primary recommendation).
-- **plotly-dash**: Builds interactive web dashboards and data applications.
-- **seaborn**: Creates statistical visualizations with attractive defaults.
+- **visualization-pro**: Consolidated expert guide for Plotly (interactive), Dash (dashboards), and Seaborn (static stats).
 
 ---
 *For details on how to create or extend these skills, see the [writing-skills](skills/core-workflow/maintenance-and-meta/writing-skills/SKILL.md) documentation.*

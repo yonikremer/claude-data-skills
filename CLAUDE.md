@@ -34,19 +34,19 @@ When a user provides a prompt, route to these specialized skills based on intent
 | If user wants to...       | Use these Primary Skills                                   |
 |:--------------------------|:-----------------------------------------------------------|
 | **Explore a new dataset** | `exploratory-data-analysis`                                |
-| **Clean/Transform data**  | `pandas`, `polars`, `numpy`, `python-stdlib-pro`           |
-| **Visualize data**        | `data-visualization`, `scientific-visualization`           |
-| **Train/Evaluate ML**     | `scikit-learn`, `anomaly-detection`, `timesfm-forecasting` |
-| **Write/Optimize SQL**    | `sql-queries`                                              |
-| **Build a UI/Dashboard**  | `build-dashboard`, `plotly-dash`                           |
-| **Parallel Processing**   | `parallel-processing-pro`                                  |
-| **Verify code quality**   | `pytest`, `pydantic`, `python-best-practices`              |
+| **Clean/Transform data**  | `data-analysis-pro`, `python-core-pro`                   |
+| **Visualize data**        | `visualization-pro`, `scientific-visualization`           |
+| **Train/Evaluate ML**     | `ml-classical`, `ml-deep-learning`, `timesfm-forecasting` |
+| **Write/Optimize SQL**    | `database-pro`                                             |
+| **Build a UI/Dashboard**  | `visualization-pro`                                        |
+| **Parallel Processing**   | `python-core-pro`                                          |
+| **Verify code quality**   | `python-core-pro`                                          |
 | **Manage version control** | `git`                                                      |
 | **Process audio/video**   | `ffmpeg`                                                   |
 | **Repair corrupted data** | `bit-error-correction`                                     |
 | **Create new skills**     | `skill-engineering`                                        |
-| **Summarize research**    | `research-summaries`                                       |
-| **Handle specific files** | `pdf`, `docx`, `pptx`, `xlsx`, `binary-data-parsing`       |
+| **Summarize research**    | `scientific-research-suite`                                |
+| **Handle specific files** | `document-processing-pro`, `binary-data-parsing`           |
 
 
 ## Gold Standard Requirements

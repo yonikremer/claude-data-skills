@@ -11,7 +11,7 @@ EDA on large datasets (SQL tables, HDF5, CSV) can crash the session if memory is
 1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
 2. **Strategy**:
    - **Data < 50% RAM**: Perform full in-memory analysis using `pandas`, `polars`, or `numpy`.
-   - **Data 50-90% RAM**: Use `polars` lazy mode or `dask` with sampling.
+   - **Data 50-90% RAM**: Use `polars` lazy mode.
    - **Data > RAM**: Perform **Streaming Analysis** or sample the first/random 10% of the dataset.
 
 ## Professional Workflow & Logical Checks

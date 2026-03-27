@@ -4,7 +4,7 @@ System Resource Detection Script
 
 Detects available compute resources including CPU, GPU, memory, and disk space.
 Outputs a JSON file that Claude Code can use to make informed decisions about
-computational approaches (e.g., whether to use Dask, Zarr, Joblib, etc.).
+computational approaches (e.g., whether to use Polars, Zarr, Joblib, etc.).
 
 Supports: macOS, Linux, Windows
 GPU Detection: NVIDIA (CUDA), AMD (ROCm), Apple Silicon (Metal)
@@ -352,7 +352,6 @@ def generate_recommendations(resources: Dict[str, Any]) -> Dict[str, Any]:
         recommendations["parallel_processing"]["libraries"] = [
             "joblib",
             "multiprocessing",
-            "dask",
         ]
     elif cpu_cores >= 4:
         recommendations["parallel_processing"]["strategy"] = "moderate_parallelism"
@@ -374,13 +373,13 @@ def generate_recommendations(resources: Dict[str, Any]) -> Dict[str, Any]:
 
     if available_memory_gb < 4:
         recommendations["memory_strategy"]["strategy"] = "memory_constrained"
-        recommendations["memory_strategy"]["libraries"] = ["zarr", "dask", "h5py"]
+        recommendations["memory_strategy"]["libraries"] = ["zarr", "h5py"]
         recommendations["memory_strategy"]["note"] = (
             "Use out-of-core processing for large datasets"
         )
     elif available_memory_gb < 16:
         recommendations["memory_strategy"]["strategy"] = "moderate_memory"
-        recommendations["memory_strategy"]["libraries"] = ["dask", "zarr"]
+        recommendations["memory_strategy"]["libraries"] = ["zarr"]
         recommendations["memory_strategy"]["note"] = (
             "Consider chunking for datasets > 2GB"
         )

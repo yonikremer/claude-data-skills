@@ -17,3 +17,10 @@ __pycache__/
 scan_skills.py
 
 .idea
+
+# Cache and Build
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+dist/
+build/

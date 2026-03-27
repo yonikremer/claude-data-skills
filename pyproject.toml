@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "claude-data-skills"
-version = "0.4.0"
+version = {attr = "claude_data_skills.__version__.__version__"}
 description = "A comprehensive collection of data science, analysis, and engineering skills and scripts."
 readme = "README.md"
 requires-python = ">=3.9"

@@ -106,6 +106,7 @@ Create a skill with this structure:
 
 ```
 [company]-data-analyst/
+`[company]-data-analyst/
 ├── SKILL.md
 └── references/
     ├── entities.md          # Entity definitions and relationships
@@ -113,14 +114,12 @@ Create a skill with this structure:
     ├── tables/              # One file per domain
     │   ├── [domain1].md
     │   └── [domain2].md
-    └── dashboards.json      # Optional: existing dashboards catalog
-```
+    └── dashboards.json      # Optional: existing dashboards catalog`
 
 **SKILL.md Template**: See `references/skill-template.md`
 
 **SQL Dialect Section**: See `references/sql-dialects.md` and include the appropriate dialect notes.
 
-**Reference File Template**: See `references/domain-template.md`
 
 ### Phase 4: Package and Deliver
 

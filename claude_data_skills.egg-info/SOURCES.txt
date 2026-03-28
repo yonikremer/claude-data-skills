@@ -4,7 +4,7 @@ README.md
 SKILLS.md
 pyproject.toml
 requirements.txt
-setup.py
+./skills/__init__.py
 claude_data_skills.egg-info/PKG-INFO
 claude_data_skills.egg-info/SOURCES.txt
 claude_data_skills.egg-info/dependency_links.txt
@@ -430,3 +430,4 @@ skills/visualization/visualization-pro/references/seaborn/__init__.py
 skills/visualization/visualization-pro/references/seaborn/examples.md
 skills/visualization/visualization-pro/references/seaborn/function_reference.md
 skills/visualization/visualization-pro/references/seaborn/objects_interface.md
+src/claude_data_skills/__version__.py

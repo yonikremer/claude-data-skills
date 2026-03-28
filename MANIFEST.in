@@ -1,4 +1,4 @@
-recursive-include skills *.md *.json *.txt *.py
+recursive-include src/skills *.md *.json *.txt *.py
 include LICENSE
 include README.md
 include SKILLS.md

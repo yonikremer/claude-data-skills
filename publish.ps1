@@ -33,17 +33,20 @@ function Update-PackageVersion {
 Write-Host "--- Automating PyPI Package Update ---"
 
 # 1. Ensure 'src' directory and __version__.py exist
-Write-Host "Creating src/claude_data_skills/__version__.py..."
-New-Item -ItemType Directory -Path src/claude_data_skills -Force | Out-Null
+Write-Host "Ensuring src/claude_data_skills exists..."
+if (-not (Test-Path "src/claude_data_skills")) {
+    New-Item -ItemType Directory -Path src/claude_data_skills -Force | Out-Null
+}
+
 # Ensure __version__.py exists, if it doesn't, initialize it for safety before reading
 if (-not (Test-Path $versionFile)) {
-    Set-Content -Path $versionFile -Value "`__version__ = '0.0.0'`"
+    Set-Content -Path $versionFile -Value "__version__ = '0.0.0'"
 }
 
 # 2. Get current version from __version__.py
 $currentVersionLine = Get-Content -Path $versionFile | Select-String "__version__ ="
 if ($currentVersionLine) {
-    # Extract version from a line like: __version__ = '3.0.0'
+    # Extract version from a line like: __version__ = '3.1.0'
     $currentVersion = ($currentVersionLine.Line -split "'")[1]
     Write-Host "Current package version: $currentVersion"
 } else {
@@ -55,10 +58,14 @@ $newVersion = Update-PackageVersion $currentVersion $VersionType
 Write-Host "New package version: $newVersion"
 
 # 4. Update __version__.py and pyproject.toml
-(Get-Content -Path $versionFile) -replace "`__version__ = '$currentVersion'`", "`__version__ = '$newVersion'`" | Set-Content -Path $versionFile
+$oldVersionString = "__version__ = '$currentVersion'"
+$newVersionString = "__version__ = '$newVersion'"
+(Get-Content -Path $versionFile) -replace [regex]::Escape($oldVersionString), $newVersionString | Set-Content -Path $versionFile
 Write-Host "Updated version in $versionFile to $newVersion"
 
-(Get-Content -Path $pyprojectToml) -replace "version = `"$currentVersion`"", "version = `"$newVersion`"" | Set-Content -Path $pyprojectToml
+$oldPyprojectVersion = "version = `"$currentVersion`""
+$newPyprojectVersion = "version = `"$newVersion`""
+(Get-Content -Path $pyprojectToml) -replace [regex]::Escape($oldPyprojectVersion), $newPyprojectVersion | Set-Content -Path $pyprojectToml
 Write-Host "Updated version in $pyprojectToml to $newVersion"
 
 # 5. Install build and twine

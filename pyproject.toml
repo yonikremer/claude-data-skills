@@ -88,11 +88,7 @@ stdlib-demo = "skills.python_dev.python_stdlib_pro.scripts.stdlib_demo:main"
 setup-claude-skills = "claude_data_skills.cli.setup_skills:copy_skills_to_claude_home"
 
 [tool.setuptools]
-packages = ["skills", "claude_data_skills"]
-package-dir = {
-    "skills" = ".",
-    "claude_data_skills" = "src/claude_data_skills"
-}
+package-dir = {"" = "src"}
 
 [tool.setuptools.package-data]
 "*" = ["*.md", "*.json", "*.txt"]

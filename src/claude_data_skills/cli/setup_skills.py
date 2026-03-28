@@ -9,14 +9,13 @@ def copy_skills_to_claude_home():
     """
     try:
         # Determine the installed 'skills' package's location
-        # Check if 'skills' is directly importable
         spec = importlib.util.find_spec("skills")
         if spec is None or spec.origin is None:
             print(f"Error: Could not find installed 'skills' package. Please ensure it's installed correctly.", file=sys.stderr)
             sys.exit(1)
 
-        package_root = os.path.dirname(os.path.abspath(spec.origin))
-        source_path = package_root # The 'skills' package itself is the source
+        # spec.origin is the path to __init__.py. The directory of that is the source_path.
+        source_path = os.path.dirname(os.path.abspath(spec.origin))
 
         home_dir = os.path.expanduser("~")
         claude_dir = os.path.join(home_dir, '.claude')

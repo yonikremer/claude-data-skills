@@ -1,16 +1,22 @@
 import os
 import shutil
 import sys
+import importlib.util
 
 def copy_skills_to_claude_home():
     """
     Copies the 'skills' directory from the installed package to ~/.claude/skills.
     """
     try:
-        # Determine the installed package's location
-        import claude_data_skills
-        package_root = os.path.dirname(os.path.abspath(claude_data_skills.__file__))
-        source_path = os.path.join(package_root, 'skills')
+        # Determine the installed 'skills' package's location
+        # Check if 'skills' is directly importable
+        spec = importlib.util.find_spec("skills")
+        if spec is None or spec.origin is None:
+            print(f"Error: Could not find installed 'skills' package. Please ensure it's installed correctly.", file=sys.stderr)
+            sys.exit(1)
+
+        package_root = os.path.dirname(os.path.abspath(spec.origin))
+        source_path = package_root # The 'skills' package itself is the source
 
         home_dir = os.path.expanduser("~")
         claude_dir = os.path.join(home_dir, '.claude')
@@ -19,7 +25,7 @@ def copy_skills_to_claude_home():
         print(f"Attempting to copy skills from '{source_path}' to '{destination_path}'")
 
         if not os.path.exists(source_path):
-            print(f"Error: Source skills directory '{source_path}' does not exist in the installed package.", file=sys.stderr)
+            print(f"Error: Source skills directory '{source_path}' does not exist (installed 'skills' package not found).", file=sys.stderr)
             sys.exit(1)
 
         if os.path.exists(destination_path):

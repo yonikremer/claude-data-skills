@@ -47,7 +47,6 @@ Beyond basic statistics, you MUST answer these "Deep EDA" questions for every da
 
 ### Step 1: Data Access & Type Detection
 Identify if you are querying a **SQL Warehouse** or a **Local File**.
-- For 200+ scientific formats, load specific references (e.g., `references/bioinformatics_genomics_formats.md`).
 - For SQL, explore schema metadata first.
 
 ### Step 2: Perform Data Profiling
@@ -66,5 +65,3 @@ Create a `{filename}_eda_report.md` with Findings, Data Quality Issues, and Down
 ## References (Load on demand)
 - `references/advanced_eda_questions.md` — Detailed logic for hierarchy and nullity checks.
 - `references/general_scientific_formats.md` — How to read CSV, HDF5, Parquet, etc.
-- `references/microscopy_imaging_formats.md` — Domain-specific imaging EDA.
-- `references/bioinformatics_genomics_formats.md` — Domain-specific sequence EDA.

@@ -186,11 +186,6 @@ def load_reference_info(category: str, extension: str) -> Optional[Dict[str, str
     """
     # Map categories to reference files
     category_files = {
-        "chemistry_molecular": "chemistry_molecular_formats.md",
-        "bioinformatics_genomics": "bioinformatics_genomics_formats.md",
-        "microscopy_imaging": "microscopy_imaging_formats.md",
-        "spectroscopy_analytical": "spectroscopy_analytical_formats.md",
-        "proteomics_metabolomics": "proteomics_metabolomics_formats.md",
         "general_scientific": "general_scientific_formats.md",
     }
 

@@ -23,9 +23,14 @@ All skills in this repository follow a unified architectural standard:
 - **test-driven-development**: Strict Red-Green-Refactor workflow for robust code implementation.
 - **verification-before-completion**: Mandatory evidence-based verification before claiming task completion.
 
-#### Maintenance & Meta
+#### Meta & Discovery
 - **using-superpowers**: Fundamental rules and priorities for skill discovery and application.
+
+### Learning and Skill Building
+- **tech-explorer**: Researches, tests, and masters unfamiliar technologies (libraries, APIs, databases) to create comprehensive, "Gold Standard" skills.
 - **writing-skills**: TDD-based process for creating and refining persistent agent skills.
+- **api-skill-creator**: Transforms API documentation (Swagger, Wiki, etc.) into reusable skills for internal or external services.
+- **database-skill-creator**: Transforms database structures (schemas, relationships) into reusable skills for specific data sources.
 
 ### Data Analysis
 - **data-analysis-pro**: Consolidated power-user guide for NumPy, Pandas, and Polars. Unified strategy for scaling from KB to 100GB+.
@@ -79,4 +84,4 @@ All skills in this repository follow a unified architectural standard:
 - **visualization-pro**: Consolidated expert guide for Plotly (interactive), Dash (dashboards), and Seaborn (static stats).
 
 ---
-*For details on how to create or extend these skills, see the [writing-skills](skills/core-workflow/maintenance-and-meta/writing-skills/SKILL.md) documentation.*
+*For details on how to create or extend these skills, see the [writing-skills](src/skills/learning-and-skill-building/writing-skills/SKILL.md) documentation.*

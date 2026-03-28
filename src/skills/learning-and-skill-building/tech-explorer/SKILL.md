@@ -25,14 +25,25 @@ A solid foundation is required before exploration.
 
 ### 3. Empirical Testing (The Mastery Phase)
 You MUST NOT document a technology until you have successfully used it and explored its full potential.
-- **Comprehensive API/Database Mapping**: Do not stop at "Hello World". You must systematically test all major functional areas for an API/library and all tables for a database.
-- **Understanding**:: What problems does the technology solve? What are the key use cases? What are its limitations?
+- **Comprehensive Mapping**: Do not stop at "Hello World". You must systematically test all major functional areas for an API/library and all tables for a database.
+- **Understanding**: What problems does the technology solve? What are the key use cases? What are its limitations?
 - **Scaffolding**: Create temporary test scripts (e.g., `test_api_explorer.py`) to exercise the breadth of the technology.
 - **Stress Testing**: Try edge cases (e.g., large payloads, invalid inputs, network timeouts, resource limits).
 - **Pitfall Discovery**: Document exactly what failed, why it was confusing, and how you fixed it. These become your "Wall of Shame" entries.
 
 ### 4. Documentation (The Gold Standard)
-Use all the data you've gathered and the "writing skills" to create a claude code skill.
+Once mastery is achieved, translate the knowledge into a permanent skill.
+- **Core Guidelines**: Strictly follow the standards in `writing-skills` for the TDD-based documentation process.
+- **Specialized Creators**: Delegate to these if appropriate:
+    - Use `api-skill-creator` for web/system APIs.
+    - Use `database-skill-creator` for SQL/NoSQL databases.
+- **General Skills**: Use the base `writing-skills` process for libraries and general tools.
+
+## Interoperability
+- **Writing Skills**: Provides the "Gold Standard" for skill structure and the Red/Green/Refactor writing process.
+- **API Skill Creator**: Specialized path for mapping API documentation to skills.
+- **Database Skill Creator**: Specialized path for mapping database structures to skills.
+- **Systematic Debugging**: Use for troubleshooting installation and setup failures.
 
 ## Iteration
 If a user reports a bug or a missing feature in a skill you created, re-enter the **Mastery Phase** to expand the documentation and update the "Wall of Shame".

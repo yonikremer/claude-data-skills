@@ -57,9 +57,13 @@ Follow these steps in order:
 - **Understand**: Clearly understand concrete examples of how the skill will be used. Ask 1-2 clarifying questions if needed.
 - **Baseline Test**: Run a pressure scenario with a subagent WITHOUT the skill.
 - **Watch it fail**: Document exact rationalizations and failures. This is your "failing test."
+- **Mastery Phase (Optional)**: If the subject is an unfamiliar technology (library, API, database), you MUST use `tech-explorer` to achieve empirical mastery before proceeding to documentation.
 
 ### 2. Planning & GREEN Phase (Write Minimal Skill)
 - **Plan**: Identify what scripts, references, and assets would be helpful.
+- **Specialized Creators**: For specific domains, use specialized workflows:
+    - **APIs**: Use `api-skill-creator`.
+    - **Databases**: Use `database-skill-creator`.
 - **Initialize**: Use the `init_skill.cjs` script:
   `node <path-to-skill-creator>/scripts/init_skill.cjs <skill-name> --path <output-directory>`
 - **Write Minimal Skill**: Write the `SKILL.md` and resources addressing specific baseline failures.
@@ -72,6 +76,11 @@ Follow these steps in order:
 - **Package**: `node <path-to-skill-creator>/scripts/package_skill.cjs <path/to/skill-folder>`
 - **Install**: Offer to install locally (`--scope workspace`) or at user level (`--scope user`).
 - **Reload**: Notify user they MUST manually execute `/skills reload`.
+
+## Interoperability
+- **Tech Explorer**: Used for discovering and mastering unfamiliar technologies before they are documented.
+- **API Skill Creator**: Specialized workflow for mapping API documentation to skills.
+- **Database Skill Creator**: Specialized workflow for mapping database structures to skills.
 
 ## The Iron Law
 

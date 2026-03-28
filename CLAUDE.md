@@ -67,3 +67,14 @@ Every skill in this repository should adhere to the "Gold Standard":
 - **`get-available-resources`**: Detects CPU/GPU/memory/disk info.
 - **`python-best-practices`**: Enforces coding standards and tiered testing strategy.
 - **`exploratory-data-analysis`**: Entry point for scientific file analysis.
+
+## Slash Commands (Out-of-the-Box)
+
+The following commands are available as high-level shortcuts for common data tasks. When a user invokes these, skip the planning phase and immediately trigger the corresponding skill:
+
+- **`/analyze <file>`**: Immediately trigger the `exploratory-data-analysis` skill on the specified file. Perform grain detection, structure analysis, and nullity checks.
+- **`/plot <type> <file>`**: Immediately trigger the `visualization-pro` skill to create the requested plot type for the dataset. Prefer Plotly for interactivity.
+- **`/query <task>`**: Immediately trigger the `database-pro` skill to write, optimize, or explain a SQL query or database operation.
+- **`/model <target> <file>`**: Immediately trigger the `ml-classical` skill to suggest a preprocessing pipeline and baseline model for the target variable.
+- **`/forecast <col> <file>`**: Immediately trigger the `timesfm-forecasting` skill to perform a zero-shot forecast on the specified time-series column.
+- **`/explore <technology>`**: Immediately trigger the `tech-explorer` skill to research, test, and master an unfamiliar database, library, or API.

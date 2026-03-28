@@ -32,6 +32,14 @@ pip install claude-data-skills
 
 ## Quick Start
 
+### Post-Installation Setup
+
+After installing the package, run the following command to copy the necessary skills files to your user's Claude home directory (`~/.claude/skills`):
+
+```bash
+setup-claude-skills
+```
+
 ### Using the CLI
 The package includes several built-in commands. For example, to run the standard library demonstration:
 

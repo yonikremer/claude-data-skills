@@ -85,6 +85,7 @@ dev = [
 [project.scripts]
 # Entry point for the stdlib demo script
 stdlib-demo = "skills.python_dev.python_stdlib_pro.scripts.stdlib_demo:main"
+setup-claude-skills = "claude_data_skills.cli.setup_skills:copy_skills_to_claude_home"
 
 [tool.setuptools]
 packages = ["skills"]

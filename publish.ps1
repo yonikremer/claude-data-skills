@@ -54,9 +54,12 @@ if ($currentVersionLine) {
 $newVersion = Update-PackageVersion $currentVersion $VersionType
 Write-Host "New package version: $newVersion"
 
-# 4. Update __version__.py
+# 4. Update __version__.py and pyproject.toml
 (Get-Content -Path $versionFile) -replace "`__version__ = '$currentVersion'`", "`__version__ = '$newVersion'`" | Set-Content -Path $versionFile
 Write-Host "Updated version in $versionFile to $newVersion"
+
+(Get-Content -Path $pyprojectToml) -replace "version = `"$currentVersion`"", "version = `"$newVersion`"" | Set-Content -Path $pyprojectToml
+Write-Host "Updated version in $pyprojectToml to $newVersion"
 
 # 5. Install build and twine
 Write-Host "Installing build and twine..."

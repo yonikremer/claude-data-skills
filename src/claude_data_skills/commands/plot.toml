@@ -1,0 +1,5 @@
+description = "Generate a specific plot for a dataset (e.g., /plot scatter data.csv)"
+prompt = """
+Use the `visualization-pro` skill to create a {{args}} plot for the data in the provided file. 
+Prefer Plotly for interactivity. Ensure the code is production-ready with proper labels and accessibility themes.
+"""

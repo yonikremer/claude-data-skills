@@ -1,0 +1,5 @@
+description = "Lookup a technical term in the dictionary"
+prompt = """
+Use the `lookup_term` tool from `src.dictionary_agent.tools` to find the definition and context for: {{args}}.
+If found, explain how it relates to the current task. If not found, check the Golden Terms or ask for clarification.
+"""

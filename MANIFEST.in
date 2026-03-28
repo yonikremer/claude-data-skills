@@ -1,4 +1,5 @@
 recursive-include src/skills *.md *.json *.txt *.py
+recursive-include src/claude_data_skills/commands *.toml
 include LICENSE
 include README.md
 include SKILLS.md

@@ -1,0 +1,5 @@
+description = "Write or optimize a SQL query"
+prompt = """
+Use the `database-pro` skill to handle this SQL task: {{args}}. 
+Follow master-level SQL patterns: use CTEs for readability, window functions for analytics, and ensure the query is optimized.
+"""

@@ -1,0 +1,5 @@
+description = "Perform zero-shot forecasting on a time-series column"
+prompt = """
+Use the `timesfm-forecasting` skill to perform a zero-shot forecast on the column specified in the first argument of @{args}.
+Handle frequency detection and provide a plot of the historical vs forecasted values.
+"""

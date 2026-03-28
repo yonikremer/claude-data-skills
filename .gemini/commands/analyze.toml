@@ -1,0 +1,7 @@
+description = "Perform professional EDA and profiling on a data file"
+prompt = """
+Use the `exploratory-data-analysis` skill to analyze @{args}. 
+1. Detect grain, structure, and nullity patterns.
+2. Identify categorical hierarchies and redundant columns.
+3. Generate an EDA report and update the data dictionary.
+"""

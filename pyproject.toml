@@ -69,6 +69,7 @@ dependencies = [
     "nbformat",
     "nbconvert",
     "watermark",
+    "pdfplumber",
 ]
 
 [project.optional-dependencies]
@@ -85,13 +86,15 @@ dev = [
 [project.scripts]
 # Entry point for the stdlib demo script
 stdlib-demo = "skills.python_dev.python_stdlib_pro.scripts.stdlib_demo:main"
-setup-claude-skills = "claude_data_skills.cli.setup_skills:copy_skills_to_claude_home"
+setup-data-skills = "claude_data_skills.cli.setup_skills:main"
+dictionary-scan = "dictionary_agent.run_scanner:main"
+dictionary-lookup = "dictionary_agent.tools:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
 
 [tool.setuptools.package-data]
-"*" = ["*.md", "*.json", "*.txt"]
+"*" = ["*.md", "*.json", "*.txt", "*.toml"]
 
 [tool.ruff]
 line-length = 88

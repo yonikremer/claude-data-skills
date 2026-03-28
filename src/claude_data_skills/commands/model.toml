@@ -1,0 +1,5 @@
+description = "Suggest an ML baseline for a target variable in a file"
+prompt = """
+Use the `ml-classical` skill to analyze @{args} and suggest a baseline model to predict the first argument.
+Include preprocessing steps (handling skew, encoding, scaling) and a sample Scikit-Learn implementation.
+"""

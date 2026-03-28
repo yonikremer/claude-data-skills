@@ -10,6 +10,7 @@ def copy_skills_folder():
     home_dir = os.path.expanduser("~")
     destination_path = os.path.join(home_dir, '.claude', 'skills')
 
+    print(f"DEBUG: Determined HOME directory: {home_dir}")
     print(f"Attempting to copy skills from '{source_path}' to '{destination_path}'")
 
     if not os.path.exists(source_path):
@@ -25,6 +26,15 @@ def copy_skills_folder():
         os.makedirs(os.path.dirname(destination_path), exist_ok=True) # Ensure parent directory exists
         shutil.copytree(source_path, destination_path)
         print(f"Successfully copied skills from '{source_path}' to '{destination_path}'")
+
+        # Add verification step within the script
+        if os.path.exists(destination_path):
+            print(f"DEBUG: Contents of '{destination_path}' after copy:")
+            for item in os.listdir(destination_path):
+                print(f"  - {item}")
+        else:
+            print(f"DEBUG: Destination path '{destination_path}' does not exist after copy.", file=sys.stderr)
+
     except Exception as e:
         print(f"Error copying skills folder: {e}", file=sys.stderr)
         sys.exit(1)

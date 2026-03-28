@@ -13,6 +13,18 @@ def copy_skills_folder():
     print(f"DEBUG: Environment variable APPDATA: {os.environ.get('APPDATA', 'Not set')}")
 
     home_dir = os.path.expanduser("~")
+
+    # --- DIAGNOSTIC: Attempt to create a simple test file in user's home ---
+    test_file_path = os.path.join(home_dir, 'pip_install_test_file.txt')
+    try:
+        with open(test_file_path, 'w') as f:
+            f.write("This file was created by the post-install script.
+")
+        print(f"DEBUG: Successfully created diagnostic file: {test_file_path}")
+    except Exception as e:
+        print(f"DEBUG: Failed to create diagnostic file at {test_file_path}: {e}", file=sys.stderr)
+    # --- END DIAGNOSTIC ---
+
     claude_dir = os.path.join(home_dir, '.claude')
     destination_path = os.path.join(claude_dir, 'skills')
 
@@ -24,23 +36,20 @@ def copy_skills_folder():
         sys.exit(1)
 
     try:
-        # Check if .claude directory exists before creating/copying
         if os.path.exists(claude_dir):
             print(f"DEBUG: .claude directory exists at: {claude_dir}")
             print(f"DEBUG: Contents of .claude directory before copy: {os.listdir(claude_dir)}")
         else:
             print(f"DEBUG: .claude directory does NOT exist at: {claude_dir}, will be created by os.makedirs")
 
-        # Remove destination if it exists to ensure a clean copy
         if os.path.exists(destination_path):
             print(f"Removing existing destination directory: {destination_path}")
             shutil.rmtree(destination_path)
             
-        os.makedirs(claude_dir, exist_ok=True) # Ensure .claude parent directory exists
+        os.makedirs(claude_dir, exist_ok=True)
         shutil.copytree(source_path, destination_path)
         print(f"Successfully copied skills from '{source_path}' to '{destination_path}'")
 
-        # Verification step within the script
         if os.path.exists(destination_path):
             print(f"DEBUG: Contents of '{destination_path}' after copy:")
             for item in os.listdir(destination_path):
@@ -48,7 +57,6 @@ def copy_skills_folder():
         else:
             print(f"DEBUG: Destination path '{destination_path}' does not exist after copy.", file=sys.stderr)
         
-        # Verify parent .claude directory contents
         if os.path.exists(claude_dir):
             print(f"DEBUG: Final contents of .claude directory: {os.listdir(claude_dir)}")
 

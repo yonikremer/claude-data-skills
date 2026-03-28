@@ -46,6 +46,7 @@ When a user provides a prompt, route to these specialized skills based on intent
 | **Repair corrupted data** | `bit-error-correction`                                     |
 | **Create new skills**     | `skill-engineering`                                        |
 | **Summarize research**    | `scientific-research-suite`                                |
+| **Manage dictionary**     | `dictionary-agent`                                         |
 | **Handle specific files** | `document-processing-pro`, `binary-data-parsing`           |
 
 
@@ -78,3 +79,4 @@ The following commands are available as high-level shortcuts for common data tas
 - **`/model <target> <file>`**: Immediately trigger the `ml-classical` skill to suggest a preprocessing pipeline and baseline model for the target variable.
 - **`/forecast <col> <file>`**: Immediately trigger the `timesfm-forecasting` skill to perform a zero-shot forecast on the specified time-series column.
 - **`/explore <technology>`**: Immediately trigger the `tech-explorer` skill to research, test, and master an unfamiliar database, library, or API.
+- **`/define <term>`**: Immediately trigger the `dictionary-agent` skill to lookup a technical term or acronym in the domain dictionary.

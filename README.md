@@ -20,6 +20,7 @@ A professional-grade collection of data science, analysis, and engineering skill
 - **🗄️ Database Pro**: Unified access for SQL (Postgres), SQLAlchemy (ORM), Elasticsearch, and S3.
 - **📁 Document Processing Pro**: Consolidated expert guide for PDF, Word (DOCX), Excel (XLSX), and PowerPoint (PPTX).
 - **🔬 Scientific Research Suite**: Unified guide for the entire scientific lifecycle: brainstorming, writing (IMRAD), and peer review.
+- **📚 AI-Ready Dictionary Agent**: Automated extraction of technical terms from PDF/PPTX into a structured knowledge base with fuzzy-search lookup tools.
 - **🔄 Legacy Migration Suite**: Specialized patterns for migrating C#, MATLAB, and Python 2 code to modern Python (3.9+).
 
 ## Installation

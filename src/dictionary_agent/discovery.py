@@ -11,7 +11,7 @@ def extract_with_anchors(text: str) -> List[Dict]:
     results = []
     
     # Simple regex to find "project [CapitalizedWord]"
-    project_matches = re.finditer(r"project\s+([A-Z][a-zA-Z0-9_-]*)", text)
+    project_matches = re.finditer(r"project\s+([A-Z][a-zA-Z0-9_-]*)", text, re.IGNORECASE)
     
     for match in project_matches:
         term = match.group(1)
@@ -25,7 +25,7 @@ def extract_with_anchors(text: str) -> List[Dict]:
         
         results.append({
             "term": term,
-            "definition": f"Extracted project: {term}",
+            "definition": f"A project named {term}.",
             "anchor": anchor,
             "is_new": True
         })

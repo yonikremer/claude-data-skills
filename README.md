@@ -18,6 +18,7 @@ complex machine learning pipelines and professional development workflows.
 - **🚀 Professional Python Core**: Unified expert guide for PEP-8, Pydantic, Pytest, and high-performance parallelism.
 - **📊 Data Analysis Pro**: Consolidated power-user guide for NumPy, Pandas, and Polars. Unified strategy for scaling
   from KB to 100GB+.
+- **🕸️ Full Spectrum Graph Sieve (GraphRAG)**: Advanced agentic workflow for extracting relationship-aware domain knowledge from internal docs (.docx, .one, .msg, .pdf). Uses a 4-gate verifiable pipeline with local models (Ollama).
 - **⚡ Superpowers Workflow**: Integrated skills for brainstorming, TDD, systematic debugging, and plan execution.
 - **🛡️ Data Safety First**: Built-in guardrails to prevent accidental data loss or corruption during autonomous
   execution.

@@ -12,7 +12,7 @@ class LocalLLMClient:
         self.base_url = base_url
         self.model = model
 
-    def chat(self, messages: List[Dict[str, str]], json_mode: bool = True) -> Dict[str, Any]:
+    def chat(self, messages: List[Dict[str, str]], json_mode: bool = True) -> Any:
         """
         Sends a chat request to the local LLM.
         """

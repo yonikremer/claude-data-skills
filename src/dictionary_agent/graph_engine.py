@@ -81,7 +81,12 @@ class GraphKnowledgeEngine:
 
     def get_context_map(self, term: str) -> str:
         neighbors = self.get_neighbors(term)
+        entry = self.dictionary.entries.get(term)
+        
         lines = [f"Knowledge Graph Context for '{term}':"]
+        if entry:
+            lines.append(f"Ubiquity: Found in {entry.document_count} unique documents.")
+            
         for r in neighbors:
             lines.append(f"- {r.subject} --[{r.relationship}]--> {r.object}")
         

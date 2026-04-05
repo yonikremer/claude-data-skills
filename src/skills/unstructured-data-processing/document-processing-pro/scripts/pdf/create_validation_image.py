@@ -5,7 +5,7 @@ from PIL import Image, ImageDraw
 
 
 def create_validation_image(
-    page_number: int, fields_json_path: str, input_path: str, output_path: str
+        page_number: int, fields_json_path: str, input_path: str, output_path: str
 ) -> None:
     """Creates a validation image with bounding boxes drawn over it.
 

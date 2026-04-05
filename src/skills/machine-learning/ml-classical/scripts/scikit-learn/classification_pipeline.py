@@ -31,7 +31,7 @@ warnings.filterwarnings("ignore")
 
 
 def create_preprocessing_pipeline(
-    numeric_features: List[str], categorical_features: List[str]
+        numeric_features: List[str], categorical_features: List[str]
 ) -> ColumnTransformer:
     """
     Create a preprocessing pipeline for mixed data types.
@@ -71,12 +71,12 @@ def create_preprocessing_pipeline(
 
 
 def train_and_evaluate_model(
-    x_data: Union[pd.DataFrame, np.ndarray],
-    y_data: Union[pd.Series, np.ndarray],
-    numeric_features: List[str],
-    categorical_features: List[str],
-    test_size: float = 0.2,
-    random_state: int = 42,
+        x_data: Union[pd.DataFrame, np.ndarray],
+        y_data: Union[pd.Series, np.ndarray],
+        numeric_features: List[str],
+        categorical_features: List[str],
+        test_size: float = 0.2,
+        random_state: int = 42,
 ) -> Dict[str, Any]:
     """
     Complete pipeline: preprocess, train, tune, and evaluate a classifier.

@@ -2,9 +2,11 @@
 name: ffmpeg
 description: Use when processing and transforming audio, video, and image files using the FFmpeg CLI. Ideal for media conversion, compression, stream extraction, and complex filtering.
 ---
+
 # FFmpeg
 
-FFmpeg is the leading multimedia framework, able to decode, encode, transcode, mux, demux, stream, filter and play almost anything that humans and machines have created.
+FFmpeg is the leading multimedia framework, able to decode, encode, transcode, mux, demux, stream, filter and play
+almost anything that humans and machines have created.
 
 ## Core Concepts
 
@@ -15,6 +17,7 @@ FFmpeg is the leading multimedia framework, able to decode, encode, transcode, m
 ## Common Operations
 
 ### 1. Basic Conversion
+
 ```bash
 # Convert video from one format to another
 ffmpeg -i input.avi output.mp4
@@ -24,6 +27,7 @@ ffmpeg -i input.wav output.mp3
 ```
 
 ### 2. Compression & Resizing
+
 ```bash
 # Compress video using CRF (Constant Rate Factor, 0-51, 23 is default, lower is better quality)
 ffmpeg -i input.mp4 -vcodec libx264 -crf 28 output.mp4
@@ -33,6 +37,7 @@ ffmpeg -i input.mp4 -vf "scale=-1:720" output_720p.mp4
 ```
 
 ### 3. Stream Extraction & Manipulation
+
 ```bash
 # Extract audio from video (without re-encoding)
 ffmpeg -i input.mp4 -vn -acodec copy output.m4a
@@ -45,6 +50,7 @@ ffmpeg -i input.mp4 -ss 00:01:00 -t 30 -c copy output_clip.mp4
 ```
 
 ### 4. Advanced Filtering
+
 ```bash
 # Create a GIF from a video
 ffmpeg -i input.mp4 -vf "fps=10,scale=320:-1:flags=lanczos" output.gif
@@ -61,10 +67,12 @@ ffmpeg -i input.mp4 "frames/out-%03d.png"
 - **Use `-c copy`**: Whenever possible, use `copy` for codecs to avoid quality loss and save CPU (muxing only).
 - **Check Resources**: FFmpeg can consume 100% CPU. Run `get-available-resources` first.
 - **Verification**: Always run `ffprobe input.mp4` to inspect stream metadata before processing.
-- **Hardware Acceleration**: On supported systems, use `h264_nvenc` (NVIDIA) or `h264_videotoolbox` (Apple) for 10x faster encoding.
+- **Hardware Acceleration**: On supported systems, use `h264_nvenc` (NVIDIA) or `h264_videotoolbox` (Apple) for 10x
+  faster encoding.
 
 ## Troubleshooting
 
 - **Out of Sync**: If audio/video are out of sync, try `-async 1` or `-async 1 -vsync 1`.
 - **Unknown Encoder**: Ensure the required library is installed (e.g., `libx264` for H.264).
-- **Invalid Argument**: FFmpeg arguments are order-sensitive. Generally: `ffmpeg [global] [input_opts] -i input [output_opts] output`.
+- **Invalid Argument**: FFmpeg arguments are order-sensitive. Generally:
+  `ffmpeg [global] [input_opts] -i input [output_opts] output`.

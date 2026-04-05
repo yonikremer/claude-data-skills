@@ -7,11 +7,11 @@ from pypdf.annotations import FreeText
 
 
 def transform_from_image_coords(
-    bbox: List[float],
-    image_width: float,
-    image_height: float,
-    pdf_width: float,
-    pdf_height: float,
+        bbox: List[float],
+        image_width: float,
+        image_height: float,
+        pdf_width: float,
+        pdf_height: float,
 ) -> Tuple[float, float, float, float]:
     """Transforms bounding box coordinates from image space to PDF space.
 
@@ -38,7 +38,7 @@ def transform_from_image_coords(
 
 
 def transform_from_pdf_coords(
-    bbox: List[float], pdf_height: float
+        bbox: List[float], pdf_height: float
 ) -> Tuple[float, float, float, float]:
     """Transforms bounding box coordinates within PDF space (y-inversion).
 
@@ -59,7 +59,7 @@ def transform_from_pdf_coords(
 
 
 def fill_pdf_form(
-    input_pdf_path: str, fields_json_path: str, output_pdf_path: str
+        input_pdf_path: str, fields_json_path: str, output_pdf_path: str
 ) -> None:
     """Fills a PDF form by adding FreeText annotations.
 

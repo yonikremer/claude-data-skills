@@ -220,8 +220,8 @@ def create_visualization(data: dict[str, Any]) -> None:
     ax.legend(fontsize=7.5, loc="upper left")
     ax.grid(True, alpha=0.22)
     ratio = (
-        data["stores"]["store_A"]["sales"][:CONTEXT_LEN].mean()
-        / data["stores"]["store_C"]["sales"][:CONTEXT_LEN].mean()
+            data["stores"]["store_A"]["sales"][:CONTEXT_LEN].mean()
+            / data["stores"]["store_C"]["sales"][:CONTEXT_LEN].mean()
     )
     ax.annotate(
         f"Store A earns {ratio:.1f}x Store C\n(premium vs discount pricing)\n"

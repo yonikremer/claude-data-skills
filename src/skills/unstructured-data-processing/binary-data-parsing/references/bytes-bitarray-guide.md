@@ -118,7 +118,8 @@ with open('out.bin', 'wb') as f:
 
 ## memoryview — Zero-Copy Slicing
 
-`memoryview` exposes a buffer without copying. Essential when working with large mmap regions, socket data, or when passing sub-slices to struct.
+`memoryview` exposes a buffer without copying. Essential when working with large mmap regions, socket data, or when
+passing sub-slices to struct.
 
 ```python
 import struct
@@ -143,7 +144,8 @@ mv[0:2] = b'\xFF\xFE'
 
 ## io.BytesIO — In-Memory Binary Stream
 
-Treat a `bytes` object as a seekable file. Useful for parsing with stream-oriented code or constructing binary output in memory.
+Treat a `bytes` object as a seekable file. Useful for parsing with stream-oriented code or constructing binary output in
+memory.
 
 ```python
 import io, struct
@@ -170,7 +172,8 @@ result: bytes = out.getvalue()
 
 Install: `pip install bitarray`
 
-Stores bits packed into machine words — 8× more memory-efficient than a Python `list` of bools, and operations are vectorized in C.
+Stores bits packed into machine words — 8× more memory-efficient than a Python `list` of bools, and operations are
+vectorized in C.
 
 ### Creation
 
@@ -317,7 +320,8 @@ decoded = decode(code, encoded)   # ['a', 'b', 'c', 'd', 'e']
 
 ### endian parameter
 
-By default, `bitarray` stores bits in MSB-first order within each byte (same as network byte order). For LSB-first (common in some hardware/RF protocols):
+By default, `bitarray` stores bits in MSB-first order within each byte (same as network byte order). For LSB-first (
+common in some hardware/RF protocols):
 
 ```python
 a = bitarray('10110100', endian='little')  # LSB of byte is bit[0]

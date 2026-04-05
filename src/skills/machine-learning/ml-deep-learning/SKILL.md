@@ -2,6 +2,7 @@
 name: ml-deep-learning
 description: Use for training and fine-tuning deep learning models, including LLMs, Vision, and Audio transformers. Unified guide for PyTorch Lightning (scalable training) and Transformers (Hugging Face). CRITICAL: Run `get-available-resources` first to detect GPUs and CUDA availability.
 ---
+
 # Deep Learning & Transformers (Consolidated)
 
 Unified expert guide for scalable deep learning and foundation model fine-tuning.
@@ -19,6 +20,7 @@ Unified expert guide for scalable deep learning and foundation model fine-tuning
 Use for organizing PyTorch code into scalable, reproducible modules.
 
 ### Core Idioms
+
 - **LightningModule**: Decouple the model architecture from the training loop.
 - **Callbacks**: Use built-in callbacks for checkpointing, early stopping, and logging.
 - **DataModule**: Encapsulate all data-related logic (loading, splitting, transforms).
@@ -43,6 +45,7 @@ class MyModel(L.LightningModule):
 Use for working with state-of-the-art NLP, Vision, and Audio transformer models.
 
 ### Core Tools
+
 - **AutoModel/AutoTokenizer**: Use the "Auto" classes for flexible model loading.
 - **PEFT/LoRA**: Use Parameter-Efficient Fine-Tuning for LLMs with limited VRAM.
 - **Datasets**: Use the `datasets` library for efficient data streaming and mapping.
@@ -63,5 +66,6 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 3. **Silently Catching CUDA Errors**: Not properly handling device errors, leading to hung processes.
 
 ## References
+
 - `skills/machine-learning/ml-deep-learning/references/pytorch-lightning/` — Distributed training and callbacks.
 - `skills/machine-learning/ml-deep-learning/references/transformers/` — Tokenization and model architecture.

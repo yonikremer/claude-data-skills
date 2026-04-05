@@ -1,6 +1,7 @@
 # SQLite Reference (Python `sqlite3`)
 
 ## Quick Start
+
 ```python
 import sqlite3
 import pandas as pd
@@ -17,6 +18,7 @@ with sqlite3.connect('mydata.db') as con:
 ```
 
 ## Advanced Patterns
+
 - **Memory Databases**: `sqlite3.connect(':memory:')`
 - **Upsert**: `INSERT OR REPLACE INTO table ...`
 - **Pragmas**: `WAL` mode for concurrency, `synchronous=NORMAL` for speed.

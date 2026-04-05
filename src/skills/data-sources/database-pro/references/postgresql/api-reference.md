@@ -46,7 +46,7 @@ Execute a statement using `VALUES` with a sequence of parameters.
 
 - **cur**: the cursor to use to execute the query.
 - **sql**: the query to execute. It must contain a single `%s` placeholder, which will be replaced by a `VALUES list`.
-    Example: `"INSERT INTO mytable (id, f1, f2) VALUES %s"`.
+  Example: `"INSERT INTO mytable (id, f1, f2) VALUES %s"`.
 - **argslist**: sequence of sequences or dictionaries with the arguments to send to the query.
 - **template**: the snippet to merge to every item in *argslist* to compose the query.
 - **page_size**: maximum number of *argslist* items to include in every statement.
@@ -59,4 +59,5 @@ Execute a statement using `VALUES` with a sequence of parameters.
 For more advanced database interaction using an ORM or for direct integration with DataFrames:
 
 - **[`sqlalchemy.create_engine`](../../sqlalchemy/references/api-reference.md)**: Create a new Engine instance.
-- **[`pandas.read_sql`](https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html)**: Read SQL query or database table into a DataFrame.
+- **[`pandas.read_sql`](https://pandas.pydata.org/docs/reference/api/pandas.read_sql.html)**: Read SQL query or database
+  table into a DataFrame.

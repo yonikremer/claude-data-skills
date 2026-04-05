@@ -2,11 +2,13 @@
 
 ## Expressions
 
-Expressions are the foundation of Polars' API. They are composable units that describe data transformations without executing them immediately.
+Expressions are the foundation of Polars' API. They are composable units that describe data transformations without
+executing them immediately.
 
 ### What are Expressions?
 
 An expression describes a transformation on data. It only materializes (executes) within specific contexts:
+
 - `select()` - Select and transform columns
 - `with_columns()` - Add or modify columns
 - `filter()` - Filter rows
@@ -15,11 +17,13 @@ An expression describes a transformation on data. It only materializes (executes
 ### Expression Syntax
 
 **Basic column reference:**
+
 ```python
 pl.col("column_name")
 ```
 
 **Computed expressions:**
+
 ```python
 # Arithmetic
 pl.col("height") * 2
@@ -35,6 +39,7 @@ pl.col("name").str.to_uppercase().str.slice(0, 3)
 ### Expression Contexts
 
 **Select context:**
+
 ```python
 df.select(
     "name",  # Simple column name
@@ -44,6 +49,7 @@ df.select(
 ```
 
 **With_columns context:**
+
 ```python
 df.with_columns(
     age_doubled=pl.col("age") * 2,
@@ -52,6 +58,7 @@ df.with_columns(
 ```
 
 **Filter context:**
+
 ```python
 df.filter(
     pl.col("age") > 25,
@@ -60,6 +67,7 @@ df.filter(
 ```
 
 **Group_by context:**
+
 ```python
 df.group_by("department").agg(
     pl.col("salary").mean(),
@@ -72,11 +80,13 @@ df.group_by("department").agg(
 Apply operations to multiple columns at once:
 
 **All columns:**
+
 ```python
 df.select(pl.all() * 2)
 ```
 
 **Pattern matching:**
+
 ```python
 # All columns ending with "_value"
 df.select(pl.col("^.*_value$") * 100)
@@ -86,6 +96,7 @@ df.select(pl.col(pl.NUMERIC_DTYPES) + 1)
 ```
 
 **Exclude patterns:**
+
 ```python
 df.select(pl.all().exclude("id", "name"))
 ```
@@ -111,30 +122,36 @@ Polars has a strict type system based on Apache Arrow.
 ### Core Data Types
 
 **Numeric:**
+
 - `Int8`, `Int16`, `Int32`, `Int64` - Signed integers
 - `UInt8`, `UInt16`, `UInt32`, `UInt64` - Unsigned integers
 - `Float32`, `Float64` - Floating point numbers
 
 **Text:**
+
 - `Utf8` / `String` - UTF-8 encoded strings
 - `Categorical` - Categorized strings (low cardinality)
 - `Enum` - Fixed set of string values
 
 **Temporal:**
+
 - `Date` - Calendar date (no time)
 - `Datetime` - Date and time with optional timezone
 - `Time` - Time of day
 - `Duration` - Time duration/difference
 
 **Boolean:**
+
 - `Boolean` - True/False values
 
 **Nested:**
+
 - `List` - Variable-length lists
 - `Array` - Fixed-length arrays
 - `Struct` - Nested record structures
 
 **Other:**
+
 - `Binary` - Binary data
 - `Object` - Python objects (avoid in production)
 - `Null` - Null type
@@ -157,12 +174,14 @@ df.select(
 Polars uses consistent null handling across all types:
 
 **Check for nulls:**
+
 ```python
 df.filter(pl.col("value").is_null())
 df.filter(pl.col("value").is_not_null())
 ```
 
 **Fill nulls:**
+
 ```python
 pl.col("value").fill_null(0)
 pl.col("value").fill_null(strategy="forward")
@@ -171,6 +190,7 @@ pl.col("value").fill_null(strategy="mean")
 ```
 
 **Drop nulls:**
+
 ```python
 df.drop_nulls()  # Drop any row with nulls
 df.drop_nulls(subset=["col1", "col2"])  # Drop rows with nulls in specific columns
@@ -210,6 +230,7 @@ final = result.select("name", "age")  # Selects immediately
 ```
 
 **When to use eager:**
+
 - Small datasets that fit in memory
 - Interactive exploration in notebooks
 - Simple one-off operations
@@ -230,6 +251,7 @@ df = lf3.collect()  # NOW executes optimized plan
 ```
 
 **When to use lazy:**
+
 - Large datasets
 - Complex query pipelines
 - Only need subset of data
@@ -242,6 +264,7 @@ Polars automatically optimizes lazy queries:
 
 **Predicate Pushdown:**
 Filter operations pushed to data source when possible:
+
 ```python
 # Only reads rows where age > 25 from CSV
 lf = pl.scan_csv("data.csv")
@@ -250,6 +273,7 @@ result = lf.filter(pl.col("age") > 25).collect()
 
 **Projection Pushdown:**
 Only read needed columns from data source:
+
 ```python
 # Only reads "name" and "age" columns from CSV
 lf = pl.scan_csv("data.csv")
@@ -257,6 +281,7 @@ result = lf.select("name", "age").collect()
 ```
 
 **Query Plan Inspection:**
+
 ```python
 # View the optimized query plan
 lf = pl.scan_csv("data.csv")
@@ -275,12 +300,14 @@ result = lf.filter(pl.col("age") > 25).collect(streaming=True)
 ```
 
 **Streaming benefits:**
+
 - Process data larger than RAM
 - Lower peak memory usage
 - Chunk-based processing
 - Automatic memory management
 
 **Streaming limitations:**
+
 - Not all operations support streaming
 - May be slower for small data
 - Some operations require materializing entire dataset
@@ -288,12 +315,14 @@ result = lf.filter(pl.col("age") > 25).collect(streaming=True)
 ### Converting Between Eager and Lazy
 
 **Eager to Lazy:**
+
 ```python
 df = pl.read_csv("data.csv")
 lf = df.lazy()  # Convert to LazyFrame
 ```
 
 **Lazy to Eager:**
+
 ```python
 lf = pl.scan_csv("data.csv")
 df = lf.collect()  # Execute and return DataFrame
@@ -304,6 +333,7 @@ df = lf.collect()  # Execute and return DataFrame
 Polars uses Apache Arrow columnar memory format:
 
 **Benefits:**
+
 - Zero-copy data sharing with other Arrow libraries
 - Efficient columnar operations
 - SIMD vectorization
@@ -311,6 +341,7 @@ Polars uses Apache Arrow columnar memory format:
 - Fast serialization
 
 **Implications:**
+
 - Data stored column-wise, not row-wise
 - Column operations very fast
 - Random row access slower than pandas
@@ -321,6 +352,7 @@ Polars uses Apache Arrow columnar memory format:
 Polars parallelizes operations automatically using Rust's concurrency:
 
 **What gets parallelized:**
+
 - Aggregations within groups
 - Window functions
 - Most expression evaluations
@@ -328,11 +360,13 @@ Polars parallelizes operations automatically using Rust's concurrency:
 - Join operations
 
 **What to avoid for parallelization:**
+
 - Python user-defined functions (UDFs)
 - Lambda functions in `.map_elements()`
 - Sequential `.pipe()` chains
 
 **Best practice:**
+
 ```python
 # Good: Stays in expression API (parallelized)
 df.with_columns(
@@ -352,6 +386,7 @@ df.with_columns(
 Polars enforces strict typing:
 
 **No silent conversions:**
+
 ```python
 # This will error - can't mix types
 # df.with_columns(pl.col("int_col") + "string")
@@ -363,6 +398,7 @@ df.with_columns(
 ```
 
 **Benefits:**
+
 - Prevents silent bugs
 - Predictable behavior
 - Better performance
@@ -370,6 +406,7 @@ df.with_columns(
 
 **Integer nulls:**
 Unlike pandas, integer columns can have nulls without converting to float:
+
 ```python
 # In pandas: Int column with null becomes Float
 # In polars: Int column with null stays Int (with null values)

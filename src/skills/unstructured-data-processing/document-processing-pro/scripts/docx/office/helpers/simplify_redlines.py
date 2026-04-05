@@ -254,7 +254,7 @@ def _get_authors_from_docx(docx_path: Path) -> Dict[str, int]:
 
 
 def infer_author(
-    modified_dir: Path, original_docx: Path, default: str = "Claude"
+        modified_dir: Path, original_docx: Path, default: str = "Claude"
 ) -> str:
     """
     Infer the author of new changes in a document.

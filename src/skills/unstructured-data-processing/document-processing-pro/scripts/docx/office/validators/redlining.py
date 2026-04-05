@@ -4,11 +4,10 @@ Validator for tracked changes in Word documents.
 
 import subprocess
 import tempfile
+import xml.etree.ElementTree as ET
 import zipfile
 from pathlib import Path
 from typing import Optional, Union
-
-import xml.etree.ElementTree as ET
 
 
 class RedliningValidator:
@@ -19,11 +18,11 @@ class RedliningValidator:
     """
 
     def __init__(
-        self,
-        unpacked_dir: Union[str, Path],
-        original_docx: Union[str, Path],
-        verbose: bool = False,
-        author: str = "Claude",
+            self,
+            unpacked_dir: Union[str, Path],
+            original_docx: Union[str, Path],
+            verbose: bool = False,
+            author: str = "Claude",
     ):
         """
         Initialize the redlining validator.
@@ -166,7 +165,7 @@ class RedliningValidator:
         return "\n".join(error_parts)
 
     def _get_git_word_diff(
-        self, original_text: str, modified_text: str
+            self, original_text: str, modified_text: str
     ) -> Optional[str]:
         """
         Get a word-level diff using git.

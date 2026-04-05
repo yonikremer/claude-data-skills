@@ -2,16 +2,19 @@
 name: scapy
 description: Use when performing interactive packet manipulation, sniffing, and crafting using Scapy. Ideal for network discovery, protocol research, and low-level network security analysis. CRITICAL: Run `get-available-resources` for high-volume packet capture.
 ---
+
 # Scapy (Network Research)
 
-Scapy is a powerful Python-based interactive packet manipulation program and library. It can forge or decode packets of a wide number of protocols, send them on the wire, capture them, match requests and replies, and much more.
+Scapy is a powerful Python-based interactive packet manipulation program and library. It can forge or decode packets of
+a wide number of protocols, send them on the wire, capture them, match requests and replies, and much more.
 
 ## ⚠️ Mandatory Pre-flight: Resource Check
 
 Packet sniffing and processing can be CPU and RAM intensive, especially on high-speed interfaces.
 
 1. **Check Resources**: Run `python skills/get-available-resources/scripts/detect_resources.py`.
-2. **Buffering Strategy**: For sustained capture (>1 min), use `sniff(..., prn=callback, store=0)` to avoid filling RAM with packet history.
+2. **Buffering Strategy**: For sustained capture (>1 min), use `sniff(..., prn=callback, store=0)` to avoid filling RAM
+   with packet history.
 
 ## Core Concepts
 
@@ -23,6 +26,7 @@ Packet sniffing and processing can be CPU and RAM intensive, especially on high-
 ## Common Operations
 
 ### 1. Packet Crafting
+
 ```python
 from scapy.all import IP, TCP, Ether
 
@@ -34,6 +38,7 @@ eth_pkt = Ether() / IP(dst="192.168.1.1") / TCP()
 ```
 
 ### 2. Sniffing
+
 ```python
 from scapy.all import sniff
 
@@ -49,6 +54,7 @@ sniff(filter="icmp", prn=process_pkt, store=0)
 ```
 
 ### 3. Sending and Receiving
+
 ```python
 from scapy.all import sr1, send
 
@@ -60,6 +66,7 @@ sendp(Ether()/IP(dst="1.2.3.4")/UDP(), iface="eth0")
 ```
 
 ### 4. Network Discovery
+
 ```python
 from scapy.all import arping
 
@@ -75,10 +82,14 @@ ans, unans = arping("192.168.1.0/24")
 
 ## Common Pitfalls (The "Wall of Shame")
 
-1. **The `store=1` Trap**: Calling `sniff()` without `store=0` on a busy network will eventually crash the session due to RAM exhaustion.
-2. **Missing `Ether()`**: Sending packets at Layer 2 (`sendp`) without an `Ether` header will fail or cause OS-level errors.
-3. **Implicit Layer Access**: Accessing `pkt[TCP]` when the packet is ICMP will raise an `IndexError`. Always guard with `haslayer()`.
+1. **The `store=1` Trap**: Calling `sniff()` without `store=0` on a busy network will eventually crash the session due
+   to RAM exhaustion.
+2. **Missing `Ether()`**: Sending packets at Layer 2 (`sendp`) without an `Ether` header will fail or cause OS-level
+   errors.
+3. **Implicit Layer Access**: Accessing `pkt[TCP]` when the packet is ICMP will raise an `IndexError`. Always guard with
+   `haslayer()`.
 
 ## References (Load on demand)
+
 - `references/protocols.md` — Detailed list of supported Scapy layers (HTTP, DNS, TLS, etc.).
 - `references/pcap_management.md` — Reading/writing `.pcap` files.

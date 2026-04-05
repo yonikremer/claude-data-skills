@@ -1,10 +1,12 @@
 # Stable Baselines3 Callback System
 
-This document provides comprehensive information about the callback system in Stable Baselines3 for monitoring and controlling training.
+This document provides comprehensive information about the callback system in Stable Baselines3 for monitoring and
+controlling training.
 
 ## Overview
 
 Callbacks are functions called at specific points during training to:
+
 - Monitor training metrics
 - Save checkpoints
 - Implement early stopping
@@ -37,11 +39,13 @@ model.learn(total_timesteps=100000, callback=eval_callback)
 ```
 
 **Key Features:**
+
 - Automatically saves best model based on mean reward
 - Logs evaluation metrics to TensorBoard
 - Can stop training if reward threshold reached
 
 **Important:** When using vectorized training environments, adjust `eval_freq`:
+
 ```python
 # With 4 parallel environments, divide eval_freq by n_envs
 eval_freq = 10000 // 4  # Evaluate every 10000 total environment steps
@@ -67,6 +71,7 @@ model.learn(total_timesteps=100000, callback=checkpoint_callback)
 ```
 
 **Output Files:**
+
 - `rl_model_10000_steps.zip` - Model at 10k steps
 - `rl_model_20000_steps.zip` - Model at 20k steps
 - etc.
@@ -147,6 +152,7 @@ model.learn(total_timesteps=100000, callback=progress_callback)
 ```
 
 **Output:**
+
 ```
 100%|██████████| 100000/100000 [05:23<00:00, 309.31it/s]
 ```
@@ -432,6 +438,7 @@ class TensorBoardCallback(BaseCallback):
 ```
 
 **View in TensorBoard:**
+
 ```bash
 tensorboard --logdir ./logs/
 ```
@@ -511,43 +518,43 @@ class DebugCallback(BaseCallback):
 ### Common Issues
 
 1. **Callback not being called:**
-   - Ensure callback is passed to `model.learn()`
-   - Check that `_on_step()` returns `True`
+    - Ensure callback is passed to `model.learn()`
+    - Check that `_on_step()` returns `True`
 
 2. **AttributeError in callback:**
-   - Not all attributes available in all callbacks
-   - Use `self.locals.get("key", default)` for safety
+    - Not all attributes available in all callbacks
+    - Use `self.locals.get("key", default)` for safety
 
 3. **Memory leaks:**
-   - Don't store large arrays in callback state
-   - Clear buffers periodically
+    - Don't store large arrays in callback state
+    - Clear buffers periodically
 
 4. **Performance impact:**
-   - Minimize computation in `_on_step()` (called every step)
-   - Use `check_freq` to limit expensive operations
+    - Minimize computation in `_on_step()` (called every step)
+    - Use `check_freq` to limit expensive operations
 
 ## Best Practices
 
 1. **Use appropriate callback timing:**
-   - `_on_step()`: For metrics that change every step
-   - `_on_rollout_end()`: For metrics computed over rollouts
-   - `_init_callback()`: For one-time initialization
+    - `_on_step()`: For metrics that change every step
+    - `_on_rollout_end()`: For metrics computed over rollouts
+    - `_init_callback()`: For one-time initialization
 
 2. **Log efficiently:**
-   - Don't log every step (hurts performance)
-   - Aggregate metrics and log periodically
+    - Don't log every step (hurts performance)
+    - Aggregate metrics and log periodically
 
 3. **Handle vectorized environments:**
-   - Remember that `dones`, `infos`, etc. are arrays
-   - Check `dones[i]` for each environment
+    - Remember that `dones`, `infos`, etc. are arrays
+    - Check `dones[i]` for each environment
 
 4. **Test callbacks independently:**
-   - Create simple test cases
-   - Verify callback behavior before long training runs
+    - Create simple test cases
+    - Verify callback behavior before long training runs
 
 5. **Document custom callbacks:**
-   - Clear docstrings
-   - Example usage in comments
+    - Clear docstrings
+    - Example usage in comments
 
 ## Additional Resources
 

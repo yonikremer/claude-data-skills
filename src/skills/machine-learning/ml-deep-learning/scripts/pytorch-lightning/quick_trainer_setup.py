@@ -71,9 +71,9 @@ def debug_trainer() -> L.Trainer:
 
 
 def production_single_gpu_trainer(
-    max_epochs: int = 100,
-    log_dir: str = "logs",
-    checkpoint_dir: str = "checkpoints",
+        max_epochs: int = 100,
+        log_dir: str = "logs",
+        checkpoint_dir: str = "checkpoints",
 ) -> L.Trainer:
     """
     Production-ready trainer for single GPU with checkpointing and logging.
@@ -140,10 +140,10 @@ def production_single_gpu_trainer(
 
 
 def multi_gpu_ddp_trainer(
-    max_epochs: int = 100,
-    num_gpus: int = 4,
-    log_dir: str = "logs",
-    checkpoint_dir: str = "checkpoints",
+        max_epochs: int = 100,
+        num_gpus: int = 4,
+        log_dir: str = "logs",
+        checkpoint_dir: str = "checkpoints",
 ) -> L.Trainer:
     """
     Multi-GPU training with Distributed Data Parallel.
@@ -213,10 +213,10 @@ def multi_gpu_ddp_trainer(
 
 
 def large_model_fsdp_trainer(
-    max_epochs: int = 100,
-    num_gpus: int = 8,
-    log_dir: str = "logs",
-    checkpoint_dir: str = "checkpoints",
+        max_epochs: int = 100,
+        num_gpus: int = 8,
+        log_dir: str = "logs",
+        checkpoint_dir: str = "checkpoints",
 ) -> L.Trainer:
     """
     Training for large models (500M+ parameters) with FSDP.
@@ -285,11 +285,11 @@ def large_model_fsdp_trainer(
 
 
 def deepspeed_trainer(
-    max_epochs: int = 100,
-    num_gpus: int = 8,
-    stage: int = 3,
-    log_dir: str = "logs",
-    checkpoint_dir: str = "checkpoints",
+        max_epochs: int = 100,
+        num_gpus: int = 8,
+        stage: int = 3,
+        log_dir: str = "logs",
+        checkpoint_dir: str = "checkpoints",
 ) -> L.Trainer:
     """
     Training for very large models with DeepSpeed.
@@ -410,9 +410,9 @@ def overfit_test_trainer(num_batches: int = 10) -> L.Trainer:
 
 
 def time_limited_trainer(
-    max_time_hours: float = 23.5,
-    max_epochs: int = 1000,
-    checkpoint_dir: str = "checkpoints",
+        max_time_hours: float = 23.5,
+        max_epochs: int = 1000,
+        checkpoint_dir: str = "checkpoints",
 ) -> L.Trainer:
     """
     Training with time limit for SLURM clusters.

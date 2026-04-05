@@ -1,6 +1,7 @@
 # Advanced EDA Questions & Logical Checks
 
-This reference provides specific logical patterns for deep exploratory data analysis, focusing on relationships between variables, data quality, and structural anomalies.
+This reference provides specific logical patterns for deep exploratory data analysis, focusing on relationships between
+variables, data quality, and structural anomalies.
 
 ## 1. Categorical Relationships & Hierarchies
 
@@ -97,7 +98,8 @@ def concentration_ratio(df, col, n=1):
 ## 5. Unit & Scale Detection
 
 **Question:** Are the values in a specific unit or scale?
-**Logic:** 
+**Logic:**
+
 - Check if all values are between 0 and 1 (Probabilities/Normalized).
 - Check if all values are integers (Counts).
 - Check column names for keywords: `_kg`, `_ms`, `_usd`, `_pct`.

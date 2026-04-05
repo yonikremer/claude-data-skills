@@ -2,6 +2,7 @@
 name: data-context-extractor
 description: Use when extracting warehouse schemas and tribal knowledge to generate tailored data skills. Ideal for setting up a new data context or updating metric definitions. Do NOT use for general data exploration (use explore-data) or for writing SQL (use write-query).
 ---
+
 # Data Context Extractor
 
 A meta-skill that extracts company-specific data knowledge from analysts and generates tailored data analysis skills.
@@ -26,21 +27,25 @@ Use when: User wants to create a new data context skill for their warehouse.
 Ask: "What data warehouse are you using?"
 
 Common options:
+
 - **BigQuery**
 - **Snowflake**
 - **PostgreSQL/Redshift**
 - **Databricks**
 
-Use `~~data warehouse` tools (query and schema) to connect. If unclear, check available MCP tools in the current session.
+Use `~~data warehouse` tools (query and schema) to connect. If unclear, check available MCP tools in the current
+session.
 
 **Step 2: Explore the schema**
 
 Use `~~data warehouse` schema tools to:
+
 1. List available datasets/schemas
 2. Identify the most important tables (ask user: "Which 3-5 tables do analysts query most often?")
 3. Pull schema details for those key tables
 
 Sample exploration queries by dialect:
+
 ```sql
 -- BigQuery: List datasets
 SELECT schema_name FROM INFORMATION_SCHEMA.SCHEMATA
@@ -63,6 +68,7 @@ After schema discovery, ask these questions conversationally (not all at once):
 > "When people here say 'user' or 'customer', what exactly do they mean? Are there different types?"
 
 Listen for:
+
 - Multiple entity types (user vs account vs organization)
 - Relationships between them (1:1, 1:many, many:many)
 - Which ID fields link them together
@@ -71,6 +77,7 @@ Listen for:
 > "What's the main identifier for a [customer/user/account]? Are there multiple IDs for the same entity?"
 
 Listen for:
+
 - Primary keys vs business keys
 - UUID vs integer IDs
 - Legacy ID systems
@@ -79,6 +86,7 @@ Listen for:
 > "What are the 2-3 metrics people ask about most? How is each one calculated?"
 
 Listen for:
+
 - Exact formulas (ARR = monthly_revenue × 12)
 - Which tables/columns feed each metric
 - Time period conventions (trailing 7 days, calendar month, etc.)
@@ -87,6 +95,7 @@ Listen for:
 > "What should ALWAYS be filtered out of queries? (test data, fraud, internal users, etc.)"
 
 Listen for:
+
 - Standard WHERE clauses to always include
 - Flag columns that indicate exclusions (is_test, is_internal, is_fraud)
 - Specific values to exclude (status = 'deleted')
@@ -95,6 +104,7 @@ Listen for:
 > "What mistakes do new analysts typically make with this data?"
 
 Listen for:
+
 - Confusing column names
 - Timezone issues
 - NULL handling quirks

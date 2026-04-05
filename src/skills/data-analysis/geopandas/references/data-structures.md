@@ -2,7 +2,8 @@
 
 ## GeoSeries
 
-A GeoSeries is a vector where each entry is a set of shapes corresponding to one observation (similar to a pandas Series but with geometric data).
+A GeoSeries is a vector where each entry is a set of shapes corresponding to one observation (similar to a pandas Series
+but with geometric data).
 
 ```python
 import geopandas as gpd
@@ -19,7 +20,8 @@ points.bounds
 
 ## GeoDataFrame
 
-A GeoDataFrame is a tabular data structure that contains a GeoSeries (similar to a pandas DataFrame but with geographic data).
+A GeoDataFrame is a tabular data structure that contains a GeoSeries (similar to a pandas DataFrame but with geographic
+data).
 
 ```python
 # Create from dictionary

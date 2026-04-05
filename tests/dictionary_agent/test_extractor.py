@@ -1,6 +1,7 @@
-import pytest
 from unittest.mock import MagicMock, patch
+
 from src.dictionary_agent.extractor import extract_text_from_pdf, extract_text_from_pptx
+
 
 @patch("pdfplumber.open")
 def test_extract_text_from_pdf(mock_open, tmp_path):
@@ -9,13 +10,14 @@ def test_extract_text_from_pdf(mock_open, tmp_path):
     mock_page = MagicMock()
     mock_page.extract_text.return_value = "Extracted Text"
     mock_pdf.pages = [mock_page]
-    
+
     # Create dummy file path
     dummy_pdf = tmp_path / "dummy.pdf"
     dummy_pdf.write_text("dummy content")
-    
+
     result = extract_text_from_pdf(str(dummy_pdf))
     assert "Extracted Text" in result
+
 
 @patch("src.dictionary_agent.extractor.Presentation")
 def test_extract_text_from_pptx(mock_presentation, tmp_path):
@@ -28,11 +30,11 @@ def test_extract_text_from_pptx(mock_presentation, tmp_path):
     mock_slide.has_notes_slide = True
     mock_slide.notes_slide.notes_text_frame.text = "Notes Text"
     mock_prs.slides = [mock_slide]
-    
+
     # Create dummy file path
     dummy_pptx = tmp_path / "dummy.pptx"
     dummy_pptx.write_text("dummy content")
-    
+
     result = extract_text_from_pptx(str(dummy_pptx))
     assert "Slide Text" in result
     assert "Notes Text" in result

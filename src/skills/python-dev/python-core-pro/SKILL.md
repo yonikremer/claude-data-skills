@@ -2,6 +2,7 @@
 name: python-core-pro
 description: Use for writing ANY high-quality Python code. Consolidated expert guide for Best Practices (PEP-8), Type Safety (Pydantic), Testing (Pytest), CLI Scripts, and Performance (Parallelism). CRITICAL: Apply to all Python code generation and refactoring.
 ---
+
 # Python Core Pro (Consolidated)
 
 Unified expert guide for writing idiomatic, robust, and high-performance Python code.
@@ -19,6 +20,7 @@ Unified expert guide for writing idiomatic, robust, and high-performance Python 
 Use for writing clean, maintainable Python code.
 
 ### Core Idioms
+
 - **Pathlib**: Always use `pathlib.Path` instead of `os.path`.
 - **Context Managers**: Use `with` for file I/O, database sessions, and network connections.
 - **F-Strings**: Use literal string interpolation for all formatting.
@@ -42,6 +44,7 @@ def process_file(path_str: str) -> None:
 Use for validating data structures and managing configuration.
 
 ### Core Idiom
+
 - **Strict Typing**: Use Pydantic V2 models for all data-heavy structures.
 
 ```python
@@ -59,6 +62,7 @@ class Config(BaseModel):
 Use for writing and executing robust tests.
 
 ### Core Idioms
+
 - **Fixtures**: Use `pytest.fixture` for reusable setup/teardown.
 - **Parametrization**: Use `pytest.mark.parametrize` for testing multiple scenarios.
 
@@ -69,6 +73,7 @@ Use for writing and executing robust tests.
 Use for accelerating I/O-bound (Multithreading) and CPU-bound (Multiprocessing) tasks.
 
 ### Core Tools
+
 - **ThreadPoolExecutor**: For network requests and file I/O.
 - **ProcessPoolExecutor**: For heavy numerical computations.
 
@@ -81,6 +86,7 @@ Use for accelerating I/O-bound (Multithreading) and CPU-bound (Multiprocessing) 
 3. **Global State**: Overusing global variables instead of passing arguments or using classes.
 
 ## References
+
 - `skills/python-dev/python-core-pro/references/stdlib/` — Detailed PEP-8 and idiom guide.
 - `skills/python-dev/python-core-pro/references/pydantic/` — Advanced V2 patterns and validation.
 - `skills/python-dev/python-core-pro/references/pytest/` — Mocking and complex fixture patterns.

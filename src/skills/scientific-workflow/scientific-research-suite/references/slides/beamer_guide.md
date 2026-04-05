@@ -2,19 +2,23 @@
 
 ## Overview
 
-Beamer is a LaTeX document class for creating presentations with professional, consistent formatting. It's particularly well-suited for scientific presentations containing equations, code, algorithms, and citations. This guide covers Beamer basics, themes, customization, and advanced features for effective scientific talks.
+Beamer is a LaTeX document class for creating presentations with professional, consistent formatting. It's particularly
+well-suited for scientific presentations containing equations, code, algorithms, and citations. This guide covers Beamer
+basics, themes, customization, and advanced features for effective scientific talks.
 
 ## Why Use Beamer?
 
 ### Advantages
 
 **Professional Quality**:
+
 - Consistent, polished appearance
 - Beautiful typography (especially for math)
 - Publication-quality output
 - Professional themes and templates
 
 **Scientific Content**:
+
 - Native equation support (LaTeX math)
 - Code listings with syntax highlighting
 - Algorithm environments
@@ -22,12 +26,14 @@ Beamer is a LaTeX document class for creating presentations with professional, c
 - Cross-referencing
 
 **Reproducibility**:
+
 - Plain text source (version control friendly)
 - Programmatic figure generation
 - Consistent styling across presentations
 - Easy to maintain and update
 
 **Efficiency**:
+
 - Reuse content across presentations
 - Template once, use forever
 - Automated elements (page numbers, navigation)
@@ -36,18 +42,21 @@ Beamer is a LaTeX document class for creating presentations with professional, c
 ### Disadvantages
 
 **Learning Curve**:
+
 - Requires LaTeX knowledge
 - Compilation time
 - Debugging can be challenging
 - Less WYSIWYG than PowerPoint
 
 **Flexibility**:
+
 - Complex custom layouts require effort
 - Image editing requires external tools
 - Some design elements easier in PowerPoint
 - Animations more limited
 
 **Collaboration**:
+
 - Not ideal for non-LaTeX users
 - Version conflicts possible
 - Requires LaTeX installation
@@ -159,6 +168,7 @@ Beamer is a LaTeX document class for creating presentations with professional, c
 Beamer includes many built-in themes controlling overall layout:
 
 **Classic Themes**:
+
 ```latex
 \usetheme{Berlin}      % Sections in header
 \usetheme{Copenhagen}  % Minimal, clean
@@ -168,6 +178,7 @@ Beamer includes many built-in themes controlling overall layout:
 ```
 
 **Modern Themes**:
+
 ```latex
 \usetheme{CambridgeUS}  % Blue theme
 \usetheme{Singapore}    % Minimalist
@@ -176,6 +187,7 @@ Beamer includes many built-in themes controlling overall layout:
 ```
 
 **Popular for Science**:
+
 ```latex
 % Clean and minimal
 \usetheme{default}
@@ -260,6 +272,7 @@ Beamer includes many built-in themes controlling overall layout:
 ### Lists
 
 **Itemize**:
+
 ```latex
 \begin{frame}{Bullet Points}
   \begin{itemize}
@@ -274,6 +287,7 @@ Beamer includes many built-in themes controlling overall layout:
 ```
 
 **Enumerate**:
+
 ```latex
 \begin{frame}{Numbered List}
   \begin{enumerate}
@@ -285,6 +299,7 @@ Beamer includes many built-in themes controlling overall layout:
 ```
 
 **Description**:
+
 ```latex
 \begin{frame}{Definitions}
   \begin{description}
@@ -318,6 +333,7 @@ Beamer includes many built-in themes controlling overall layout:
 ```
 
 **Three Column Layout**:
+
 ```latex
 \begin{columns}[T] % Align at top
   \begin{column}{0.32\textwidth}
@@ -345,6 +361,7 @@ Beamer includes many built-in themes controlling overall layout:
 ```
 
 **Side-by-Side Figures**:
+
 ```latex
 \begin{frame}{Comparison}
   \begin{columns}
@@ -361,6 +378,7 @@ Beamer includes many built-in themes controlling overall layout:
 ```
 
 **Subfigures**:
+
 ```latex
 \usepackage{subcaption}
 
@@ -404,6 +422,7 @@ Beamer includes many built-in themes controlling overall layout:
 ### Blocks
 
 **Standard Blocks**:
+
 ```latex
 \begin{frame}{Block Examples}
   
@@ -426,6 +445,7 @@ Beamer includes many built-in themes controlling overall layout:
 ```
 
 **Theorem Environments**:
+
 ```latex
 \begin{frame}{Mathematical Results}
   
@@ -469,6 +489,7 @@ Beamer includes many built-in themes controlling overall layout:
 ### Overlay Specifications
 
 **Itemize with Overlays**:
+
 ```latex
 \begin{frame}{Sequential Bullets}
   \begin{itemize}
@@ -480,6 +501,7 @@ Beamer includes many built-in themes controlling overall layout:
 ```
 
 **Alternative Syntax**:
+
 ```latex
 \begin{frame}{Sequential Bullets}
   \begin{itemize}[<+->]  % Automatically sequential
@@ -493,6 +515,7 @@ Beamer includes many built-in themes controlling overall layout:
 ### Highlighting with Overlays
 
 **Alert on Specific Slides**:
+
 ```latex
 \begin{frame}{Highlighting}
   \begin{itemize}
@@ -504,6 +527,7 @@ Beamer includes many built-in themes controlling overall layout:
 ```
 
 **Temporary Appearance**:
+
 ```latex
 \begin{frame}{Appearing and Disappearing}
   Appears on all slides
@@ -541,6 +565,7 @@ Beamer includes many built-in themes controlling overall layout:
 ### Equations
 
 **Inline Math**:
+
 ```latex
 \begin{frame}{Inline Math}
   The equation $E = mc^2$ is famous.
@@ -550,6 +575,7 @@ Beamer includes many built-in themes controlling overall layout:
 ```
 
 **Display Math**:
+
 ```latex
 \begin{frame}{Display Equations}
   Single equation:
@@ -567,6 +593,7 @@ Beamer includes many built-in themes controlling overall layout:
 ```
 
 **Equation Arrays**:
+
 ```latex
 \begin{frame}{Equation System}
   \begin{equation}
@@ -608,6 +635,7 @@ def fibonacci(n):
 ```
 
 **Custom Code Styling**:
+
 ```latex
 \lstset{
   language=Python,
@@ -949,24 +977,28 @@ pdflatex -output-directory=build presentation.tex
 ### Common Issues
 
 **Missing Fragile**:
+
 ```
 Error: Verbatim environment in frame
 Solution: Add [fragile] option to frame
 ```
 
 **Package Conflicts**:
+
 ```
 Error: Option clash for package X
 Solution: Load package in preamble only once
 ```
 
 **Image Not Found**:
+
 ```
 Error: File `figure.pdf' not found
 Solution: Check path, use \graphicspath, ensure file exists
 ```
 
 **Overlay Issues**:
+
 ```
 Problem: Overlays not working as expected
 Solution: Check syntax <n-> vs <n-m>, test incremental builds
@@ -1000,6 +1032,7 @@ See `assets/beamer_template_conference.tex` for a complete, customizable templat
 ## Summary
 
 Beamer excels at:
+
 - Mathematical content
 - Consistent professional formatting
 - Reproducible presentations
@@ -1007,12 +1040,14 @@ Beamer excels at:
 - Citations and cross-references
 
 Choose Beamer when:
+
 - Presentation contains significant math/equations
 - You value version control and plain text
 - Consistent styling is priority
 - You're comfortable with LaTeX
 
 Consider PowerPoint when:
+
 - Extensive custom graphics needed
 - Collaborating with non-LaTeX users
 - Complex animations required

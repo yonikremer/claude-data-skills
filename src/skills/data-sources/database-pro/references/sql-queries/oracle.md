@@ -1,6 +1,7 @@
 # Oracle Database Reference (`python-oracledb`)
 
 ## Quick Start
+
 ```python
 import oracledb
 
@@ -13,6 +14,7 @@ with con.cursor() as cur:
 ```
 
 ## Dialect Tips
+
 - **Bind Variables**: Always use `:name` or `:1`.
 - **Pagination**: Use `OFFSET :n ROWS FETCH NEXT :m ROWS ONLY`.
 - **Merge**: Use `MERGE INTO ...` for upserts.

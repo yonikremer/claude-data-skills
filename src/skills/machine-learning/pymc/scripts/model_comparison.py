@@ -26,10 +26,10 @@ import pandas as pd
 
 
 def compare_models(
-    models_dict: Dict[str, az.InferenceData],
-    ic: str = "loo",
-    scale: str = "deviance",
-    verbose: bool = True,
+        models_dict: Dict[str, az.InferenceData],
+        ic: str = "loo",
+        scale: str = "deviance",
+        verbose: bool = True,
 ) -> pd.DataFrame:
     """
     Compare multiple models using information criteria.
@@ -113,9 +113,9 @@ def compare_models(
 
 
 def check_loo_reliability(
-    models_dict: Dict[str, az.InferenceData],
-    threshold: float = 0.7,
-    verbose: bool = True,
+        models_dict: Dict[str, az.InferenceData],
+        threshold: float = 0.7,
+        verbose: bool = True,
 ) -> Dict[str, Any]:
     """
     Check LOO-CV reliability using Pareto-k diagnostics.
@@ -188,7 +188,7 @@ def check_loo_reliability(
 
 
 def plot_model_comparison(
-    comparison: pd.DataFrame, output_path: Optional[str] = None, show: bool = True
+        comparison: pd.DataFrame, output_path: Optional[str] = None, show: bool = True
 ) -> plt.Figure:
     """
     Visualize model comparison results.
@@ -219,10 +219,10 @@ def plot_model_comparison(
 
 
 def model_averaging(
-    models_dict: Dict[str, az.InferenceData],
-    weights: Optional[np.ndarray] = None,
-    var_name: str = "y_obs",
-    ic: str = "loo",
+        models_dict: Dict[str, az.InferenceData],
+        weights: Optional[np.ndarray] = None,
+        var_name: str = "y_obs",
+        ic: str = "loo",
 ) -> Tuple[np.ndarray, np.ndarray]:
     """
     Perform Bayesian model averaging using model weights.
@@ -275,7 +275,7 @@ def model_averaging(
 
 
 def cross_validation_comparison(
-    models_dict: Dict[str, az.InferenceData], k: int = 10, verbose: bool = True
+        models_dict: Dict[str, az.InferenceData], k: int = 10, verbose: bool = True
 ) -> None:
     """
     Perform k-fold cross-validation comparison (conceptual guide).

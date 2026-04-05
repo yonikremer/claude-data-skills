@@ -2,6 +2,7 @@
 name: visualization-pro
 description: Use for creating ALL data visualizations, from static statistical plots to interactive web dashboards. Unified guide for Plotly (Primary Recommendation), Dash (Dashboards), and Seaborn (Static Stats). CRITICAL: Use Plotly for interactive web-based outputs.
 ---
+
 # Visualization Pro (Consolidated)
 
 Unified expert guide for high-impact data visualization and interactive dashboard development.
@@ -19,6 +20,7 @@ Unified expert guide for high-impact data visualization and interactive dashboar
 Use for interactive, publication-quality visualizations.
 
 ### Core Idioms
+
 - **Express vs Graph Objects**: Use `plotly.express` for fast exploration; use `graph_objects` for fine-grained control.
 - **Figure Layout**: Always include clear axis labels, titles, and legends.
 
@@ -36,6 +38,7 @@ fig.show()
 Use for building complex, multi-component data applications.
 
 ### Core Idioms
+
 - **Callbacks**: Use `Input` and `Output` to create reactive components.
 - **Layout**: Use `dash_bootstrap_components` (dbc) for responsive, professional designs.
 
@@ -46,6 +49,7 @@ Use for building complex, multi-component data applications.
 Use for publication-ready static figures and quick statistical exploration.
 
 ### Core Idiom
+
 - **Context**: Use `sns.set_context("paper")` for publication-ready font sizes.
 
 ```python
@@ -65,6 +69,7 @@ plt.show()
 3. **Legend Bloat**: Including a legend with 20+ items; use interactive filtering or faceted plots instead.
 
 ## References
+
 - `skills/visualization/visualization-pro/references/plotly/` — Advanced graph objects and layouts.
 - `skills/visualization/visualization-pro/references/plotly-dash/` — Callback patterns and state management.
 - `skills/visualization/visualization-pro/references/seaborn/` — Statistical plot types and color palettes.

@@ -54,7 +54,7 @@ octave --version
 ## Quick comparison
 
 | Task                          | MATLAB                            | Octave                   |
-| ----------------------------- | --------------------------------- | ------------------------ |
+|-------------------------------|-----------------------------------|--------------------------|
 | Interactive shell             | `matlab` (GUI by default)         | `octave`                 |
 | Headless run (CI)             | `matlab -batch "cmd"` (preferred) | `octave --eval "cmd"`    |
 | Run script file               | `matlab -batch "run('file.m')"`   | `octave --no-gui file.m` |
@@ -113,7 +113,8 @@ To pass values from Bash variables:
 matlab -batch "myfunc(${N}, '${NAME}')"
 ```
 
-If arguments may contain quotes or spaces, consider writing a small MATLAB wrapper function that reads environment variables.
+If arguments may contain quotes or spaces, consider writing a small MATLAB wrapper function that reads environment
+variables.
 
 ### 4) Run one-liners
 
@@ -277,7 +278,8 @@ Run:
 ./myscript.m
 ```
 
-If you need flags (quiet, no GUI), use a wrapper script instead, because the shebang line typically supports limited arguments across platforms.
+If you need flags (quiet, no GUI), use a wrapper script instead, because the shebang line typically supports limited
+arguments across platforms.
 
 ### 6) Working directory and path handling
 
@@ -358,7 +360,8 @@ octave --help | head -n 50
    Many MATLAB toolboxes have no Octave equivalent.
 
 3. Be careful with strings and quoting
-   MATLAB and Octave both support `'single quotes'`, and newer MATLAB supports `"double quotes"` strings. For maximum compatibility, prefer single quotes unless you know your Octave version supports double quotes the way you need.
+   MATLAB and Octave both support `'single quotes'`, and newer MATLAB supports `"double quotes"` strings. For maximum
+   compatibility, prefer single quotes unless you know your Octave version supports double quotes the way you need.
 
 4. Use `fprintf` or `disp` for output
    For CI logs, keep output simple and deterministic.

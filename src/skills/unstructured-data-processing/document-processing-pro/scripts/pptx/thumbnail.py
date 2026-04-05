@@ -23,8 +23,9 @@ import zipfile
 from pathlib import Path
 
 import defusedxml.minidom
-from office.soffice import get_soffice_env
 from PIL import Image, ImageDraw, ImageFont
+
+from office.soffice import get_soffice_env
 
 THUMBNAIL_WIDTH = 300
 CONVERSION_DPI = 100
@@ -128,9 +129,9 @@ def get_slide_info(pptx_path: Path) -> list[dict]:
 
 
 def build_slide_list(
-    slide_info: list[dict],
-    visible_images: list[Path],
-    temp_dir: Path,
+        slide_info: list[dict],
+        visible_images: list[Path],
+        temp_dir: Path,
 ) -> list[tuple[Path, str]]:
     """Build a list of image paths and labels for all slides, including placeholders.
 
@@ -233,10 +234,10 @@ def convert_to_images(pptx_path: Path, temp_dir: Path) -> list[Path]:
 
 
 def create_grids(
-    slides: list[tuple[Path, str]],
-    cols: int,
-    width: int,
-    output_path: Path,
+        slides: list[tuple[Path, str]],
+        cols: int,
+        width: int,
+        output_path: Path,
 ) -> list[str]:
     """Create one or more grid images from a list of slides.
 
@@ -273,9 +274,9 @@ def create_grids(
 
 
 def create_grid(
-    slides: list[tuple[Path, str]],
-    cols: int,
-    width: int,
+        slides: list[tuple[Path, str]],
+        cols: int,
+        width: int,
 ) -> Image.Image:
     """Create a single grid image from a chunk of slides.
 
@@ -310,7 +311,7 @@ def create_grid(
         row, col = i // cols, i % cols
         x = col * width + (col + 1) * GRID_PADDING
         y_base = (
-            row * (height + font_size + label_padding * 2) + (row + 1) * GRID_PADDING
+                row * (height + font_size + label_padding * 2) + (row + 1) * GRID_PADDING
         )
 
         label = slide_name

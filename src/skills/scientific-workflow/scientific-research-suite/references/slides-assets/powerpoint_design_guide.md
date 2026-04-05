@@ -2,22 +2,26 @@
 
 ## Overview
 
-This guide provides comprehensive instructions for creating professional scientific presentations using PowerPoint, with emphasis on integration with the pptx skill for programmatic creation and best practices for scientific content.
+This guide provides comprehensive instructions for creating professional scientific presentations using PowerPoint, with
+emphasis on integration with the pptx skill for programmatic creation and best practices for scientific content.
 
 **CRITICAL**: Avoid dry, text-heavy presentations. Scientific slides should be:
+
 - **Visually engaging**: High-quality images, figures, diagrams on EVERY slide
 - **Research-backed**: Citations from research-lookup for credibility (8-15 papers minimum)
 - **Modern design**: Contemporary color palettes, not default themes
 - **Minimal text**: 3-4 bullets with 4-6 words each, visuals do the talking
 - **Professional polish**: Consistent but varied layouts, generous white space
 
-**Anti-Pattern Warning**: All-bullet-point slides with black text on white background = instant boredom and forgotten science.
+**Anti-Pattern Warning**: All-bullet-point slides with black text on white background = instant boredom and forgotten
+science.
 
 ## Using the PPTX Skill
 
 ### Reference
 
 For complete technical documentation on PowerPoint creation, refer to:
+
 - **Main documentation**: `document-skills/pptx/SKILL.md`
 - **HTML to PowerPoint workflow**: Detailed in `pptx/html2pptx.md`
 - **OOXML editing**: For advanced editing in `pptx/ooxml.md`
@@ -29,6 +33,7 @@ For complete technical documentation on PowerPoint creation, refer to:
 **Best for**: Creating presentations from scratch with custom designs and data visualizations.
 
 **Workflow**:
+
 1. Read `document-skills/pptx/SKILL.md` completely
 2. Design slides in HTML with proper dimensions (720pt × 405pt for 16:9)
 3. Create JavaScript file using `html2pptx()` function
@@ -37,6 +42,7 @@ For complete technical documentation on PowerPoint creation, refer to:
 6. Iterate based on visual inspection
 
 **Example Structure**:
+
 ```javascript
 const pptx = new PptxGenJS();
 
@@ -60,6 +66,7 @@ pptx.writeFile({ fileName: "presentation.pptx" });
 **Best for**: Using existing PowerPoint templates or editing existing presentations.
 
 **Workflow**:
+
 1. Start with template.pptx
 2. Use `scripts/rearrange.py` to duplicate/reorder slides
 3. Use `scripts/inventory.py` to extract text
@@ -68,6 +75,7 @@ pptx.writeFile({ fileName: "presentation.pptx" });
 6. Validate with thumbnail grids
 
 **Key Scripts**:
+
 - `rearrange.py`: Duplicate and reorder slides
 - `inventory.py`: Extract all text shapes
 - `replace.py`: Apply text replacements
@@ -78,6 +86,7 @@ pptx.writeFile({ fileName: "presentation.pptx" });
 ### 1. Layout and Structure
 
 **Slide Master Setup**:
+
 - Create consistent master slides
 - Define 4-5 layout types (title, content, figure, two-column, closing)
 - Set default fonts, colors, and spacing
@@ -86,6 +95,7 @@ pptx.writeFile({ fileName: "presentation.pptx" });
 **Standard Layouts**:
 
 **Title Slide**:
+
 ```
 ┌─────────────────────────┐
 │                         │
@@ -98,6 +108,7 @@ pptx.writeFile({ fileName: "presentation.pptx" });
 ```
 
 **Content Slide**:
+
 ```
 ┌─────────────────────────┐
 │ Slide Title             │
@@ -111,6 +122,7 @@ pptx.writeFile({ fileName: "presentation.pptx" });
 ```
 
 **Two-Column Slide**:
+
 ```
 ┌─────────────────────────┐
 │ Slide Title             │
@@ -123,6 +135,7 @@ pptx.writeFile({ fileName: "presentation.pptx" });
 ```
 
 **Full-Figure Slide**:
+
 ```
 ┌─────────────────────────┐
 │ Figure Title (small)    │
@@ -137,11 +150,13 @@ pptx.writeFile({ fileName: "presentation.pptx" });
 ### 2. Typography
 
 **Font Selection**:
+
 - **Primary**: Sans-serif (Arial, Calibri, Helvetica)
 - **Alternative**: Verdana, Tahoma, Trebuchet MS
 - **Avoid**: Serif fonts (harder to read on screens), decorative fonts
 
 **Font Sizes**:
+
 - Title slide title: 44-54pt
 - Slide titles: 32-40pt
 - Body text: 24-28pt (minimum 18pt)
@@ -149,12 +164,14 @@ pptx.writeFile({ fileName: "presentation.pptx" });
 - Footer: 10-12pt
 
 **Text Formatting**:
+
 - **Bold**: For emphasis (use sparingly)
 - **Color**: For highlighting (consistent meaning)
 - **Size**: For hierarchy
 - **Alignment**: Left for body, center for titles
 
 **The 6×6 Rule**:
+
 - Maximum 6 bullet points per slide
 - Maximum 6 words per bullet
 - Better: 3-4 bullets with 4-8 words each
@@ -164,6 +181,7 @@ pptx.writeFile({ fileName: "presentation.pptx" });
 **Selecting Colors**:
 
 Consider your subject matter and audience:
+
 - **Academic/Professional**: Navy blue, gray, white with minimal accent
 - **Biomedical**: Blue and green tones (avoid red-green combinations)
 - **Technology**: Modern colors (teal, orange, purple)
@@ -172,24 +190,28 @@ Consider your subject matter and audience:
 **Example Palettes**:
 
 **Classic Scientific**:
+
 - Background: White (#FFFFFF)
 - Title: Navy (#1C3D5A)
 - Text: Dark gray (#2D3748)
 - Accent: Orange (#E67E22)
 
 **Modern Research**:
+
 - Background: Light gray (#F7FAFC)
 - Title: Teal (#0A9396)
 - Text: Charcoal (#2C2C2C)
 - Accent: Coral (#EE6C4D)
 
 **High Contrast** (for large venues):
+
 - Background: White (#FFFFFF)
 - Title: Black (#000000)
 - Text: Dark gray (#1A1A1A)
 - Accent: Bright blue (#0066CC)
 
 **Accessibility Guidelines**:
+
 - Minimum contrast ratio: 4.5:1 (body text)
 - Preferred contrast ratio: 7:1 (AAA standard)
 - Avoid red-green combinations (8% of men are color-blind)
@@ -198,12 +220,14 @@ Consider your subject matter and audience:
 ### 4. Visual Elements
 
 **Figures and Images**:
+
 - **Resolution**: Minimum 300 DPI for print, 150 DPI for projection
 - **Format**: PNG for screenshots, PDF/SVG for vector graphics
 - **Size**: Large enough to be readable from back of room
 - **Placement**: Center or use two-column layout
 
 **Data Visualizations**:
+
 - **Simplify** from journal figures (fewer panels, larger text)
 - **Font sizes**: 18-24pt for axis labels
 - **Line widths**: 2-4pt thickness
@@ -211,6 +235,7 @@ Consider your subject matter and audience:
 - **Labels**: Direct labeling preferred over legends
 
 **Icons and Shapes**:
+
 - Use for visual interest and organization
 - Consistent style (all outline or all filled)
 - Size appropriately (not too large or small)
@@ -219,17 +244,20 @@ Consider your subject matter and audience:
 ### 5. Animations and Transitions
 
 **When to Use**:
+
 - ✅ Progressive disclosure of bullet points
 - ✅ Building complex figures incrementally
 - ✅ Emphasizing key findings
 - ✅ Showing process steps
 
 **When to Avoid**:
+
 - ❌ Decoration or entertainment
 - ❌ Every single slide
 - ❌ Distracting effects (fly in, bounce, spin)
 
 **Recommended Animations**:
+
 - **Appear**: Clean, professional
 - **Fade**: Subtle transition
 - **Wipe**: Directional reveal
@@ -237,6 +265,7 @@ Consider your subject matter and audience:
 - **Trigger**: On click (not automatic)
 
 **Slide Transitions**:
+
 - Use consistent transition throughout (or none)
 - Recommended: None, Fade, or Push
 - Avoid: 3D rotations, complex effects
@@ -251,6 +280,7 @@ Consider your subject matter and audience:
 **CRITICAL**: Select colors that reflect your subject matter, not generic defaults.
 
 **Topic-Based Palette Examples:**
+
 - **Biotechnology/Life Sciences**: Teal (#0A9396), Coral (#EE6C4D), Cream (#F4F1DE)
 - **Neuroscience/Brain Research**: Deep Purple (#722880), Magenta (#D72D51), White
 - **Machine Learning/AI**: Bold Red (#E74C3C), Orange (#F39C12), Dark Gray (#2C2C2C)
@@ -261,6 +291,7 @@ Consider your subject matter and audience:
 See full palette options in pptx skill SKILL.md (lines 76-94).
 
 **Step 1: Plan Design System** (With Modern Palette)
+
 ```javascript
 // Define design constants with MODERN colors (not defaults)
 const DESIGN = {
@@ -285,6 +316,7 @@ const DESIGN = {
 ```
 
 **Step 2: Create Reusable Functions**
+
 ```javascript
 function addTitleSlide(pptx, title, subtitle, author) {
   const slide = pptx.addSlide();
@@ -337,6 +369,7 @@ function addContentSlide(pptx, title, bullets) {
 ```
 
 **Step 3: Build Presentation** (Visual-First Approach)
+
 ```javascript
 const pptx = new PptxGenJS();
 pptx.layout = "LAYOUT_16x9";
@@ -384,6 +417,7 @@ pptx.writeFile({ fileName: "presentation.pptx" });
 ```
 
 **Key Changes from Dry Presentations:**
+
 - Title slide uses bold background color (not plain white)
 - Introduction includes relevant image (not just bullets)
 - Results slide is figure-dominated (not text-dominated)
@@ -393,6 +427,7 @@ pptx.writeFile({ fileName: "presentation.pptx" });
 ### Adding Scientific Content
 
 **Equations** (as images):
+
 ```javascript
 // Render equation as PNG first (using LaTeX or online tool)
 // Then add to slide
@@ -403,6 +438,7 @@ slide.addImage({
 ```
 
 **Tables**:
+
 ```javascript
 slide.addTable([
   [
@@ -422,6 +458,7 @@ slide.addTable([
 ```
 
 **Charts**:
+
 ```javascript
 // Bar chart
 slide.addChart(pptx.ChartType.bar, [
@@ -461,6 +498,7 @@ python scripts/thumbnail.py presentation.pptx review/slide
 ### Inspection Checklist
 
 For each slide, check:
+
 - [ ] Text readable (not cut off or too small)
 - [ ] No element overlap
 - [ ] Consistent colors and fonts
@@ -471,16 +509,19 @@ For each slide, check:
 ### Common Issues
 
 **Text Overflow**:
+
 - Reduce font size or text length
 - Increase text box size
 - Split into multiple slides
 
 **Element Overlap**:
+
 - Use two-column layout
 - Reduce element sizes
 - Adjust positioning
 
 **Poor Contrast**:
+
 - Choose higher contrast colors
 - Use dark text on light background
 - Test with contrast checker
@@ -492,11 +533,13 @@ For each slide, check:
 If you have an existing template:
 
 1. **Extract template structure**:
+
 ```bash
 python scripts/inventory.py template.pptx inventory.json
 ```
 
 2. **Create thumbnail grid**:
+
 ```bash
 python scripts/thumbnail.py template.pptx template_review
 ```
@@ -504,11 +547,13 @@ python scripts/thumbnail.py template.pptx template_review
 3. **Analyze layouts** and document which slides to use
 
 4. **Rearrange slides**:
+
 ```bash
 python scripts/rearrange.py template.pptx working.pptx 0,5,5,12,18,22
 ```
 
 5. **Replace content**:
+
 ```bash
 python scripts/replace.py working.pptx replacements.json output.pptx
 ```
@@ -546,16 +591,19 @@ python scripts/replace.py working.pptx replacements.json output.pptx
 ## Accessibility Considerations
 
 **Color Contrast**:
+
 - Use WebAIM contrast checker
 - Minimum 4.5:1 for normal text
 - Preferred 7:1 for optimal readability
 
 **Color Blindness**:
+
 - Test with Coblis simulator
 - Use patterns/shapes with colors
 - Avoid red-green combinations
 
 **Readability**:
+
 - Sans-serif fonts only
 - Minimum 18pt, prefer 24pt+
 - Clear visual hierarchy
@@ -564,18 +612,21 @@ python scripts/replace.py working.pptx replacements.json output.pptx
 ## Integration with Other Skills
 
 **With Scientific Writing**:
+
 - Convert paper content to slides
 - Simplify dense text
 - Extract key findings
 - Create visual abstracts
 
 **With Data Visualization**:
+
 - Simplify journal figures
 - Recreate with larger labels
 - Use progressive disclosure
 - Emphasize key results
 
 **With Research Lookup**:
+
 - Find relevant papers
 - Extract key citations
 - Build background context
@@ -584,17 +635,20 @@ python scripts/replace.py working.pptx replacements.json output.pptx
 ## Resources
 
 **PowerPoint Tutorials**:
+
 - Microsoft PowerPoint documentation
 - PowerPoint design templates
 - Scientific presentation examples
 
 **Design Tools**:
+
 - Color palette generators (Coolors.co)
 - Contrast checkers (WebAIM)
 - Icon libraries (Noun Project)
 - Image editing (PowerPoint built-in, external tools)
 
 **PPTX Skill Documentation**:
+
 - `document-skills/pptx/SKILL.md`: Main documentation
 - `document-skills/pptx/html2pptx.md`: HTML to PPTX workflow
 - `document-skills/pptx/ooxml.md`: Advanced editing
@@ -616,13 +670,13 @@ python scripts/replace.py working.pptx replacements.json output.pptx
 
 ### Font Size Guidelines
 
-| Element | Minimum | Recommended |
-|---------|---------|-------------|
-| Title slide | 40pt | 44-54pt |
-| Slide title | 28pt | 32-40pt |
-| Body text | 18pt | 24-28pt |
-| Caption | 14pt | 16-20pt |
-| Footer | 10pt | 10-12pt |
+| Element     | Minimum | Recommended |
+|-------------|---------|-------------|
+| Title slide | 40pt    | 44-54pt     |
+| Slide title | 28pt    | 32-40pt     |
+| Body text   | 18pt    | 24-28pt     |
+| Caption     | 14pt    | 16-20pt     |
+| Footer      | 10pt    | 10-12pt     |
 
 ### Color Usage
 
@@ -634,23 +688,29 @@ python scripts/replace.py working.pptx replacements.json output.pptx
 ## Troubleshooting
 
 **Problem**: Text appears cut off
+
 - **Solution**: Increase text box size or reduce font size
 
 **Problem**: Figures are blurry
+
 - **Solution**: Use higher resolution images (300 DPI)
 
 **Problem**: Colors look different when projected
+
 - **Solution**: Test with projector beforehand, use high contrast
 
 **Problem**: File size too large
+
 - **Solution**: Compress images, reduce image resolution
 
 **Problem**: Animations not working
+
 - **Solution**: Check PowerPoint version compatibility
 
 ## Conclusion
 
 Effective PowerPoint presentations for science require:
+
 1. Clear, simple design
 2. Readable text (24pt+ body)
 3. High-quality figures
@@ -658,5 +718,6 @@ Effective PowerPoint presentations for science require:
 5. Visual validation
 6. Accessibility considerations
 
-Use the pptx skill for programmatic creation and the visual review workflow to ensure professional quality before presenting.
+Use the pptx skill for programmatic creation and the visual review workflow to ensure professional quality before
+presenting.
 

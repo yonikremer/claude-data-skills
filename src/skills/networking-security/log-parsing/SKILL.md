@@ -2,11 +2,13 @@
 name: log-parsing
 description: Use when parsing structured and unstructured log files into DataFrames for analysis. Ideal for processing syslog, access logs, or application logs. Do NOT use for real-time monitoring (use elasticsearch) or for simple text search (use regex).
 ---
+
 # Log Parsing
 
 ## Overview
 
 Log parsing in Python falls into three patterns:
+
 - **Regex extraction** — unstructured text logs with known formats
 - **JSON log parsing** — structured logs (one JSON object per line)
 - **Python `logging` / `structlog`** — parsing your own application's log output

@@ -1,6 +1,7 @@
 # ES|QL Complete Reference
 
-ES|QL (Elasticsearch Query Language) is a piped query language for filtering, transforming, and analyzing data in Elasticsearch. It uses pipes (`|`) to chain commands together.
+ES|QL (Elasticsearch Query Language) is a piped query language for filtering, transforming, and analyzing data in
+Elasticsearch. It uses pipes (`|`) to chain commands together.
 
 ## Query Structure
 
@@ -389,7 +390,7 @@ FROM orders
 Used with STATS command.
 
 | Function                    | Description           | Example                                    |
-| --------------------------- | --------------------- | ------------------------------------------ |
+|-----------------------------|-----------------------|--------------------------------------------|
 | `COUNT(*)`                  | Count all rows        | `STATS n = COUNT(*)`                       |
 | `COUNT(field)`              | Count non-null values | `STATS n = COUNT(status)`                  |
 | `COUNT_DISTINCT(field)`     | Count unique values   | `STATS unique = COUNT_DISTINCT(user_id)`   |
@@ -410,7 +411,7 @@ Used with STATS command.
 ## String Functions
 
 | Function                   | Description         | Example                                     |
-| -------------------------- | ------------------- | ------------------------------------------- |
+|----------------------------|---------------------|---------------------------------------------|
 | `LENGTH(s)`                | String length       | `EVAL len = LENGTH(name)`                   |
 | `CONCAT(s1, s2, ...)`      | Concatenate strings | `EVAL full = CONCAT(first, " ", last)`      |
 | `SUBSTRING(s, start, len)` | Extract substring   | `EVAL sub = SUBSTRING(text, 1, 10)`         |
@@ -436,7 +437,7 @@ Used with STATS command.
 ## Math Functions
 
 | Function                        | Description       | Example                                  |
-| ------------------------------- | ----------------- | ---------------------------------------- |
+|---------------------------------|-------------------|------------------------------------------|
 | `ABS(n)`                        | Absolute value    | `EVAL abs_val = ABS(diff)`               |
 | `ROUND(n, decimals)`            | Round             | `EVAL rounded = ROUND(price, 2)`         |
 | `FLOOR(n)`                      | Round down        | `EVAL floored = FLOOR(value)`            |
@@ -459,7 +460,7 @@ Used with STATS command.
 ## Date/Time Functions
 
 | Function                     | Description          | Example                                      |
-| ---------------------------- | -------------------- | -------------------------------------------- |
+|------------------------------|----------------------|----------------------------------------------|
 | `NOW()`                      | Current timestamp    | `WHERE @timestamp > NOW() - 1 hour`          |
 | `DATE_TRUNC(interval, date)` | Truncate to interval | `EVAL hour = DATE_TRUNC(1 hour, @timestamp)` |
 | `DATE_EXTRACT(part, date)`   | Extract part         | `EVAL month = DATE_EXTRACT(month, date)`     |
@@ -476,7 +477,7 @@ Used with STATS command.
 ## Type Conversion Functions
 
 | Function         | Description         | Example                       |
-| ---------------- | ------------------- | ----------------------------- |
+|------------------|---------------------|-------------------------------|
 | `TO_STRING(v)`   | Convert to string   | `EVAL str = TO_STRING(num)`   |
 | `TO_INTEGER(v)`  | Convert to integer  | `EVAL int = TO_INTEGER(str)`  |
 | `TO_LONG(v)`     | Convert to long     | `EVAL lng = TO_LONG(str)`     |
@@ -493,7 +494,7 @@ Used with STATS command.
 For handling fields with multiple values.
 
 | Function                      | Description       | Example                              |
-| ----------------------------- | ----------------- | ------------------------------------ |
+|-------------------------------|-------------------|--------------------------------------|
 | `MV_COUNT(field)`             | Count values      | `EVAL n = MV_COUNT(tags)`            |
 | `MV_FIRST(field)`             | First value       | `EVAL first = MV_FIRST(values)`      |
 | `MV_LAST(field)`              | Last value        | `EVAL last = MV_LAST(values)`        |
@@ -513,7 +514,7 @@ For handling fields with multiple values.
 ## Conditional Functions
 
 | Function                          | Description    | Example                                                    |
-| --------------------------------- | -------------- | ---------------------------------------------------------- |
+|-----------------------------------|----------------|------------------------------------------------------------|
 | `CASE(cond1, val1, ..., default)` | Conditional    | `EVAL level = CASE(score > 90, "A", score > 80, "B", "C")` |
 | `COALESCE(v1, v2, ...)`           | First non-null | `EVAL name = COALESCE(nickname, full_name, "Unknown")`     |
 | `NULLIF(v1, v2)`                  | Null if equal  | `EVAL val = NULLIF(x, 0)`                                  |

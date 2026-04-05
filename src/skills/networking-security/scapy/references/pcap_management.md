@@ -1,6 +1,7 @@
 # Scapy PCAP Management Reference
 
 ## 1. Reading PCAP files
+
 ```python
 from scapy.all import rdpcap
 
@@ -12,6 +13,7 @@ pkts = rdpcap("traffic.pcap", count=100)
 ```
 
 ## 2. Writing PCAP files
+
 ```python
 from scapy.all import wrpcap
 
@@ -23,6 +25,7 @@ wrpcap("output.pcap", pkts, append=True)
 ```
 
 ## 3. Streaming (Large files)
+
 ```python
 from scapy.all import PcapReader, PcapWriter
 
@@ -39,6 +42,7 @@ with PcapWriter("output.pcap", append=True, sync=True) as pw:
 ```
 
 ## 4. Filtering with Tcpdump syntax
+
 ```python
 from scapy.all import sniff
 

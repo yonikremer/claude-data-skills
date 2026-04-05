@@ -48,7 +48,7 @@ def merge_runs(input_dir: str) -> tuple[int, str]:
 
 
 def _find_elements(
-    root: defusedxml.minidom.Element, tag: str
+        root: defusedxml.minidom.Element, tag: str
 ) -> list[defusedxml.minidom.Element]:
     """Recursively finds all elements with the given tag name.
 
@@ -74,7 +74,7 @@ def _find_elements(
 
 
 def _get_child(
-    parent: defusedxml.minidom.Element, tag: str
+        parent: defusedxml.minidom.Element, tag: str
 ) -> defusedxml.minidom.Element | None:
     """Gets the first child element with the given tag name.
 
@@ -94,7 +94,7 @@ def _get_child(
 
 
 def _get_children(
-    parent: defusedxml.minidom.Element, tag: str
+        parent: defusedxml.minidom.Element, tag: str
 ) -> list[defusedxml.minidom.Element]:
     """Gets all child elements with the given tag name.
 
@@ -115,7 +115,7 @@ def _get_children(
 
 
 def _is_adjacent(
-    elem1: defusedxml.minidom.Element, elem2: defusedxml.minidom.Element
+        elem1: defusedxml.minidom.Element, elem2: defusedxml.minidom.Element
 ) -> bool:
     """Checks if two elements are adjacent, ignoring whitespace.
 
@@ -191,7 +191,7 @@ def _merge_runs_in(container: defusedxml.minidom.Element) -> int:
 
 
 def _first_child_run(
-    container: defusedxml.minidom.Element,
+        container: defusedxml.minidom.Element,
 ) -> defusedxml.minidom.Element | None:
     """Gets the first child element that is a run.
 
@@ -208,7 +208,7 @@ def _first_child_run(
 
 
 def _next_element_sibling(
-    node: defusedxml.minidom.Node,
+        node: defusedxml.minidom.Node,
 ) -> defusedxml.minidom.Element | None:
     """Gets the next sibling that is an element.
 
@@ -227,7 +227,7 @@ def _next_element_sibling(
 
 
 def _next_sibling_run(
-    node: defusedxml.minidom.Node,
+        node: defusedxml.minidom.Node,
 ) -> defusedxml.minidom.Element | None:
     """Gets the next sibling that is a run.
 
@@ -262,7 +262,7 @@ def _is_run(node: defusedxml.minidom.Node) -> bool:
 
 
 def _can_merge(
-    run1: defusedxml.minidom.Element, run2: defusedxml.minidom.Element
+        run1: defusedxml.minidom.Element, run2: defusedxml.minidom.Element
 ) -> bool:
     """Checks if two runs can be merged based on their formatting.
 
@@ -284,7 +284,7 @@ def _can_merge(
 
 
 def _merge_run_content(
-    target: defusedxml.minidom.Element, source: defusedxml.minidom.Element
+        target: defusedxml.minidom.Element, source: defusedxml.minidom.Element
 ) -> None:
     """Moves content from a source run to a target run.
 

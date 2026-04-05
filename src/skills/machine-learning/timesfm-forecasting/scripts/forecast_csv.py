@@ -95,9 +95,9 @@ def load_model(batch_size: int = 32) -> Any:
 
 
 def load_csv(
-    path: str,
-    date_col: str | None = None,
-    value_cols: list[str] | None = None,
+        path: str,
+        date_col: str | None = None,
+        value_cols: list[str] | None = None,
 ) -> tuple[pd.DataFrame, list[str], str | None]:
     """Load CSV and identify time series columns.
 
@@ -143,7 +143,7 @@ def load_csv(
 
 
 def forecast_series(
-    model: Any, df: pd.DataFrame, value_cols: list[str], horizon: int
+        model: Any, df: pd.DataFrame, value_cols: list[str], horizon: int
 ) -> dict[str, dict[str, list[float]]]:
     """Forecast all series and return results dictionary.
 
@@ -179,11 +179,11 @@ def forecast_series(
 
 
 def write_csv_output(
-    results: dict[str, dict[str, list[float]]],
-    output_path: str,
-    df: pd.DataFrame,
-    date_col: str | None,
-    horizon: int,
+        results: dict[str, dict[str, list[float]]],
+        output_path: str,
+        df: pd.DataFrame,
+        date_col: str | None,
+        horizon: int,
 ) -> None:
     """Write forecast results to a CSV file.
 
@@ -230,7 +230,7 @@ def write_csv_output(
 
 
 def write_json_output(
-    results: dict[str, dict[str, list[float]]], output_path: str
+        results: dict[str, dict[str, list[float]]], output_path: str
 ) -> None:
     """Write forecast results to a JSON file.
 

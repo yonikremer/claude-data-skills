@@ -10,9 +10,9 @@ import subprocess
 import sys
 from pathlib import Path
 
-from office.soffice import get_soffice_env
-
 from openpyxl import load_workbook
+
+from office.soffice import get_soffice_env
 
 MACRO_DIR_MACOS = "~/Library/Application Support/LibreOffice/4/user/basic/Standard"
 MACRO_DIR_LINUX = "~/.config/libreoffice/4/user/basic/Standard"
@@ -56,8 +56,8 @@ def setup_libreoffice_macro() -> bool:
     macro_file = os.path.join(macro_dir, MACRO_FILENAME)
 
     if (
-        os.path.exists(macro_file)
-        and "RecalculateAndSave" in Path(macro_file).read_text()
+            os.path.exists(macro_file)
+            and "RecalculateAndSave" in Path(macro_file).read_text()
     ):
         return True
 
@@ -166,9 +166,9 @@ def recalc(filename: str, timeout: int = 30) -> dict:
             for row in ws.iter_rows():
                 for cell in row:
                     if (
-                        cell.value
-                        and isinstance(cell.value, str)
-                        and cell.value.startswith("=")
+                            cell.value
+                            and isinstance(cell.value, str)
+                            and cell.value.startswith("=")
                     ):
                         formula_count += 1
         wb_formulas.close()

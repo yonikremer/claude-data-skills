@@ -50,7 +50,7 @@ def validate_skill(skill_path: Path) -> Tuple[bool, str]:
 
 
 def package_skill(
-    skill_path_str: str, output_dir_str: Optional[str] = None
+        skill_path_str: str, output_dir_str: Optional[str] = None
 ) -> Optional[Path]:
     """
     Package a skill folder into a .skill file.

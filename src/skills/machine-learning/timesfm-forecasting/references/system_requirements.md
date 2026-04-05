@@ -74,34 +74,34 @@ model.compile(timesfm.ForecastConfig(
 
 Approximate RAM usage during inference:
 
-| Component | TimesFM 2.5 (200M) | TimesFM 2.0 (500M) |
-| --------- | ------------------- | ------------------- |
-| Model weights | ~800 MB | ~2 GB |
-| Runtime overhead | ~500 MB | ~1 GB |
-| Input/output buffers | ~200 MB per 1000 series | ~500 MB per 1000 series |
-| **Total (small batch)** | **~1.5 GB** | **~3.5 GB** |
-| **Total (large batch)** | **~3 GB** | **~6 GB** |
+| Component               | TimesFM 2.5 (200M)      | TimesFM 2.0 (500M)      |
+|-------------------------|-------------------------|-------------------------|
+| Model weights           | ~800 MB                 | ~2 GB                   |
+| Runtime overhead        | ~500 MB                 | ~1 GB                   |
+| Input/output buffers    | ~200 MB per 1000 series | ~500 MB per 1000 series |
+| **Total (small batch)** | **~1.5 GB**             | **~3.5 GB**             |
+| **Total (large batch)** | **~3 GB**               | **~6 GB**               |
 
 **Formula**: `RAM ≈ model_weights + 0.5 GB + (0.2 MB × num_series × context_length / 1000)`
 
 ### GPU Memory (VRAM)
 
-| Component | TimesFM 2.5 (200M) |
-| --------- | ------------------- |
-| Model weights | ~800 MB |
-| KV cache + activations | ~200–500 MB (scales with context) |
-| Batch buffers | ~100 MB per 100 series at context=1024 |
-| **Total (batch=32)** | **~1.2 GB** |
-| **Total (batch=128)** | **~1.8 GB** |
-| **Total (batch=256)** | **~2.5 GB** |
+| Component              | TimesFM 2.5 (200M)                     |
+|------------------------|----------------------------------------|
+| Model weights          | ~800 MB                                |
+| KV cache + activations | ~200–500 MB (scales with context)      |
+| Batch buffers          | ~100 MB per 100 series at context=1024 |
+| **Total (batch=32)**   | **~1.2 GB**                            |
+| **Total (batch=128)**  | **~1.8 GB**                            |
+| **Total (batch=256)**  | **~2.5 GB**                            |
 
 ### Disk Space
 
-| Item | Size |
-| ---- | ---- |
-| TimesFM 2.5 safetensors | ~800 MB |
-| Hugging Face cache overhead | ~200 MB |
-| **Total download** | **~1 GB** |
+| Item                        | Size      |
+|-----------------------------|-----------|
+| TimesFM 2.5 safetensors     | ~800 MB   |
+| Hugging Face cache overhead | ~200 MB   |
+| **Total download**          | **~1 GB** |
 
 Model weights are downloaded once from Hugging Face Hub and cached in
 `~/.cache/huggingface/` (or `$HF_HOME`).
@@ -110,22 +110,22 @@ Model weights are downloaded once from Hugging Face Hub and cached in
 
 ### NVIDIA GPUs (CUDA)
 
-| GPU | VRAM | Recommended batch | Notes |
-| --- | ---- | ----------------- | ----- |
-| RTX 3060 | 12 GB | 64 | Good entry-level |
-| RTX 3090 / 4090 | 24 GB | 256 | Excellent for production |
-| A100 (40 GB) | 40 GB | 512 | Cloud/HPC |
-| A100 (80 GB) | 80 GB | 1024 | Cloud/HPC |
-| T4 | 16 GB | 128 | Cloud (Colab, AWS) |
-| V100 | 16–32 GB | 128–256 | Cloud |
+| GPU             | VRAM     | Recommended batch | Notes                    |
+|-----------------|----------|-------------------|--------------------------|
+| RTX 3060        | 12 GB    | 64                | Good entry-level         |
+| RTX 3090 / 4090 | 24 GB    | 256               | Excellent for production |
+| A100 (40 GB)    | 40 GB    | 512               | Cloud/HPC                |
+| A100 (80 GB)    | 80 GB    | 1024              | Cloud/HPC                |
+| T4              | 16 GB    | 128               | Cloud (Colab, AWS)       |
+| V100            | 16–32 GB | 128–256           | Cloud                    |
 
 ### Apple Silicon (MPS)
 
-| Chip | Unified Memory | Recommended batch | Notes |
-| ---- | -------------- | ----------------- | ----- |
-| M1 | 8–16 GB | 16–32 | Works, slower than CUDA |
-| M1 Pro/Max | 16–64 GB | 32–128 | Good performance |
-| M2/M3/M4 Pro/Max | 18–128 GB | 64–256 | Excellent |
+| Chip             | Unified Memory | Recommended batch | Notes                   |
+|------------------|----------------|-------------------|-------------------------|
+| M1               | 8–16 GB        | 16–32             | Works, slower than CUDA |
+| M1 Pro/Max       | 16–64 GB       | 32–128            | Good performance        |
+| M2/M3/M4 Pro/Max | 18–128 GB      | 64–256            | Excellent               |
 
 ### CPU Only
 
@@ -133,30 +133,30 @@ Works on any CPU with sufficient RAM. Expect 5–20× slower than GPU.
 
 ## Python and Package Requirements
 
-| Requirement | Minimum | Recommended |
-| ----------- | ------- | ----------- |
-| Python | 3.10 | 3.12+ |
-| numpy | 1.26.4 | latest |
-| torch | 2.0.0 | latest |
-| huggingface_hub | 0.23.0 | latest |
-| safetensors | 0.5.3 | latest |
+| Requirement     | Minimum | Recommended |
+|-----------------|---------|-------------|
+| Python          | 3.10    | 3.12+       |
+| numpy           | 1.26.4  | latest      |
+| torch           | 2.0.0   | latest      |
+| huggingface_hub | 0.23.0  | latest      |
+| safetensors     | 0.5.3   | latest      |
 
 ### Optional Dependencies
 
-| Package | Purpose | Install |
-| ------- | ------- | ------- |
-| jax | Flax backend | `pip install jax[cuda]` |
-| flax | Flax backend | `pip install flax` |
+| Package      | Purpose         | Install                    |
+|--------------|-----------------|----------------------------|
+| jax          | Flax backend    | `pip install jax[cuda]`    |
+| flax         | Flax backend    | `pip install flax`         |
 | scikit-learn | XReg covariates | `pip install scikit-learn` |
 
 ## Operating System Compatibility
 
-| OS | Status | Notes |
-| -- | ------ | ----- |
-| Linux (Ubuntu 20.04+) | ✅ Fully supported | Best performance with CUDA |
-| macOS 13+ (Ventura) | ✅ Fully supported | MPS acceleration on Apple Silicon |
-| Windows 11 + WSL2 | ✅ Supported | Use WSL2 for best experience |
-| Windows (native) | ⚠️ Partial | PyTorch works, some edge cases |
+| OS                    | Status            | Notes                             |
+|-----------------------|-------------------|-----------------------------------|
+| Linux (Ubuntu 20.04+) | ✅ Fully supported | Best performance with CUDA        |
+| macOS 13+ (Ventura)   | ✅ Fully supported | MPS acceleration on Apple Silicon |
+| Windows 11 + WSL2     | ✅ Supported       | Use WSL2 for best experience      |
+| Windows (native)      | ⚠️ Partial        | PyTorch works, some edge cases    |
 
 ## Troubleshooting
 

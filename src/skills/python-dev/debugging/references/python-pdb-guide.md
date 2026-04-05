@@ -5,15 +5,19 @@ Use the Python debugger (`pdb`) to step through code and inspect variables.
 ## How to Start the Debugger
 
 ### 1. Insert a Breakpoint
+
 Add this line right before the error or the line you want to inspect:
+
 ```python
 import pdb; pdb.set_trace()
 ```
 
 ### 2. Run your Script
+
 When the code hits that line, the program will pause and show a `(Pdb)` prompt.
 
 ## Essential PDB Commands
+
 Type these commands at the `(Pdb)` prompt:
 
 - **`n` (next)**: Go to the next line in the current function.
@@ -24,6 +28,7 @@ Type these commands at the `(Pdb)` prompt:
 - **`q` (quit)**: Stop the debugger and the program.
 
 ## Step-by-Step Workflow
+
 1. Find where the code is acting weird.
 2. Put `import pdb; pdb.set_trace()` right before that spot.
 3. Run the code.

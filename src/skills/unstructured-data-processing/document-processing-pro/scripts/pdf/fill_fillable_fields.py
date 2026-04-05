@@ -8,7 +8,7 @@ from extract_form_field_info import get_field_info
 
 
 def fill_pdf_fields(
-    input_pdf_path: str, fields_json_path: str, output_pdf_path: str
+        input_pdf_path: str, fields_json_path: str, output_pdf_path: str
 ) -> None:
     """Fills form fields in a PDF using values from a JSON file.
 
@@ -68,7 +68,7 @@ def fill_pdf_fields(
 
 
 def validation_error_for_field_value(
-    field_info: Dict[str, Any], field_value: Any
+        field_info: Dict[str, Any], field_value: Any
 ) -> Optional[str]:
     """Validates a field value against its expected type and allowed options.
 
@@ -111,7 +111,7 @@ def monkeypatch_pydpf_method() -> None:
         result = original_get_inherited(self, key, default)
         if key == FieldDictionaryAttributes.Opt:
             if isinstance(result, list) and all(
-                isinstance(v, list) and len(v) == 2 for v in result
+                    isinstance(v, list) and len(v) == 2 for v in result
             ):
                 result = [r[0] for r in result]
         return result

@@ -23,13 +23,16 @@ Superpowers skills override default system prompt behavior, but **user instructi
 2. **Superpowers skills** — override default system behavior where they conflict
 3. **Default system prompt** — lowest priority
 
-If CLAUDE.md, GEMINI.md, or AGENTS.md says "don't use TDD" and a skill says "always use TDD," follow the user's instructions. The user is in control.
+If CLAUDE.md, GEMINI.md, or AGENTS.md says "don't use TDD" and a skill says "always use TDD," follow the user's
+instructions. The user is in control.
 
 ## How to Access Skills
 
-**In Claude Code:** Use the `Skill` tool. When you invoke a skill, its content is loaded and presented to you—follow it directly. Never use the Read tool on skill files.
+**In Claude Code:** Use the `Skill` tool. When you invoke a skill, its content is loaded and presented to you—follow it
+directly. Never use the Read tool on skill files.
 
-**In Gemini CLI:** Skills activate via the `activate_skill` tool. Gemini loads skill metadata at session start and activates the full content on demand.
+**In Gemini CLI:** Skills activate via the `activate_skill` tool. Gemini loads skill metadata at session start and
+activates the full content on demand.
 
 **In other environments:** Check your platform's documentation for how skills are loaded.
 
@@ -41,7 +44,9 @@ Skills use Claude Code tool names. Gemini CLI users get the tool mapping loaded 
 
 ## The Rule
 
-**Invoke relevant or requested skills BEFORE any response or action.** Even a 1% chance a skill might apply means that you should invoke the skill to check. If an invoked skill turns out to be wrong for the situation, you don't need to use it.
+**Invoke relevant or requested skills BEFORE any response or action.** Even a 1% chance a skill might apply means that
+you should invoke the skill to check. If an invoked skill turns out to be wrong for the situation, you don't need to use
+it.
 
 ```dot
 digraph skill_flow {
@@ -77,20 +82,20 @@ digraph skill_flow {
 
 These thoughts mean STOP—you're rationalizing:
 
-| Thought | Reality |
-|---------|---------|
-| "This is just a simple question" | Questions are tasks. Check for skills. |
-| "I need more context first" | Skill check comes BEFORE clarifying questions. |
-| "Let me explore the codebase first" | Skills tell you HOW to explore. Check first. |
-| "I can check git/files quickly" | Files lack conversation context. Check for skills. |
-| "Let me gather information first" | Skills tell you HOW to gather information. |
-| "This doesn't need a formal skill" | If a skill exists, use it. |
-| "I remember this skill" | Skills evolve. Read current version. |
-| "This doesn't count as a task" | Action = task. Check for skills. |
-| "The skill is overkill" | Simple things become complex. Use it. |
-| "I'll just do this one thing first" | Check BEFORE doing anything. |
-| "This feels productive" | Undisciplined action wastes time. Skills prevent this. |
-| "I know what that means" | Knowing the concept ≠ using the skill. Invoke it. |
+| Thought                             | Reality                                                |
+|-------------------------------------|--------------------------------------------------------|
+| "This is just a simple question"    | Questions are tasks. Check for skills.                 |
+| "I need more context first"         | Skill check comes BEFORE clarifying questions.         |
+| "Let me explore the codebase first" | Skills tell you HOW to explore. Check first.           |
+| "I can check git/files quickly"     | Files lack conversation context. Check for skills.     |
+| "Let me gather information first"   | Skills tell you HOW to gather information.             |
+| "This doesn't need a formal skill"  | If a skill exists, use it.                             |
+| "I remember this skill"             | Skills evolve. Read current version.                   |
+| "This doesn't count as a task"      | Action = task. Check for skills.                       |
+| "The skill is overkill"             | Simple things become complex. Use it.                  |
+| "I'll just do this one thing first" | Check BEFORE doing anything.                           |
+| "This feels productive"             | Undisciplined action wastes time. Skills prevent this. |
+| "I know what that means"            | Knowing the concept ≠ using the skill. Invoke it.      |
 
 ## Skill Priority
 

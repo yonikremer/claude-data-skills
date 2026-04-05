@@ -1,7 +1,8 @@
+import importlib.util
 import os
 import shutil
 import sys
-import importlib.util
+
 
 def copy_skills_to_claude_home():
     """
@@ -17,7 +18,8 @@ def copy_skills_to_claude_home():
             if os.path.exists(potential_path):
                 source_path = potential_path
             else:
-                print(f"Error: Could not find installed 'skills' package. Please ensure it's installed correctly.", file=sys.stderr)
+                print(f"Error: Could not find installed 'skills' package. Please ensure it's installed correctly.",
+                      file=sys.stderr)
                 sys.exit(1)
         else:
             # spec.origin is the path to __init__.py. The directory of that is the source_path.
@@ -36,7 +38,7 @@ def copy_skills_to_claude_home():
         if os.path.exists(destination_path):
             print(f"Updating existing destination directory: {destination_path}")
             shutil.rmtree(destination_path)
-        
+
         os.makedirs(claude_dir, exist_ok=True)
         shutil.copytree(source_path, destination_path)
         print(f"Successfully copied skills and command wrappers.")
@@ -44,6 +46,7 @@ def copy_skills_to_claude_home():
     except Exception as e:
         print(f"Error during Claude skills setup: {e}", file=sys.stderr)
         sys.exit(1)
+
 
 def setup_gemini_commands():
     """
@@ -54,16 +57,17 @@ def setup_gemini_commands():
         # Find the claude_data_skills package
         spec = importlib.util.find_spec("claude_data_skills")
         if spec is None or spec.origin is None:
-             # Fallback for local development or if running from source
-             potential_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'commands'))
-             if os.path.exists(potential_path):
-                 commands_source = potential_path
-             else:
-                 print("Warning: Could not find claude_data_skills package or local commands folder. Skipping Gemini setup.")
-                 return
+            # Fallback for local development or if running from source
+            potential_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'commands'))
+            if os.path.exists(potential_path):
+                commands_source = potential_path
+            else:
+                print(
+                    "Warning: Could not find claude_data_skills package or local commands folder. Skipping Gemini setup.")
+                return
         else:
-             package_dir = os.path.dirname(os.path.abspath(spec.origin))
-             commands_source = os.path.join(package_dir, 'commands')
+            package_dir = os.path.dirname(os.path.abspath(spec.origin))
+            commands_source = os.path.join(package_dir, 'commands')
 
         gemini_dest = os.path.join(os.getcwd(), '.gemini', 'commands')
 
@@ -84,13 +88,16 @@ def setup_gemini_commands():
     except Exception as e:
         print(f"Error during Gemini setup: {e}", file=sys.stderr)
 
+
 def main():
     """Main entry point for setting up both Claude and Gemini environments."""
     print("--- Claude Data Skills Setup ---")
     copy_skills_to_claude_home()
     print("\n--- Gemini CLI Setup ---")
     setup_gemini_commands()
-    print("\nSetup complete! You can now use slash commands (/analyze, /explore, /query, etc.) in both Claude and Gemini.")
+    print(
+        "\nSetup complete! You can now use slash commands (/analyze, /explore, /query, etc.) in both Claude and Gemini.")
+
 
 if __name__ == "__main__":
     main()

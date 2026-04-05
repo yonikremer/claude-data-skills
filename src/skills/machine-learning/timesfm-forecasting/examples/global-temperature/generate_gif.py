@@ -26,15 +26,15 @@ DURATION_MS = 500  # Time per frame in milliseconds
 
 
 def create_frame(
-    ax: plt.Axes,
-    step_data: dict[str, Any],
-    actual_data: dict[str, Any],
-    final_forecast: dict[str, Any],
-    total_steps: int,
-    x_min: pd.Timestamp,
-    x_max: pd.Timestamp,
-    y_min: float,
-    y_max: float,
+        ax: plt.Axes,
+        step_data: dict[str, Any],
+        actual_data: dict[str, Any],
+        final_forecast: dict[str, Any],
+        total_steps: int,
+        x_min: pd.Timestamp,
+        x_max: pd.Timestamp,
+        y_min: float,
+        y_max: float,
 ) -> None:
     """Create a single frame of the animation with fixed axes.
 

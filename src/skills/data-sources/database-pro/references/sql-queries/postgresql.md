@@ -1,6 +1,7 @@
 # PostgreSQL Reference (`psycopg2`)
 
 ## Quick Start
+
 ```python
 import psycopg2
 from psycopg2.extras import execute_values
@@ -14,7 +15,9 @@ con.commit()
 ```
 
 ## Performance: COPY
+
 The `COPY` command is significantly faster than `INSERT` for large datasets.
+
 ```python
 import io
 buf = io.StringIO()
@@ -25,6 +28,8 @@ with con.cursor() as cur:
 ```
 
 ## JSONB
+
 Postgres supports advanced JSON indexing.
+
 - Access: `data->>'field'`
 - Search: `data @> '{"key": "value"}'`

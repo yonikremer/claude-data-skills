@@ -160,14 +160,14 @@ class PPTXSchemaValidator(BaseSchemaValidator):
 
                 valid_layout_rids = set()
                 for rel in rels_root.findall(
-                    f".//{{{self.PACKAGE_RELATIONSHIPS_NAMESPACE}}}Relationship"
+                        f".//{{{self.PACKAGE_RELATIONSHIPS_NAMESPACE}}}Relationship"
                 ):
                     rel_type = rel.get("Type", "")
                     if "slideLayout" in rel_type:
                         valid_layout_rids.add(rel.get("Id"))
 
                 for sld_layout_id in root.findall(
-                    f".//{{{self.PRESENTATIONML_NAMESPACE}}}sldLayoutId"
+                        f".//{{{self.PRESENTATIONML_NAMESPACE}}}sldLayoutId"
                 ):
                     r_id = sld_layout_id.get(
                         f"{{{self.OFFICE_RELATIONSHIPS_NAMESPACE}}}id"
@@ -263,7 +263,7 @@ class PPTXSchemaValidator(BaseSchemaValidator):
                 root = lxml.etree.parse(str(rels_file)).getroot()
 
                 for rel in root.findall(
-                    f".//{{{self.PACKAGE_RELATIONSHIPS_NAMESPACE}}}Relationship"
+                        f".//{{{self.PACKAGE_RELATIONSHIPS_NAMESPACE}}}Relationship"
                 ):
                     rel_type = rel.get("Type", "")
                     if "notesSlide" in rel_type:

@@ -93,10 +93,10 @@ class BaseSchemaValidator:
     }
 
     def __init__(
-        self,
-        unpacked_dir: str | Path,
-        original_file: str | Path | None = None,
-        verbose: bool = False,
+            self,
+            unpacked_dir: str | Path,
+            original_file: str | Path | None = None,
+            verbose: bool = False,
     ) -> None:
         """Initializes the base validator.
 
@@ -156,7 +156,7 @@ class BaseSchemaValidator:
                     if elem.tagName.endswith(":t") and elem.firstChild:
                         text = elem.firstChild.nodeValue
                         if text and (
-                            text.startswith((" ", "\t")) or text.endswith((" ", "\t"))
+                                text.startswith((" ", "\t")) or text.endswith((" ", "\t"))
                         ):
                             if elem.getAttribute("xml:space") != "preserve":
                                 elem.setAttribute("xml:space", "preserve")
@@ -359,9 +359,9 @@ class BaseSchemaValidator:
         all_files = []
         for file_path in self.unpacked_dir.rglob("*"):
             if (
-                file_path.is_file()
-                and file_path.name != "[Content_Types].xml"
-                and not file_path.name.endswith(".rels")
+                    file_path.is_file()
+                    and file_path.name != "[Content_Types].xml"
+                    and not file_path.name.endswith(".rels")
             ):
                 all_files.append(file_path.resolve())
 
@@ -382,8 +382,8 @@ class BaseSchemaValidator:
                 broken_refs = []
 
                 for rel in rels_root.findall(
-                    ".//ns:Relationship",
-                    namespaces={"ns": self.PACKAGE_RELATIONSHIPS_NAMESPACE},
+                        ".//ns:Relationship",
+                        namespaces={"ns": self.PACKAGE_RELATIONSHIPS_NAMESPACE},
                 ):
                     target = rel.get("Target")
                     if target and not target.startswith(("http", "mailto:")):
@@ -465,7 +465,7 @@ class BaseSchemaValidator:
                 rid_to_type = {}
 
                 for rel in rels_root.findall(
-                    f".//{{{self.PACKAGE_RELATIONSHIPS_NAMESPACE}}}Relationship"
+                        f".//{{{self.PACKAGE_RELATIONSHIPS_NAMESPACE}}}Relationship"
                 ):
                     rid = rel.get("Id")
                     rel_type = rel.get("Type", "")
@@ -579,14 +579,14 @@ class BaseSchemaValidator:
             declared_extensions = set()
 
             for override in root.findall(
-                f".//{{{self.CONTENT_TYPES_NAMESPACE}}}Override"
+                    f".//{{{self.CONTENT_TYPES_NAMESPACE}}}Override"
             ):
                 part_name = override.get("PartName")
                 if part_name is not None:
                     declared_parts.add(part_name.lstrip("/"))
 
             for default in root.findall(
-                f".//{{{self.CONTENT_TYPES_NAMESPACE}}}Default"
+                    f".//{{{self.CONTENT_TYPES_NAMESPACE}}}Default"
             ):
                 extension = default.get("Extension")
                 if extension is not None:
@@ -623,8 +623,8 @@ class BaseSchemaValidator:
                 )
 
                 if any(
-                    skip in path_str
-                    for skip in [".rels", "[Content_Types]", "docProps/", "_rels/"]
+                        skip in path_str
+                        for skip in [".rels", "[Content_Types]", "docProps/", "_rels/"]
                 ):
                     continue
 
@@ -672,7 +672,7 @@ class BaseSchemaValidator:
             return True
 
     def validate_file_against_xsd(
-        self, xml_file: str | Path, verbose: bool = False
+            self, xml_file: str | Path, verbose: bool = False
     ) -> tuple[bool | None, set[str]]:
         """Validates a single XML file against its XSD schema.
 
@@ -802,7 +802,7 @@ class BaseSchemaValidator:
         return None
 
     def _clean_ignorable_namespaces(
-        self, xml_doc: lxml.etree._ElementTree
+            self, xml_doc: lxml.etree._ElementTree
     ) -> lxml.etree._ElementTree:
         """Removes undeclared and non-OOXML namespaces from an XML document.
 
@@ -856,7 +856,7 @@ class BaseSchemaValidator:
             root.remove(elem)
 
     def _preprocess_for_mc_ignorable(
-        self, xml_doc: lxml.etree._ElementTree
+            self, xml_doc: lxml.etree._ElementTree
     ) -> lxml.etree._ElementTree:
         """Removes mc:Ignorable attribute from the root element.
 
@@ -874,7 +874,7 @@ class BaseSchemaValidator:
         return xml_doc
 
     def _validate_single_file_xsd(
-        self, xml_file: Path, base_path: Path
+            self, xml_file: Path, base_path: Path
     ) -> tuple[bool | None, set[str] | None]:
         """Validates a single XML file against its XSD schema.
 
@@ -905,8 +905,8 @@ class BaseSchemaValidator:
 
             relative_path = xml_file.relative_to(base_path)
             if (
-                relative_path.parts
-                and relative_path.parts[0] in self.MAIN_CONTENT_FOLDERS
+                    relative_path.parts
+                    and relative_path.parts[0] in self.MAIN_CONTENT_FOLDERS
             ):
                 xml_doc = self._clean_ignorable_namespaces(xml_doc)
 
@@ -957,7 +957,7 @@ class BaseSchemaValidator:
             return errors if errors else set()
 
     def _remove_template_tags_from_text_nodes(
-        self, xml_doc: lxml.etree._ElementTree
+            self, xml_doc: lxml.etree._ElementTree
     ) -> tuple[lxml.etree._ElementTree, list[str]]:
         """Removes template tags ({{...}}) from text nodes in an XML document.
 

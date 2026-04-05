@@ -2,6 +2,7 @@
 name: data-format-detection
 description: Identifies the format and encoding of unknown binary files or raw bytes. Use for deep forensic inspection of unlabelled data using magic bytes, ffprobe, and bitwise similarity.
 ---
+
 # Data Format Detection (Forensic Grade)
 
 This skill provides a professional framework for identifying unknown data formats and character encodings.
@@ -11,6 +12,7 @@ This skill provides a professional framework for identifying unknown data format
 NEVER rely on manual dictionaries. Use industry-standard libraries that wrap the `libmagic` database.
 
 ### python-magic (Primary)
+
 ```python
 import magic
 
@@ -22,7 +24,9 @@ print(f"MIME: {mime} ({desc})")
 ```
 
 ### filetype (Zero-dependency fallback)
+
 Use for common file types (images, video, archives) if `libmagic` is unavailable.
+
 ```python
 import filetype
 kind = filetype.guess('unknown_blob')
@@ -31,6 +35,7 @@ if kind:
 ```
 
 ## 2. Media Discovery with FFprobe
+
 If a file lacks headers but is suspected to be a media stream (raw PCM, H.264, etc.), use FFprobe.
 
 ```bash
@@ -61,7 +66,8 @@ if best_guess:
 
 For raw telemetry, sensor data, or unaligned binary streams, use bit-level self-similarity to find the record size.
 
-**Logic**: Convert the file to a bitstream and search for the bit-period (1 to file size) where adjacent bit-frames are most similar (lowest XOR difference).
+**Logic**: Convert the file to a bitstream and search for the bit-period (1 to file size) where adjacent bit-frames are
+most similar (lowest XOR difference).
 
 ```python
 # Use the optimized bitwise detector:
@@ -70,18 +76,21 @@ For raw telemetry, sensor data, or unaligned binary streams, use bit-level self-
 
 ## 5. Entropy & Forensic Analysis
 
-- **Entropy**: High entropy (>7.5 bits/byte) indicates compression or encryption. Low entropy (<4.0) indicates highly structured/sparse data.
+- **Entropy**: High entropy (>7.5 bits/byte) indicates compression or encryption. Low entropy (<4.0) indicates highly
+  structured/sparse data.
 - **CyberChef Patterns**:
-  - **Base64 + Gzip**: Web/API payloads.
-  - **XOR Brute Force**: Simple obfuscation.
-  - **Bit Flip**: Corrupted streams.
+    - **Base64 + Gzip**: Web/API payloads.
+    - **XOR Brute Force**: Simple obfuscation.
+    - **Bit Flip**: Corrupted streams.
 - **Strings**: Always check for human-readable content.
   ```bash
   strings -n 6 unknown_file | head -n 20
   ```
 
 ## 6. Compression Sniffing
+
 If magic bytes are missing, try transparent decompression:
+
 ```python
 import gzip, zlib, bz2, lzma
 

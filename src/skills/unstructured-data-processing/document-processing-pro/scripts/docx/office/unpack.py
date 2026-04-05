@@ -32,10 +32,10 @@ SMART_QUOTE_REPLACEMENTS = {
 
 
 def unpack(
-    input_file: str,
-    output_directory: str,
-    merge_runs: bool = True,
-    simplify_redlines: bool = True,
+        input_file: str,
+        output_directory: str,
+        merge_runs: bool = True,
+        simplify_redlines: bool = True,
 ) -> tuple[None, str]:
     input_path = Path(input_file)
     output_path = Path(output_directory)

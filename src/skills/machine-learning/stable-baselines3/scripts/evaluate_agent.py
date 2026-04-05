@@ -19,14 +19,14 @@ from stable_baselines3.common.vec_env import DummyVecEnv, VecNormalize, VecVideo
 
 
 def evaluate_agent(
-    model_path: str,
-    env_id: str = "CartPole-v1",
-    n_eval_episodes: int = 10,
-    deterministic: bool = True,
-    render: bool = False,
-    record_video: bool = False,
-    video_folder: str = "./videos/",
-    vec_normalize_path: Optional[str] = None,
+        model_path: str,
+        env_id: str = "CartPole-v1",
+        n_eval_episodes: int = 10,
+        deterministic: bool = True,
+        render: bool = False,
+        record_video: bool = False,
+        video_folder: str = "./videos/",
+        vec_normalize_path: Optional[str] = None,
 ) -> Tuple[float, float]:
     """
     Evaluate a trained RL agent.
@@ -100,11 +100,11 @@ def evaluate_agent(
 
 
 def watch_agent(
-    model_path: str,
-    env_id: str = "CartPole-v1",
-    n_episodes: int = 5,
-    deterministic: bool = True,
-    vec_normalize_path: Optional[str] = None,
+        model_path: str,
+        env_id: str = "CartPole-v1",
+        n_episodes: int = 5,
+        deterministic: bool = True,
+        vec_normalize_path: Optional[str] = None,
 ) -> None:
     """
     Watch a trained agent play (with rendering).
@@ -166,10 +166,10 @@ def watch_agent(
 
 
 def compare_models(
-    model_paths: List[str],
-    env_id: str = "CartPole-v1",
-    n_eval_episodes: int = 10,
-    deterministic: bool = True,
+        model_paths: List[str],
+        env_id: str = "CartPole-v1",
+        n_eval_episodes: int = 10,
+        deterministic: bool = True,
 ) -> Dict[str, Dict[str, float]]:
     """
     Compare performance of multiple trained models.

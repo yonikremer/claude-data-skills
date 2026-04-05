@@ -1,6 +1,7 @@
 # Example: Generated Skill
 
-This is an example of what a generated skill looks like after the bootstrap process. This example is for a fictional e-commerce company called "ShopCo" using Snowflake.
+This is an example of what a generated skill looks like after the bootstrap process. This example is for a fictional
+e-commerce company called "ShopCo" using Snowflake.
 
 ---
 
@@ -70,6 +71,7 @@ WHERE order_status != 'TEST'
 ## Key Metrics
 
 ### Gross Merchandise Value (GMV)
+
 - **Definition**: Total value of all orders placed
 - **Formula**: `SUM(order_total_gross)`
 - **Source**: `CORE.FCT_ORDERS.order_total_gross`
@@ -77,6 +79,7 @@ WHERE order_status != 'TEST'
 - **Caveats**: Includes orders that may later be cancelled or returned
 
 ### Net Revenue
+
 - **Definition**: Actual revenue after returns and discounts
 - **Formula**: `SUM(order_total_gross - return_amount - discount_amount)`
 - **Source**: `CORE.FCT_ORDERS`
@@ -86,17 +89,18 @@ WHERE order_status != 'TEST'
 
 ## Knowledge Base Navigation
 
-| Domain | Reference File | Use For |
-|--------|----------------|---------|
-| Orders | `references/orders.md` | Order tables, GMV/NMV calculations |
+| Domain    | Reference File            | Use For                              |
+|-----------|---------------------------|--------------------------------------|
+| Orders    | `references/orders.md`    | Order tables, GMV/NMV calculations   |
 | Customers | `references/customers.md` | User/customer entities, LTV, cohorts |
-| Products | `references/products.md` | Catalog, inventory, categories |
+| Products  | `references/products.md`  | Catalog, inventory, categories       |
 
 ---
 
 ## Common Query Patterns
 
 ### Daily GMV by Channel
+
 ```sql
 SELECT
     DATE_TRUNC('DAY', order_timestamp) AS order_date,
@@ -111,6 +115,7 @@ ORDER BY 1 DESC, 3 DESC
 ```
 
 ### Customer Cohort Retention
+
 ```sql
 WITH cohorts AS (
     SELECT
@@ -128,6 +133,7 @@ WHERE o.order_status NOT IN ('TEST', 'CANCELLED')
 GROUP BY 1, 2
 ORDER BY 1, 2
 ```
+
 ```
 
 ---
@@ -183,6 +189,7 @@ WHERE order_status NOT IN ('TEST', 'CANCELLED')
 GROUP BY 1
 ORDER BY 1
 ```
+
 ```
 
 ---

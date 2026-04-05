@@ -66,7 +66,7 @@ class CustomEnv(gym.Env):
         self._goal_position: Optional[np.ndarray] = None
 
     def reset(
-        self, seed: Optional[int] = None, options: Optional[Dict[str, Any]] = None
+            self, seed: Optional[int] = None, options: Optional[Dict[str, Any]] = None
     ) -> Tuple[np.ndarray, Dict[str, Any]]:
         """
         Reset the environment to initial state.

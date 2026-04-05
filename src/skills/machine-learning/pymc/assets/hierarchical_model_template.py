@@ -51,9 +51,9 @@ def run_hierarchical_analysis() -> None:
     groups = np.repeat(np.arange(n_groups), n_per_group)
     x_vals = np.random.randn(n_obs)
     y_vals = (
-        group_alphas[groups]
-        + group_betas[groups] * x_vals
-        + np.random.randn(n_obs) * true_sigma
+            group_alphas[groups]
+            + group_betas[groups] * x_vals
+            + np.random.randn(n_obs) * true_sigma
     )
 
     # TODO: Customize group names

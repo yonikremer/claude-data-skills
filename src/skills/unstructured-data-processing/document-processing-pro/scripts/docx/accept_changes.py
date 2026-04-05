@@ -34,8 +34,8 @@ ACCEPT_CHANGES_MACRO = """<?xml version="1.0" encoding="UTF-8"?>
 
 
 def accept_changes(
-    input_file: str,
-    output_file: str,
+        input_file: str,
+        output_file: str,
 ) -> tuple[None, str]:
     """Accept all tracked changes in a DOCX file.
 

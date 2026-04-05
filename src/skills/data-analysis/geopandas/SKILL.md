@@ -2,6 +2,7 @@
 name: geopandas
 description: Use when analyzing geospatial vector data (Shapefiles, GeoJSON, GeoPackage). Ideal for spatial joins, coordinate transformations, and choropleth mapping. CRITICAL: For large datasets (>100k rows), use spatial indexing and Parquet format.
 ---
+
 # GeoPandas
 
 ## ⚠️ Mandatory Pre-flight: Resource Check
@@ -14,11 +15,15 @@ Geospatial operations (especially joins and overlays) are CPU and memory intensi
 
 ## Common Pitfalls (The "Wall of Shame")
 
-1. **CRS Mismatch**: Performing a `sjoin` on layers with different CRS results in empty or incorrect results. Always `to_crs()` first.
-2. **Measuring in Degrees**: Calculating area or distance in `EPSG:4326` (degrees) is incorrect. Reproject to a metric CRS (e.g., UTM) first.
-3. **Invalid Geometries**: Self-intersecting polygons cause topological errors. Use `gdf.is_valid` and `gdf.make_valid()`.
+1. **CRS Mismatch**: Performing a `sjoin` on layers with different CRS results in empty or incorrect results. Always
+   `to_crs()` first.
+2. **Measuring in Degrees**: Calculating area or distance in `EPSG:4326` (degrees) is incorrect. Reproject to a metric
+   CRS (e.g., UTM) first.
+3. **Invalid Geometries**: Self-intersecting polygons cause topological errors. Use `gdf.is_valid` and
+   `gdf.make_valid()`.
 
 ## References (Load on demand)
+
 - `references/api-reference.md` — Formal signatures and docstrings for core functions.
 - `references/data-structures.md` — GeoSeries and GeoDataFrame fundamentals.
 - `references/data-io.md` — Reading/writing files, PostGIS, Parquet.

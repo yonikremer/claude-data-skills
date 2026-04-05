@@ -1,6 +1,7 @@
 # GNU Octave Compatibility Reference
 
 ## Table of Contents
+
 1. [Overview](#overview)
 2. [Syntax Differences](#syntax-differences)
 3. [Operator Differences](#operator-differences)
@@ -12,7 +13,8 @@
 
 ## Overview
 
-GNU Octave is a free, open-source alternative to MATLAB with high compatibility. Most MATLAB scripts run in Octave with no or minimal modifications. However, there are some differences to be aware of.
+GNU Octave is a free, open-source alternative to MATLAB with high compatibility. Most MATLAB scripts run in Octave with
+no or minimal modifications. However, there are some differences to be aware of.
 
 ### Installation
 
@@ -517,18 +519,18 @@ pkg unload control
 
 ### Common Packages
 
-| Package | Description |
-|---------|-------------|
-| control | Control systems design |
-| signal | Signal processing |
-| image | Image processing |
-| statistics | Statistical functions |
-| optim | Optimization algorithms |
-| io | Input/output functions |
-| struct | Structure manipulation |
-| symbolic | Symbolic math (via SymPy) |
-| parallel | Parallel computing |
-| netcdf | NetCDF file support |
+| Package    | Description               |
+|------------|---------------------------|
+| control    | Control systems design    |
+| signal     | Signal processing         |
+| image      | Image processing          |
+| statistics | Statistical functions     |
+| optim      | Optimization algorithms   |
+| io         | Input/output functions    |
+| struct     | Structure manipulation    |
+| symbolic   | Symbolic math (via SymPy) |
+| parallel   | Parallel computing        |
+| netcdf     | NetCDF file support       |
 
 ### Package Management
 

@@ -94,12 +94,12 @@ class DOCXSchemaValidator(BaseSchemaValidator):
                     if elem.text:
                         text = elem.text
                         if re.search(r"^[ \t\n\r]", text) or re.search(
-                            r"[ \t\n\r]$", text
+                                r"[ \t\n\r]$", text
                         ):
                             xml_space_attr = f"{{{self.XML_NAMESPACE}}}space"
                             if (
-                                xml_space_attr not in elem.attrib
-                                or elem.attrib[xml_space_attr] != "preserve"
+                                    xml_space_attr not in elem.attrib
+                                    or elem.attrib[xml_space_attr] != "preserve"
                             ):
                                 text_preview = (
                                     repr(text)[:50] + "..."
@@ -155,7 +155,7 @@ class DOCXSchemaValidator(BaseSchemaValidator):
                         )
 
                 for instr_elem in root.xpath(
-                    ".//w:del//w:instrText", namespaces=namespaces
+                        ".//w:del//w:instrText", namespaces=namespaces
                 ):
                     text_preview = (
                         repr(instr_elem.text or "")[:50] + "..."
@@ -393,7 +393,7 @@ class DOCXSchemaValidator(BaseSchemaValidator):
 
             orphaned_ends = range_ends - range_starts
             for comment_id in sorted(
-                orphaned_ends, key=lambda x: int(x) if x and x.isdigit() else 0
+                    orphaned_ends, key=lambda x: int(x) if x and x.isdigit() else 0
             ):
                 errors.append(
                     f'  document.xml: commentRangeEnd id="{comment_id}" has no matching commentRangeStart'
@@ -401,7 +401,7 @@ class DOCXSchemaValidator(BaseSchemaValidator):
 
             orphaned_starts = range_starts - range_ends
             for comment_id in sorted(
-                orphaned_starts, key=lambda x: int(x) if x and x.isdigit() else 0
+                    orphaned_starts, key=lambda x: int(x) if x and x.isdigit() else 0
             ):
                 errors.append(
                     f'  document.xml: commentRangeStart id="{comment_id}" has no matching commentRangeEnd'
@@ -420,7 +420,7 @@ class DOCXSchemaValidator(BaseSchemaValidator):
                 marker_ids = range_starts | range_ends | references
                 invalid_refs = marker_ids - comment_ids
                 for comment_id in sorted(
-                    invalid_refs, key=lambda x: int(x) if x and x.isdigit() else 0
+                        invalid_refs, key=lambda x: int(x) if x and x.isdigit() else 0
                 ):
                     if comment_id:
                         errors.append(
@@ -474,14 +474,14 @@ class DOCXSchemaValidator(BaseSchemaValidator):
                     if xml_file.name == "numbering.xml":
                         try:
                             needs_repair = (
-                                self._parse_id_value(durable_id, base=10) >= 0x7FFFFFFF
+                                    self._parse_id_value(durable_id, base=10) >= 0x7FFFFFFF
                             )
                         except ValueError:
                             needs_repair = True
                     else:
                         try:
                             needs_repair = (
-                                self._parse_id_value(durable_id, base=16) >= 0x7FFFFFFF
+                                    self._parse_id_value(durable_id, base=16) >= 0x7FFFFFFF
                             )
                         except ValueError:
                             needs_repair = True

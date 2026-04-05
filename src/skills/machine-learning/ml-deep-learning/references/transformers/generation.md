@@ -2,7 +2,8 @@
 
 ## Overview
 
-Generate text with language models using the `generate()` method. Control output quality and style through generation strategies and parameters.
+Generate text with language models using the `generate()` method. Control output quality and style through generation
+strategies and parameters.
 
 ## Basic Generation
 
@@ -91,21 +92,25 @@ outputs = model.generate(
 ### Length Control
 
 **max_new_tokens**: Maximum tokens to generate
+
 ```python
 max_new_tokens=100  # Generate up to 100 new tokens
 ```
 
 **max_length**: Maximum total length (input + output)
+
 ```python
 max_length=512  # Total sequence length
 ```
 
 **min_new_tokens**: Minimum tokens to generate
+
 ```python
 min_new_tokens=50  # Force at least 50 tokens
 ```
 
 **min_length**: Minimum total length
+
 ```python
 min_length=100
 ```
@@ -158,16 +163,19 @@ repetition_penalty=1.2  # Penalize repeated tokens
 ### Beam Search Parameters
 
 **num_beams**: Number of beams
+
 ```python
 num_beams=5  # Keep 5 hypotheses
 ```
 
 **early_stopping**: Stop when num_beams sentences are finished
+
 ```python
 early_stopping=True
 ```
 
 **no_repeat_ngram_size**: Prevent n-gram repetition
+
 ```python
 no_repeat_ngram_size=3  # Don't repeat any 3-gram
 ```
@@ -175,6 +183,7 @@ no_repeat_ngram_size=3  # Don't repeat any 3-gram
 ### Output Control
 
 **num_return_sequences**: Generate multiple outputs
+
 ```python
 outputs = model.generate(
     **inputs,
@@ -185,11 +194,13 @@ outputs = model.generate(
 ```
 
 **pad_token_id**: Specify padding token
+
 ```python
 pad_token_id=tokenizer.eos_token_id
 ```
 
 **eos_token_id**: Stop generation at specific token
+
 ```python
 eos_token_id=tokenizer.eos_token_id
 ```
@@ -255,6 +266,7 @@ outputs = model.generate(
 ### Guidance and Control
 
 **Prevent bad words:**
+
 ```python
 bad_words = ["offensive", "inappropriate"]
 bad_words_ids = [tokenizer.encode(word, add_special_tokens=False) for word in bad_words]
@@ -434,22 +446,26 @@ outputs = model.generate(
 ## Common Issues
 
 **Repetitive output:**
+
 - Increase repetition_penalty (1.2-1.5)
 - Use no_repeat_ngram_size (2-3)
 - Try contrastive search
 - Lower temperature
 
 **Poor quality:**
+
 - Use beam search (num_beams=5)
 - Lower temperature
 - Adjust top_k/top_p
 
 **Too deterministic:**
+
 - Enable sampling (do_sample=True)
 - Increase temperature (0.7-1.0)
 - Adjust top_k/top_p
 
 **Slow generation:**
+
 - Reduce batch size
 - Enable use_cache=True
 - Use Flash Attention

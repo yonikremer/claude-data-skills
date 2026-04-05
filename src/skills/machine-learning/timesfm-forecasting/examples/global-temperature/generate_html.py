@@ -15,7 +15,6 @@ EXAMPLE_DIR = Path(__file__).parent
 DATA_FILE = EXAMPLE_DIR / "output" / "animation_data.json"
 OUTPUT_FILE = EXAMPLE_DIR / "output" / "interactive_forecast.html"
 
-
 HTML_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
 <head>

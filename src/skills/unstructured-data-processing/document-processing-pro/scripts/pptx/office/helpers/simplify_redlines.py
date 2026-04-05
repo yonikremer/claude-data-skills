@@ -123,7 +123,7 @@ def _get_author(elem: defusedxml.minidom.Element) -> str:
 
 
 def _can_merge_tracked(
-    elem1: defusedxml.minidom.Element, elem2: defusedxml.minidom.Element
+        elem1: defusedxml.minidom.Element, elem2: defusedxml.minidom.Element
 ) -> bool:
     """Checks if two tracked change elements can be merged.
 
@@ -149,7 +149,7 @@ def _can_merge_tracked(
 
 
 def _merge_tracked_content(
-    target: defusedxml.minidom.Element, source: defusedxml.minidom.Element
+        target: defusedxml.minidom.Element, source: defusedxml.minidom.Element
 ) -> None:
     """Moves content from a source tracked change to a target tracked change.
 
@@ -164,7 +164,7 @@ def _merge_tracked_content(
 
 
 def _find_elements(
-    root: defusedxml.minidom.Element, tag: str
+        root: defusedxml.minidom.Element, tag: str
 ) -> list[defusedxml.minidom.Element]:
     """Finds all elements with a given tag name.
 
@@ -252,7 +252,7 @@ def _get_authors_from_docx(docx_path: Path) -> dict[str, int]:
 
 
 def infer_author(
-    modified_dir: Path, original_docx: Path, default: str = "Claude"
+        modified_dir: Path, original_docx: Path, default: str = "Claude"
 ) -> str:
     """Infers the author of new tracked changes by comparing modified and original.
 

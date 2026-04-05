@@ -1,12 +1,16 @@
 # Vectorized Environments in Stable Baselines3
 
-This document provides comprehensive information about vectorized environments in Stable Baselines3 for efficient parallel training.
+This document provides comprehensive information about vectorized environments in Stable Baselines3 for efficient
+parallel training.
 
 ## Overview
 
-Vectorized environments stack multiple independent environment instances into a single environment that processes actions and observations in batches. Instead of interacting with one environment at a time, you interact with `n` environments simultaneously.
+Vectorized environments stack multiple independent environment instances into a single environment that processes
+actions and observations in batches. Instead of interacting with one environment at a time, you interact with `n`
+environments simultaneously.
 
 **Benefits:**
+
 - **Speed:** Parallel execution significantly accelerates training
 - **Sample efficiency:** Collect more diverse experiences faster
 - **Required for:** Frame stacking and normalization wrappers
@@ -36,6 +40,7 @@ env = DummyVecEnv([make_env() for _ in range(4)])
 ```
 
 **When to use:**
+
 - Lightweight environments (CartPole, simple grids)
 - When multiprocessing overhead > computation time
 - Debugging (easier to trace errors)
@@ -55,6 +60,7 @@ env = make_vec_env("CartPole-v1", n_envs=8, vec_env_cls=SubprocVecEnv)
 ```
 
 **When to use:**
+
 - Computationally expensive environments (physics simulations, 3D games)
 - When environment computation time justifies multiprocessing overhead
 - When you need true parallel execution
@@ -102,11 +108,13 @@ Vectorized environments have a different API than standard Gym environments:
 ### reset()
 
 **Standard Gym:**
+
 ```python
 obs, info = env.reset()
 ```
 
 **VecEnv:**
+
 ```python
 obs = env.reset()  # Returns only observations (numpy array)
 # Access info via env.reset_infos (list of dicts)
@@ -116,11 +124,13 @@ infos = env.reset_infos
 ### step()
 
 **Standard Gym:**
+
 ```python
 obs, reward, terminated, truncated, info = env.step(action)
 ```
 
 **VecEnv:**
+
 ```python
 obs, rewards, dones, infos = env.step(actions)
 # Returns 4-tuple instead of 5-tuple
@@ -244,11 +254,13 @@ model = PPO.load("ppo_pendulum", env=env)
 ```
 
 **When to use:**
+
 - Continuous control tasks (especially MuJoCo)
 - When observation scales vary widely
 - When rewards have high variance
 
 **Important:**
+
 - Statistics are NOT saved with model - save separately
 - Disable training and reward normalization during evaluation
 
@@ -270,6 +282,7 @@ model.learn(total_timesteps=1000000)
 ```
 
 **When to use:**
+
 - Atari games (stack 4 frames)
 - Environments where velocity information is needed
 - Partial observability problems
@@ -315,6 +328,7 @@ model.learn(total_timesteps=10000)
 ```
 
 **When to use:**
+
 - Debugging custom environments
 - Catching numerical instabilities
 - Validating environment implementation
@@ -335,6 +349,7 @@ model = PPO("CnnPolicy", env)
 ```
 
 **When to use:**
+
 - When environment returns images in HWC format
 - SB3 expects CHW format for CNN policies
 
@@ -388,6 +403,7 @@ env.set_attr("max_steps", 1000, indices=[1, 3])
 ### Choosing Number of Environments
 
 **On-Policy (PPO, A2C):**
+
 ```python
 # General rule: 4-16 environments
 # More environments = faster data collection
@@ -400,6 +416,7 @@ model = PPO("MlpPolicy", env, n_steps=128)  # 8*128 = 1024 steps/rollout
 ```
 
 **Off-Policy (SAC, TD3, DQN):**
+
 ```python
 # General rule: 1-4 environments
 # More doesn't help as much (replay buffer provides diversity)
@@ -484,6 +501,7 @@ env = make_vec_env("CartPole-v1", n_envs=8, vec_env_cls=DummyVecEnv)
 **Cause:** Environment not properly isolated or has shared state.
 
 **Solution:**
+
 - Ensure environment has no shared global state
 - Wrap code in `if __name__ == "__main__":`
 - Use DummyVecEnv for debugging
@@ -491,24 +509,24 @@ env = make_vec_env("CartPole-v1", n_envs=8, vec_env_cls=DummyVecEnv)
 ## Best Practices
 
 1. **Use appropriate VecEnv type:**
-   - DummyVecEnv: Simple environments (CartPole, basic grids)
-   - SubprocVecEnv: Complex environments (MuJoCo, Unity, 3D games)
+    - DummyVecEnv: Simple environments (CartPole, basic grids)
+    - SubprocVecEnv: Complex environments (MuJoCo, Unity, 3D games)
 
 2. **Adjust hyperparameters for vectorization:**
-   - Divide `eval_freq`, `save_freq` by `n_envs` in callbacks
-   - Maintain same `n_steps * n_envs` for on-policy algorithms
+    - Divide `eval_freq`, `save_freq` by `n_envs` in callbacks
+    - Maintain same `n_steps * n_envs` for on-policy algorithms
 
 3. **Save normalization statistics:**
-   - Always save VecNormalize stats with model
-   - Disable training during evaluation
+    - Always save VecNormalize stats with model
+    - Disable training during evaluation
 
 4. **Monitor memory usage:**
-   - More environments = more memory
-   - Reduce buffer size if needed
+    - More environments = more memory
+    - Reduce buffer size if needed
 
 5. **Test with DummyVecEnv first:**
-   - Easier debugging
-   - Ensure environment works before parallelizing
+    - Easier debugging
+    - Ensure environment works before parallelizing
 
 ## Examples
 

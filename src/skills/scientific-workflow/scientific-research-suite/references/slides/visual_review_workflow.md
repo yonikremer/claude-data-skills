@@ -2,7 +2,9 @@
 
 ## Overview
 
-Visual review is a critical quality assurance step for presentations, allowing you to identify and fix layout issues, text overflow, element overlap, and design problems before presenting. This guide covers converting presentations to images, systematic visual inspection, common issues, and iterative improvement strategies.
+Visual review is a critical quality assurance step for presentations, allowing you to identify and fix layout issues,
+text overflow, element overlap, and design problems before presenting. This guide covers converting presentations to
+images, systematic visual inspection, common issues, and iterative improvement strategies.
 
 ## ⚠️ CRITICAL RULE: NEVER READ PDF PRESENTATIONS DIRECTLY
 
@@ -10,7 +12,8 @@ Visual review is a critical quality assurance step for presentations, allowing y
 
 ### Why This Rule Exists
 
-- **Buffer Overflow Prevention**: Presentation PDFs (especially multi-slide decks) cause "JSON message exceeded maximum buffer size" errors when read directly
+- **Buffer Overflow Prevention**: Presentation PDFs (especially multi-slide decks) cause "JSON message exceeded maximum
+  buffer size" errors when read directly
 - **Visual Accuracy**: Images show exactly what the audience will see, including rendering issues
 - **Performance**: Image-based review is faster and more reliable than PDF text extraction
 - **Consistency**: Ensures uniform review process for all presentations
@@ -38,6 +41,7 @@ Visual review is a critical quality assurance step for presentations, allowing y
 ### Common Problems Invisible in Source
 
 **LaTeX Beamer Issues**:
+
 - Text overflow from text boxes
 - Overlapping elements (equations over images)
 - Poor line breaking
@@ -45,6 +49,7 @@ Visual review is a critical quality assurance step for presentations, allowing y
 - Font size issues at actual resolution
 
 **PowerPoint Issues**:
+
 - Text cut off by shapes or slide edges
 - Images overlapping with text
 - Inconsistent spacing between slides
@@ -52,6 +57,7 @@ Visual review is a critical quality assurance step for presentations, allowing y
 - Font substitution problems
 
 **Projection Issues**:
+
 - Content visible on laptop but cut off when projected
 - Colors looking different on projector
 - Low contrast elements becoming invisible
@@ -73,12 +79,14 @@ Visual review is a critical quality assurance step for presentations, allowing y
 The script uses PyMuPDF, a self-contained Python library - no poppler or other system software needed.
 
 **Installation**:
+
 ```bash
 # PyMuPDF is included as a project dependency
 pip install pymupdf
 ```
 
 **Basic Conversion**:
+
 ```bash
 # Convert all slides to JPEG images
 python skills/scientific-slides/scripts/pdf_to_images.py presentation.pdf slide --dpi 150
@@ -87,6 +95,7 @@ python skills/scientific-slides/scripts/pdf_to_images.py presentation.pdf slide 
 ```
 
 **High-Resolution Conversion**:
+
 ```bash
 # Higher quality for detailed inspection (300 DPI)
 python skills/scientific-slides/scripts/pdf_to_images.py presentation.pdf slide --dpi 300
@@ -96,6 +105,7 @@ python skills/scientific-slides/scripts/pdf_to_images.py presentation.pdf slide 
 ```
 
 **Convert Specific Slides**:
+
 ```bash
 # Slides 5-10 only
 python skills/scientific-slides/scripts/pdf_to_images.py presentation.pdf slide --dpi 150 --first 5 --last 10
@@ -105,6 +115,7 @@ python skills/scientific-slides/scripts/pdf_to_images.py presentation.pdf slide 
 ```
 
 **Output Options**:
+
 ```bash
 # Different output directory
 python skills/scientific-slides/scripts/pdf_to_images.py presentation.pdf review/slide --dpi 150
@@ -126,6 +137,7 @@ python scripts/thumbnail.py presentation.pptx slides/slide --individual
 ```
 
 **Advantages**:
+
 - Optimized for PowerPoint files
 - Can create overview grids
 - Handles .pptx format directly
@@ -134,6 +146,7 @@ python scripts/thumbnail.py presentation.pptx slides/slide --individual
 ### Method 3: Using ImageMagick
 
 **Installation**:
+
 ```bash
 # Ubuntu/Debian
 sudo apt-get install imagemagick
@@ -143,6 +156,7 @@ brew install imagemagick
 ```
 
 **Conversion**:
+
 ```bash
 # Convert PDF to images
 convert -density 150 presentation.pdf slide.jpg
@@ -174,6 +188,7 @@ doc.close()
 ```
 
 **Install PyMuPDF**:
+
 ```bash
 pip install pymupdf
 # No external dependencies needed!
@@ -184,24 +199,28 @@ pip install pymupdf
 ### Inspection Workflow
 
 **Step 1: Overview Pass**
+
 - View all slides quickly
 - Note overall consistency
 - Identify obviously problematic slides
 - Create list of slides needing detailed review
 
 **Step 2: Detailed Inspection**
+
 - Review each flagged slide carefully
 - Check against issue checklist (below)
 - Document specific problems with slide numbers
 - Take notes on required fixes
 
 **Step 3: Cross-Slide Comparison**
+
 - Check consistency across similar slides
 - Verify uniform spacing and alignment
 - Ensure consistent font sizes
 - Check color scheme consistency
 
 **Step 4: Distance Test**
+
 - View images at reduced size (simulates projection)
 - Check readability from ~6 feet
 - Verify key elements are visible
@@ -214,6 +233,7 @@ Review each slide for these common problems:
 #### Text Issues
 
 **Overflow and Truncation**:
+
 - [ ] Text cut off at slide edges
 - [ ] Text extending beyond text boxes
 - [ ] Equations running into margins
@@ -221,6 +241,7 @@ Review each slide for these common problems:
 - [ ] Bullet points extending beyond boundary
 
 **Readability**:
+
 - [ ] Font size too small (minimum 18pt visible)
 - [ ] Poor contrast (text vs background)
 - [ ] Inadequate line spacing
@@ -230,6 +251,7 @@ Review each slide for these common problems:
 #### Element Overlap
 
 **Text Overlaps**:
+
 - [ ] Text overlapping with images
 - [ ] Text overlapping with shapes
 - [ ] Multiple text boxes overlapping
@@ -237,6 +259,7 @@ Review each slide for these common problems:
 - [ ] Title overlapping with content
 
 **Visual Element Overlaps**:
+
 - [ ] Images overlapping
 - [ ] Shapes overlapping inappropriately
 - [ ] Figures extending into margins
@@ -246,6 +269,7 @@ Review each slide for these common problems:
 #### Layout and Spacing
 
 **Alignment Issues**:
+
 - [ ] Misaligned text boxes
 - [ ] Uneven margins
 - [ ] Inconsistent element positioning
@@ -253,6 +277,7 @@ Review each slide for these common problems:
 - [ ] Unaligned bullet points
 
 **Spacing Problems**:
+
 - [ ] Cramped content (insufficient white space)
 - [ ] Too much empty space (poor use of slide area)
 - [ ] Inconsistent spacing between elements
@@ -262,6 +287,7 @@ Review each slide for these common problems:
 #### Color and Contrast
 
 **Visibility**:
+
 - [ ] Insufficient contrast (text vs background)
 - [ ] Colors too similar (hard to distinguish)
 - [ ] Text on busy backgrounds
@@ -269,6 +295,7 @@ Review each slide for these common problems:
 - [ ] Dark text on dark background
 
 **Consistency**:
+
 - [ ] Inconsistent color schemes between slides
 - [ ] Unexpected color changes
 - [ ] Clashing color combinations
@@ -277,6 +304,7 @@ Review each slide for these common problems:
 #### Figures and Graphics
 
 **Quality**:
+
 - [ ] Pixelated or blurry images
 - [ ] Low-resolution figures
 - [ ] Distorted aspect ratios
@@ -284,6 +312,7 @@ Review each slide for these common problems:
 - [ ] Jagged edges on graphics
 
 **Layout**:
+
 - [ ] Figures too small to read
 - [ ] Axis labels too small
 - [ ] Legend text illegible
@@ -293,6 +322,7 @@ Review each slide for these common problems:
 #### Technical Issues
 
 **Rendering**:
+
 - [ ] Missing fonts (substituted)
 - [ ] Special characters not displaying
 - [ ] Equations rendering incorrectly
@@ -300,6 +330,7 @@ Review each slide for these common problems:
 - [ ] Incorrect colors (RGB vs CMYK)
 
 **Consistency**:
+
 - [ ] Slide numbers incorrect or missing
 - [ ] Inconsistent footer/header
 - [ ] Navigation elements broken
@@ -322,6 +353,7 @@ Slide # | Issue Category | Description | Severity | Status
 ```
 
 **Severity Levels**:
+
 - **Critical**: Makes slide unusable or unprofessional
 - **High**: Significantly impacts readability or appearance
 - **Medium**: Noticeable but doesn't prevent comprehension
@@ -330,6 +362,7 @@ Slide # | Issue Category | Description | Severity | Status
 ### Example Issue Documentation
 
 **Good Documentation**:
+
 ```
 Slide 8: Text Overflow Issue
 - Description: Last bullet point "...implementation details" 
@@ -340,6 +373,7 @@ Slide 8: Text Overflow Issue
 ```
 
 **Poor Documentation**:
+
 ```
 Slide 8: text problem
 - Fix: make smaller
@@ -352,6 +386,7 @@ Slide 8: text problem
 **Problem**: Text extends beyond boundaries
 
 **Identification**:
+
 - Visible text cut off at edge
 - Text running into margins
 - Partial characters visible
@@ -359,6 +394,7 @@ Slide 8: text problem
 **Solutions**:
 
 **LaTeX Beamer**:
+
 ```latex
 % Reduce text
 \begin{frame}{Title}
@@ -385,6 +421,7 @@ Slide 8: text problem
 ```
 
 **PowerPoint**:
+
 - Reduce font size for that element
 - Shorten text content
 - Increase text box size
@@ -396,6 +433,7 @@ Slide 8: text problem
 **Problem**: Elements overlapping inappropriately
 
 **Identification**:
+
 - Text obscured by images
 - Shapes covering text
 - Figures overlapping
@@ -403,6 +441,7 @@ Slide 8: text problem
 **Solutions**:
 
 **LaTeX Beamer**:
+
 ```latex
 % Use columns for better separation
 \begin{columns}
@@ -422,6 +461,7 @@ Slide 8: text problem
 ```
 
 **PowerPoint**:
+
 - Use alignment guides to reposition
 - Reduce element sizes
 - Use two-column layout
@@ -433,6 +473,7 @@ Slide 8: text problem
 **Problem**: Text difficult to read due to color choices
 
 **Identification**:
+
 - Squinting required to read text
 - Text fades into background
 - Colors too similar
@@ -440,6 +481,7 @@ Slide 8: text problem
 **Solutions**:
 
 **LaTeX Beamer**:
+
 ```latex
 % Increase contrast
 \setbeamercolor{frametitle}{fg=black,bg=white}
@@ -455,6 +497,7 @@ Slide 8: text problem
 ```
 
 **PowerPoint**:
+
 - Choose high-contrast color combinations
 - Use dark text on light background or vice versa
 - Avoid pastels for text
@@ -466,6 +509,7 @@ Slide 8: text problem
 **Problem**: Text too small to read from distance
 
 **Identification**:
+
 - Can't read text from 3 feet away
 - Axis labels disappear when viewing normally
 - Captions illegible
@@ -473,6 +517,7 @@ Slide 8: text problem
 **Solutions**:
 
 **LaTeX Beamer**:
+
 ```latex
 % Increase base font size
 \documentclass[14pt]{beamer}  % Instead of 11pt default
@@ -487,6 +532,7 @@ theme_set(theme_minimal(base_size = 16))
 ```
 
 **PowerPoint**:
+
 - Minimum 18pt for body text, 24pt preferred
 - Recreate figures with larger labels
 - Use direct labeling instead of legends
@@ -498,6 +544,7 @@ theme_set(theme_minimal(base_size = 16))
 **Problem**: Elements not properly aligned
 
 **Identification**:
+
 - Uneven margins
 - Titles at different positions
 - Irregular spacing
@@ -505,6 +552,7 @@ theme_set(theme_minimal(base_size = 16))
 **Solutions**:
 
 **LaTeX Beamer**:
+
 ```latex
 % Use consistent templates
 \setbeamertemplate{frametitle}[default][center]
@@ -526,6 +574,7 @@ theme_set(theme_minimal(base_size = 16))
 ```
 
 **PowerPoint**:
+
 - Use alignment tools (Align Left/Center/Right)
 - Enable gridlines and guides
 - Use snap to grid
@@ -559,18 +608,21 @@ theme_set(theme_minimal(base_size = 16))
 ### Prioritization Strategy
 
 **Fix Immediately** (Block presentation):
+
 - Text overflow making content unreadable
 - Critical element overlaps obscuring data
 - Broken figures or missing content
 - Severely poor contrast
 
 **Fix Before Presenting**:
+
 - Font sizes too small
 - Moderate alignment issues
 - Inconsistent spacing
 - Moderate contrast problems
 
 **Fix If Time Permits**:
+
 - Minor misalignments
 - Small spacing inconsistencies
 - Cosmetic improvements
@@ -579,6 +631,7 @@ theme_set(theme_minimal(base_size = 16))
 ### Stopping Criteria
 
 **Minimum Standards**:
+
 - [ ] No text overflow or truncation
 - [ ] No element overlaps obscuring content
 - [ ] All text readable at minimum 18pt equivalent
@@ -587,6 +640,7 @@ theme_set(theme_minimal(base_size = 16))
 - [ ] Consistent slide structure
 
 **Ideal Standards**:
+
 - [ ] Professional appearance throughout
 - [ ] Consistent alignment and spacing
 - [ ] High contrast (7:1 ratio)
@@ -674,6 +728,7 @@ for slide_num in range(1, 26):
 ### Review Environment
 
 **Setup**:
+
 - Large monitor or dual monitors
 - Good lighting (not too bright, not dark)
 - Distraction-free environment
@@ -681,6 +736,7 @@ for slide_num in range(1, 26):
 - Notepad or spreadsheet for tracking issues
 
 **Viewing Options**:
+
 - View at 100% for detail inspection
 - View at 50% to simulate distance
 - View in sequence to check consistency
@@ -689,18 +745,21 @@ for slide_num in range(1, 26):
 ### Review Tips
 
 **Fresh Eyes**:
+
 - Take breaks every 15-20 slides
 - Review at different times of day
 - Get colleague to review
 - Come back next day for final check
 
 **Systematic Approach**:
+
 - Review in order (slide 1 → end)
 - Focus on one issue type at a time
 - Use checklist to ensure thoroughness
 - Document as you go, not from memory
 
 **Common Oversights**:
+
 - Backup slides (review these too!)
 - Title slide (first impression matters)
 - Acknowledgments slide (often forgotten)
@@ -711,17 +770,20 @@ for slide_num in range(1, 26):
 ### Recommended Software
 
 **PDF to Image Conversion**:
+
 - **PyMuPDF** (Python): Fast, no external dependencies (recommended)
 - **pdf_to_images.py script**: Wrapper for easy CLI usage
 - **ImageMagick**: Flexible, many options (optional)
 
 **Image Viewing**:
+
 - **IrfanView** (Windows): Fast, many formats
 - **Preview** (macOS): Built-in, simple
 - **Eye of GNOME** (Linux): Lightweight
 - **XnView**: Cross-platform, batch operations
 
 **Issue Tracking**:
+
 - **Spreadsheet** (Excel, Google Sheets): Simple, flexible
 - **Markdown file**: Version control friendly
 - **Issue tracker** (GitHub, Jira): If team collaboration
@@ -744,23 +806,27 @@ for slide_num in range(1, 26):
 Before finalizing your presentation:
 
 **Conversion**:
+
 - [ ] PDF converted to images at adequate resolution (150-300 DPI)
 - [ ] All slides converted (including backup slides)
 - [ ] Images saved in organized directory
 
 **Visual Inspection**:
+
 - [ ] All slides reviewed systematically
 - [ ] Issue checklist completed for each slide
 - [ ] Problems documented with slide numbers
 - [ ] Severity assigned to each issue
 
 **Issue Resolution**:
+
 - [ ] Critical issues fixed
 - [ ] High-priority issues addressed
 - [ ] Source files updated (not just PDF)
 - [ ] Regenerated and re-inspected
 
 **Final Verification**:
+
 - [ ] No text overflow or truncation
 - [ ] No inappropriate element overlaps
 - [ ] Adequate contrast throughout
@@ -769,6 +835,7 @@ Before finalizing your presentation:
 - [ ] Ready for projection or distribution
 
 **Testing**:
+
 - [ ] Tested on projector if possible
 - [ ] Viewed from back of room distance
 - [ ] Checked in various lighting conditions

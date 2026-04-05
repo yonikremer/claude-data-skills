@@ -25,7 +25,6 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-
 # ---------------------------------------------------------------------------
 # Model requirement profiles
 # ---------------------------------------------------------------------------
@@ -167,7 +166,7 @@ def _get_total_ram_gb() -> float:
                 text=True,
                 check=True,
             )
-            return int(result.stdout.strip()) / (1024**3)
+            return int(result.stdout.strip()) / (1024 ** 3)
         elif sys.platform == "win32":
             import ctypes
 
@@ -189,7 +188,7 @@ def _get_total_ram_gb() -> float:
             stat = MEMORYSTATUSEX()
             stat.dwLength = ctypes.sizeof(stat)
             kernel32.GlobalMemoryStatusEx(ctypes.byref(stat))
-            return stat.ullTotalPhys / (1024**3)
+            return stat.ullTotalPhys / (1024 ** 3)
     except Exception:
         pass
 
@@ -222,7 +221,7 @@ def _get_available_ram_gb() -> float:
                 if "Pages free" in line or "Pages inactive" in line:
                     val = line.split(":")[1].strip().rstrip(".")
                     free += int(val) * page_size
-            return free / (1024**3)
+            return free / (1024 ** 3)
         elif sys.platform == "win32":
             import ctypes
 
@@ -244,7 +243,7 @@ def _get_available_ram_gb() -> float:
             stat = MEMORYSTATUSEX()
             stat.dwLength = ctypes.sizeof(stat)
             kernel32.GlobalMemoryStatusEx(ctypes.byref(stat))
-            return stat.ullAvailPhys / (1024**3)
+            return stat.ullAvailPhys / (1024 ** 3)
     except Exception:
         pass
     return 0.0
@@ -309,7 +308,7 @@ def check_gpu() -> CheckResult:
 
         if torch.cuda.is_available():
             name = torch.cuda.get_device_name(0)
-            vram = torch.cuda.get_device_properties(0).total_memory / (1024**3)
+            vram = torch.cuda.get_device_properties(0).total_memory / (1024 ** 3)
             return CheckResult(
                 name="GPU",
                 status="pass",
@@ -357,7 +356,7 @@ def check_disk(profile: dict[str, Any]) -> CheckResult:
     check_dir = cache_dir if cache_dir.exists() else Path.home()
 
     usage = shutil.disk_usage(str(check_dir))
-    free_gb = usage.free / (1024**3)
+    free_gb = usage.free / (1024 ** 3)
     required = profile["disk_gb"]
 
     value = f"Free: {free_gb:.1f} GB (in {check_dir})"

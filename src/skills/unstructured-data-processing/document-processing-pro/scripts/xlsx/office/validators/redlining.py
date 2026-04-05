@@ -23,11 +23,11 @@ class RedliningValidator:
     """
 
     def __init__(
-        self,
-        unpacked_dir: str | Path,
-        original_docx: str | Path,
-        verbose: bool = False,
-        author: str = "Claude",
+            self,
+            unpacked_dir: str | Path,
+            original_docx: str | Path,
+            verbose: bool = False,
+            author: str = "Claude",
     ):
         """Initializes the redlining validator.
 

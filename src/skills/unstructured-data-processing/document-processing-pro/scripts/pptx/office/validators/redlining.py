@@ -4,22 +4,20 @@ Validator for tracked changes in Word documents.
 
 import subprocess
 import tempfile
+import xml.etree.ElementTree as ET
 import zipfile
 from pathlib import Path
-
-
-import xml.etree.ElementTree as ET
 
 
 class RedliningValidator:
     """Validator for tracked changes in Word documents."""
 
     def __init__(
-        self,
-        unpacked_dir: str | Path,
-        original_docx: str | Path,
-        verbose: bool = False,
-        author: str = "Claude",
+            self,
+            unpacked_dir: str | Path,
+            original_docx: str | Path,
+            verbose: bool = False,
+            author: str = "Claude",
     ) -> None:
         """Initializes the redlining validator.
 

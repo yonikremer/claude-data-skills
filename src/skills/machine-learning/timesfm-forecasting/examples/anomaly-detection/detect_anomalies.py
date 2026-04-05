@@ -30,7 +30,7 @@ import pandas as pd
 
 HORIZON = 12
 DATA_FILE = (
-    Path(__file__).parent.parent / "global-temperature" / "temperature_anomaly.csv"
+        Path(__file__).parent.parent / "global-temperature" / "temperature_anomaly.csv"
 )
 OUTPUT_DIR = Path(__file__).parent / "output"
 
@@ -49,8 +49,8 @@ CLR = {"CRITICAL": "#e02020", "WARNING": "#f08030", "NORMAL": "#4a90d9"}
 
 
 def detect_context_anomalies(
-    values: np.ndarray,
-    dates: list[pd.Timestamp],
+        values: np.ndarray,
+        dates: list[pd.Timestamp],
 ) -> tuple[list[dict[str, Any]], np.ndarray, np.ndarray, float]:
     """Linear detrend + Z-score anomaly detection on context period.
 
@@ -101,9 +101,9 @@ def detect_context_anomalies(
 
 
 def build_synthetic_future(
-    context: np.ndarray,
-    n: int,
-    seed: int = 42,
+        context: np.ndarray,
+        n: int,
+        seed: int = 42,
 ) -> tuple[np.ndarray, list[int]]:
     """Build a plausible future with 3 injected anomalies.
 
@@ -133,11 +133,11 @@ def build_synthetic_future(
 
 
 def detect_forecast_anomalies(
-    future_values: np.ndarray,
-    point: np.ndarray,
-    quant_fc: np.ndarray,
-    future_dates: list[pd.Timestamp],
-    injected_at: list[int],
+        future_values: np.ndarray,
+        point: np.ndarray,
+        quant_fc: np.ndarray,
+        future_dates: list[pd.Timestamp],
+        injected_at: list[int],
 ) -> list[dict[str, Any]]:
     """Classify each forecast month by which PI band it falls outside.
 
@@ -194,17 +194,17 @@ def detect_forecast_anomalies(
 
 
 def plot_results(
-    context_dates: list[pd.Timestamp],
-    context_values: np.ndarray,
-    ctx_records: list[dict[str, Any]],
-    trend_line: np.ndarray,
-    residuals: np.ndarray,
-    res_std: float,
-    future_dates: list[pd.Timestamp],
-    future_values: np.ndarray,
-    point_fc: np.ndarray,
-    quant_fc: np.ndarray,
-    fc_records: list[dict[str, Any]],
+        context_dates: list[pd.Timestamp],
+        context_values: np.ndarray,
+        ctx_records: list[dict[str, Any]],
+        trend_line: np.ndarray,
+        residuals: np.ndarray,
+        res_std: float,
+        future_dates: list[pd.Timestamp],
+        future_values: np.ndarray,
+        point_fc: np.ndarray,
+        quant_fc: np.ndarray,
+        fc_records: list[dict[str, Any]],
 ) -> None:
     """Generate and save the 2-panel anomaly detection visualization.
 

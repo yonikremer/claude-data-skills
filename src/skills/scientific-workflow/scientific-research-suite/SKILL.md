@@ -2,9 +2,11 @@
 name: scientific-research-suite
 description: Use for the entire scientific lifecycle: brainstorming, research design, critical thinking, writing, and peer review. Unified guide for high-impact research, literature synthesis, and publication-quality manuscripts. CRITICAL: For deep research, use `research-lookup` first.
 ---
+
 # Scientific Research Suite (Consolidated)
 
-Unified expert guide for the complete scientific research lifecycle, from initial ideation to final publication and peer review.
+Unified expert guide for the complete scientific research lifecycle, from initial ideation to final publication and peer
+review.
 
 ## ⚠️ Mandatory Pre-flight: Deep Research
 
@@ -21,6 +23,7 @@ High-quality scientific output requires current, verified data.
 Use for creative research design and interdisciplinary exploration.
 
 ### Core Idioms
+
 - **Divergent Thinking**: Explore adjacent fields for novel methodology.
 - **Feasibility Check**: Always assess data availability and computational cost early.
 - **Hypothesis Generation**: Formulate testable, falsifiable research questions.
@@ -39,6 +42,7 @@ Use for creative research design and interdisciplinary exploration.
 Use for assessing claims, methodology, and scholar impact.
 
 ### Core Tools
+
 - **Methodology Check**: Evaluate sample size, controls, and potential biases.
 - **Evidence Hierarchy**: Prioritize meta-analyses and RCTs over case reports.
 - **Scholar Impact**: Look beyond h-index; assess contribution to the field's "red thread."
@@ -50,6 +54,7 @@ Use for assessing claims, methodology, and scholar impact.
 Use for drafting manuscripts, reports, and white papers.
 
 ### Core Idioms
+
 - **Two-Stage Process**: **Outline (Bullet points) → Prose (Full paragraphs)**.
 - **Full Prose Only**: NEVER leave bullet points in a final manuscript.
 - **Visual-First**: Plan your figures and tables as the backbone of the story.
@@ -69,6 +74,7 @@ AI-driven drug discovery reduced lead time by 40% (p < 0.001).
 Use for structured evaluation of manuscripts and grant proposals.
 
 ### Core Workflow
+
 1. **The "Big Picture"**: Does the study address a significant problem?
 2. **The "Technical Core"**: Is the methodology sound and reproducible?
 3. **The "Formatting"**: Are figures clear? Is the language precise?
@@ -83,6 +89,7 @@ Use for structured evaluation of manuscripts and grant proposals.
 4. **Subscript Error**: Using Unicode subscripts (₀₁) in LaTeX/ReportLab; use `_{1}` or `<sub>1</sub>`.
 
 ## References
+
 - `skills/scientific-workflow/scientific-research-suite/references/writing/` — IMRAD and Citation styles.
 - `skills/scientific-workflow/scientific-research-suite/references/visualization/` — Multi-panel figures.
 - `skills/scientific-workflow/scientific-research-suite/references/peer-review/` — Reviewer checklists.

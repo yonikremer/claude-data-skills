@@ -2,6 +2,7 @@
 name: timesfm-forecasting
 description: Use when performing zero-shot time series forecasting using Google's TimesFM foundation models. Supports univariate forecasting with highly accurate prediction intervals. CRITICAL: Run `get-available-resources` first; requires ~4GB VRAM or 8GB RAM.
 ---
+
 # TimesFM Zero-Shot Forecasting
 
 Professional workflow for generating high-accuracy time series forecasts without model training.
@@ -12,9 +13,9 @@ TimesFM 2.5 is a 200M parameter foundation model and requires significant resour
 
 1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
 2. **Strategy**:
-   - **GPU Available (>=4GB VRAM)**: Use `torch` backend with CUDA.
-   - **CPU Only (>=8GB RAM)**: Use `torch` or `transformers` backend. Expect ~1-5s per forecast.
-   - **Low Memory (<8GB RAM)**: Use smaller batch sizes or sample the data.
+    - **GPU Available (>=4GB VRAM)**: Use `torch` backend with CUDA.
+    - **CPU Only (>=8GB RAM)**: Use `torch` or `transformers` backend. Expect ~1-5s per forecast.
+    - **Low Memory (<8GB RAM)**: Use smaller batch sizes or sample the data.
 
 ---
 
@@ -23,12 +24,14 @@ TimesFM 2.5 is a 200M parameter foundation model and requires significant resour
 TimesFM follows a **Load -> Compile -> Forecast** pattern.
 
 ### Step 1: Model Initialization
+
 ```python
 from timesfm import TimesFM_2p5_200M_torch
 model = TimesFM_2p5_200M_torch.from_pretrained("google/timesfm-2.5-200m-pytorch")
 ```
 
 ### Step 2: Compilation (Configuring constraints)
+
 ```python
 from timesfm import ForecastConfig
 model.compile(ForecastConfig(
@@ -40,6 +43,7 @@ model.compile(ForecastConfig(
 ```
 
 ### Step 3: Inference
+
 ```python
 # inputs: list of 1D numpy arrays
 point_forecast, quantile_forecast = model.forecast(horizon=24, inputs=my_data_list)
@@ -64,5 +68,7 @@ point_forecast, quantile_forecast = model.forecast(horizon=24, inputs=my_data_li
 4. **Large Batch OOM**: Processing 1000s of series at once on a small GPU. Reduce `per_core_batch_size`.
 
 ## References
+
 - `skills/machine-learning/timesfm-forecasting/references/api_reference.md` — Full parameter list and output shapes.
-- `skills/machine-learning/timesfm-forecasting/references/data_preparation.md` — Handling NaNs, frequency detection, and scaling.
+- `skills/machine-learning/timesfm-forecasting/references/data_preparation.md` — Handling NaNs, frequency detection, and
+  scaling.

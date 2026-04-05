@@ -1,11 +1,13 @@
+import os
+
 import pdfplumber
 from pptx import Presentation
-import os
+
 
 def extract_text_from_pdf(file_path: str) -> str:
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"PDF file not found: {file_path}")
-    
+
     text = ""
     with pdfplumber.open(file_path) as pdf:
         for page in pdf.pages:
@@ -14,10 +16,11 @@ def extract_text_from_pdf(file_path: str) -> str:
                 text += page_text + "\n"
     return text
 
+
 def extract_text_from_pptx(file_path: str) -> str:
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"PPTX file not found: {file_path}")
-    
+
     prs = Presentation(file_path)
     text = ""
     for slide in prs.slides:

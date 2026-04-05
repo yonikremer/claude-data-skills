@@ -2,21 +2,22 @@
 name: binary-data-parsing
 description: Use when parsing and manipulating raw binary data and custom file formats. Ideal for working with sensor outputs, legacy binary formats, or bit-level protocols. Do NOT use for standard columnar formats (use pandas) or for identifying unknown file types (use data-format-detection).
 ---
+
 # Binary Data Parsing
 
 ## Overview
 
 Tools for reading, parsing, and writing raw binary data in Python. Pick the right tool for the job:
 
-| Approach | Best For | Library |
-|----------|----------|---------|
-| `bytes` / `bytearray` / `memoryview` | Slicing, searching, hex conversion, in-place mutation | stdlib |
-| `int.from_bytes` / `int.to_bytes` | Converting raw bytes ↔ integers without struct | stdlib |
-| `struct` | Fixed-width records, known format specs | stdlib |
-| `bitarray` | Large dense bit arrays, set operations, Huffman coding | `pip install bitarray` |
-| `construct` | Complex/nested formats, variable-length fields, declarative specs | `pip install construct` |
-| `bitstring` | Bit-stream reading with mixed-width fields, network protocols | `pip install bitstring` |
-| `mmap` | Large binary files, random access without loading to RAM | stdlib |
+| Approach                             | Best For                                                          | Library                 |
+|--------------------------------------|-------------------------------------------------------------------|-------------------------|
+| `bytes` / `bytearray` / `memoryview` | Slicing, searching, hex conversion, in-place mutation             | stdlib                  |
+| `int.from_bytes` / `int.to_bytes`    | Converting raw bytes ↔ integers without struct                    | stdlib                  |
+| `struct`                             | Fixed-width records, known format specs                           | stdlib                  |
+| `bitarray`                           | Large dense bit arrays, set operations, Huffman coding            | `pip install bitarray`  |
+| `construct`                          | Complex/nested formats, variable-length fields, declarative specs | `pip install construct` |
+| `bitstring`                          | Bit-stream reading with mixed-width fields, network protocols     | `pip install bitstring` |
+| `mmap`                               | Large binary files, random access without loading to RAM          | stdlib                  |
 
 ## Quick Start
 
@@ -197,26 +198,26 @@ with open('large.bin', 'rb') as f:
 
 ### Byte Order Prefixes
 
-| Prefix | Meaning |
-|--------|---------|
-| `<` | little-endian (x86, most modern hardware) |
-| `>` | big-endian (network order, some instruments) |
-| `=` | native byte order |
-| `!` | network (big-endian) |
+| Prefix | Meaning                                      |
+|--------|----------------------------------------------|
+| `<`    | little-endian (x86, most modern hardware)    |
+| `>`    | big-endian (network order, some instruments) |
+| `=`    | native byte order                            |
+| `!`    | network (big-endian)                         |
 
 ### Type Codes
 
-| Code | C Type | Python | Size |
-|------|--------|--------|------|
-| `b` / `B` | signed/unsigned char | int | 1 |
-| `h` / `H` | signed/unsigned short | int | 2 |
-| `i` / `I` | signed/unsigned int | int | 4 |
-| `q` / `Q` | signed/unsigned long long | int | 8 |
-| `f` | float | float | 4 |
-| `d` | double | float | 8 |
-| `s` | char[] | bytes | n (use `4s` for 4 bytes) |
-| `x` | pad byte | — | 1 |
-| `?` | bool | bool | 1 |
+| Code      | C Type                    | Python | Size                     |
+|-----------|---------------------------|--------|--------------------------|
+| `b` / `B` | signed/unsigned char      | int    | 1                        |
+| `h` / `H` | signed/unsigned short     | int    | 2                        |
+| `i` / `I` | signed/unsigned int       | int    | 4                        |
+| `q` / `Q` | signed/unsigned long long | int    | 8                        |
+| `f`       | float                     | float  | 4                        |
+| `d`       | double                    | float  | 8                        |
+| `s`       | char[]                    | bytes  | n (use `4s` for 4 bytes) |
+| `x`       | pad byte                  | —      | 1                        |
+| `?`       | bool                      | bool   | 1                        |
 
 Repeat with count prefix: `'10f'` = 10 floats, `'4s'` = 4-byte string.
 
@@ -338,7 +339,8 @@ print(struct.unpack('>I', raw))  # (16777216,) — big-endian
 
 ## References
 
-- `references/bytes-bitarray-guide.md` — bytes/bytearray/memoryview operations, int.from_bytes, io.BytesIO, bitarray advanced usage
+- `references/bytes-bitarray-guide.md` — bytes/bytearray/memoryview operations, int.from_bytes, io.BytesIO, bitarray
+  advanced usage
 - `references/struct-guide.md` — full struct format string reference, alignment, padding, edge cases
 - `references/construct-guide.md` — construct library: enums, switches, conditionals, adapters, tunneling
 - `references/patterns.md` — domain-specific patterns: sensor data, network protocols, legacy formats, Python 2 pickles

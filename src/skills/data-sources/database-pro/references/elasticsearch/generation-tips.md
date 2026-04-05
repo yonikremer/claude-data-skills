@@ -24,7 +24,7 @@ FROM my-index-2024.*  // Dated indices
 **Question:** What time period should be covered?
 
 | User Expression | ES\|QL                                                             |
-| --------------- | ------------------------------------------------------------------ |
+|-----------------|--------------------------------------------------------------------|
 | "last hour"     | `@timestamp > NOW() - 1 hour`                                      |
 | "last 24 hours" | `@timestamp > NOW() - 24 hours`                                    |
 | "last 7 days"   | `@timestamp > NOW() - 7 days`                                      |
@@ -33,7 +33,8 @@ FROM my-index-2024.*  // Dated indices
 | "this week"     | `@timestamp > NOW() - 7 days`                                      |
 | "this month"    | `@timestamp > NOW() - 30 days`                                     |
 
-**Default:** If no time range specified, consider adding a reasonable default (e.g., last 24 hours) to avoid scanning too much data.
+**Default:** If no time range specified, consider adding a reasonable default (e.g., last 24 hours) to avoid scanning
+too much data.
 
 ### 3. Identify Filters
 
@@ -64,7 +65,7 @@ Or combined:
 **Question:** Does the user want raw data or aggregated results?
 
 | User Intent                   | Approach                        |
-| ----------------------------- | ------------------------------- |
+|-------------------------------|---------------------------------|
 | "show me", "list", "find"     | Raw data with KEEP, SORT, LIMIT |
 | "count", "how many"           | STATS with COUNT                |
 | "average", "total", "sum"     | STATS with aggregation function |
@@ -113,7 +114,7 @@ When generating queries, use common field naming conventions:
 ### Elastic Common Schema (ECS)
 
 | Category    | Common Fields                                                  |
-| ----------- | -------------------------------------------------------------- |
+|-------------|----------------------------------------------------------------|
 | Timestamp   | `@timestamp`                                                   |
 | Message     | `message`                                                      |
 | Log level   | `log.level`, `level`                                           |

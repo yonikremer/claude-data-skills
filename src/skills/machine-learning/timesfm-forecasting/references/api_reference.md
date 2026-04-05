@@ -16,12 +16,12 @@ model = timesfm.TimesFM_2p5_200M_torch.from_pretrained(
 )
 ```
 
-| Parameter | Type | Default | Description |
-| --------- | ---- | ------- | ----------- |
-| `model_id` | str | `"google/timesfm-2.5-200m-pytorch"` | Hugging Face model ID |
-| `revision` | str \| None | None | Specific model revision |
-| `cache_dir` | str \| Path \| None | None | Custom cache directory |
-| `force_download` | bool | True | Force re-download of weights |
+| Parameter        | Type                | Default                             | Description                  |
+|------------------|---------------------|-------------------------------------|------------------------------|
+| `model_id`       | str                 | `"google/timesfm-2.5-200m-pytorch"` | Hugging Face model ID        |
+| `revision`       | str \| None         | None                                | Specific model revision      |
+| `cache_dir`      | str \| Path \| None | None                                | Custom cache directory       |
+| `force_download` | bool                | True                                | Force re-download of weights |
 
 **Returns**: Initialized `TimesFM_2p5_200M_torch` instance (not yet compiled).
 
@@ -57,10 +57,10 @@ point_forecast, quantile_forecast = model.forecast(
 )
 ```
 
-| Parameter | Type | Description |
-| --------- | ---- | ----------- |
-| `horizon` | int | Number of future steps to forecast |
-| `inputs` | list[np.ndarray] | List of 1-D numpy arrays (each is a time series) |
+| Parameter | Type             | Description                                      |
+|-----------|------------------|--------------------------------------------------|
+| `horizon` | int              | Number of future steps to forecast               |
+| `inputs`  | list[np.ndarray] | List of 1-D numpy arrays (each is a time series) |
 
 **Returns**: `tuple[np.ndarray, np.ndarray]`
 
@@ -90,13 +90,13 @@ point, quantiles = model.forecast_with_covariates(
 )
 ```
 
-| Parameter | Type | Description |
-| --------- | ---- | ----------- |
-| `inputs` | list[np.ndarray] | Target time series |
-| `dynamic_numerical_covariates` | dict[str, list[np.ndarray]] | Time-varying numeric features |
-| `dynamic_categorical_covariates` | dict[str, list[np.ndarray]] | Time-varying categorical features |
-| `static_categorical_covariates` | dict[str, list[str]] | Fixed categorical features per series |
-| `xreg_mode` | str | `"xreg + timesfm"` or `"timesfm + xreg"` |
+| Parameter                        | Type                        | Description                              |
+|----------------------------------|-----------------------------|------------------------------------------|
+| `inputs`                         | list[np.ndarray]            | Target time series                       |
+| `dynamic_numerical_covariates`   | dict[str, list[np.ndarray]] | Time-varying numeric features            |
+| `dynamic_categorical_covariates` | dict[str, list[np.ndarray]] | Time-varying categorical features        |
+| `static_categorical_covariates`  | dict[str, list[str]]        | Fixed categorical features per series    |
+| `xreg_mode`                      | str                         | `"xreg + timesfm"` or `"timesfm + xreg"` |
 
 **Note**: Dynamic covariates must have length `context + horizon` for each series.
 
@@ -194,28 +194,28 @@ Return the model's reconstruction of the input (backcast) in addition to forecas
 
 ## Available Model Checkpoints
 
-| Model ID | Version | Params | Backend | Context |
-| -------- | ------- | ------ | ------- | ------- |
-| `google/timesfm-2.5-200m-pytorch` | 2.5 | 200M | PyTorch | 16,384 |
-| `google/timesfm-2.5-200m-flax` | 2.5 | 200M | JAX/Flax | 16,384 |
-| `google/timesfm-2.5-200m-transformers` | 2.5 | 200M | Transformers | 16,384 |
-| `google/timesfm-2.0-500m-pytorch` | 2.0 | 500M | PyTorch | 2,048 |
-| `google/timesfm-2.0-500m-jax` | 2.0 | 500M | JAX | 2,048 |
-| `google/timesfm-1.0-200m-pytorch` | 1.0 | 200M | PyTorch | 2,048 |
-| `google/timesfm-1.0-200m` | 1.0 | 200M | JAX | 2,048 |
+| Model ID                               | Version | Params | Backend      | Context |
+|----------------------------------------|---------|--------|--------------|---------|
+| `google/timesfm-2.5-200m-pytorch`      | 2.5     | 200M   | PyTorch      | 16,384  |
+| `google/timesfm-2.5-200m-flax`         | 2.5     | 200M   | JAX/Flax     | 16,384  |
+| `google/timesfm-2.5-200m-transformers` | 2.5     | 200M   | Transformers | 16,384  |
+| `google/timesfm-2.0-500m-pytorch`      | 2.0     | 500M   | PyTorch      | 2,048   |
+| `google/timesfm-2.0-500m-jax`          | 2.0     | 500M   | JAX          | 2,048   |
+| `google/timesfm-1.0-200m-pytorch`      | 1.0     | 200M   | PyTorch      | 2,048   |
+| `google/timesfm-1.0-200m`              | 1.0     | 200M   | JAX          | 2,048   |
 
 ---
 
 ## Output Shape Reference
 
-| Output | Shape | Description |
-| ------ | ----- | ----------- |
-| `point_forecast` | `(B, H)` | Median forecast for B series, H steps |
-| `quantile_forecast` | `(B, H, 10)` | Full quantile distribution |
-| `quantile_forecast[:,:,0]` | `(B, H)` | Mean |
-| `quantile_forecast[:,:,1]` | `(B, H)` | 10th percentile |
-| `quantile_forecast[:,:,5]` | `(B, H)` | 50th percentile (= point_forecast) |
-| `quantile_forecast[:,:,9]` | `(B, H)` | 90th percentile |
+| Output                     | Shape        | Description                           |
+|----------------------------|--------------|---------------------------------------|
+| `point_forecast`           | `(B, H)`     | Median forecast for B series, H steps |
+| `quantile_forecast`        | `(B, H, 10)` | Full quantile distribution            |
+| `quantile_forecast[:,:,0]` | `(B, H)`     | Mean                                  |
+| `quantile_forecast[:,:,1]` | `(B, H)`     | 10th percentile                       |
+| `quantile_forecast[:,:,5]` | `(B, H)`     | 50th percentile (= point_forecast)    |
+| `quantile_forecast[:,:,9]` | `(B, H)`     | 90th percentile                       |
 
 Where `B` = batch size (number of input series), `H` = forecast horizon.
 
@@ -223,9 +223,9 @@ Where `B` = batch size (number of input series), `H` = forecast horizon.
 
 ## Error Handling
 
-| Error | Cause | Fix |
-| ----- | ----- | --- |
+| Error                                 | Cause                                  | Fix                                             |
+|---------------------------------------|----------------------------------------|-------------------------------------------------|
 | `RuntimeError: Model is not compiled` | Called `forecast()` before `compile()` | Call `model.compile(ForecastConfig(...))` first |
-| `torch.cuda.OutOfMemoryError` | Batch too large for GPU | Reduce `per_core_batch_size` |
-| `ValueError: inputs must be list` | Passed array instead of list | Wrap in list: `[array]` |
-| `HfHubHTTPError` | Download failed | Check internet, set `HF_HOME` to writable dir |
+| `torch.cuda.OutOfMemoryError`         | Batch too large for GPU                | Reduce `per_core_batch_size`                    |
+| `ValueError: inputs must be list`     | Passed array instead of list           | Wrap in list: `[array]`                         |
+| `HfHubHTTPError`                      | Download failed                        | Check internet, set `HF_HOME` to writable dir   |

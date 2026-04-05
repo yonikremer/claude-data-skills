@@ -7,19 +7,24 @@ Comprehensive troubleshooting guide for common glab CLI issues and errors.
 ### Command Not Found
 
 **Error:**
+
 ```
 command not found: glab
 ```
+
 or
+
 ```
 glab: command not found
 ```
 
 **Causes:**
+
 - glab is not installed
 - glab is not in PATH
 
 **Solutions:**
+
 1. Verify installation:
    ```bash
    which glab
@@ -44,12 +49,14 @@ glab: command not found
 ### Version Conflicts
 
 **Error:**
+
 ```
 glab: incompatible version
 ```
 
 **Solution:**
 Update to the latest version:
+
 ```bash
 # macOS
 brew upgrade glab
@@ -63,17 +70,20 @@ sudo apt update && sudo apt upgrade glab
 ### 401 Unauthorized
 
 **Error:**
+
 ```
 failed to get current user: GET https://gitlab.com/api/v4/user: 401 {message: 401 Unauthorized}
 ```
 
 **Causes:**
+
 - Not authenticated
 - Token expired
 - Invalid token
 - Wrong GitLab instance
 
 **Solutions:**
+
 1. Authenticate:
    ```bash
    glab auth login
@@ -99,25 +109,30 @@ failed to get current user: GET https://gitlab.com/api/v4/user: 401 {message: 40
 ### Token Permissions
 
 **Error:**
+
 ```
 403 Forbidden
 ```
+
 or
+
 ```
 insufficient permissions
 ```
 
 **Causes:**
+
 - Token lacks required scopes
 - User doesn't have project permissions
 
 **Solutions:**
+
 1. Create new token with required scopes:
-   - api
-   - read_api
-   - read_user
-   - write_repository
-   - read_repository
+    - api
+    - read_api
+    - read_user
+    - write_repository
+    - read_repository
 
 2. Verify project access in GitLab web UI
 
@@ -149,15 +164,18 @@ glab mr list -R gitlab.example.org/namespace/project
 ### Not a Git Repository
 
 **Error:**
+
 ```
 fatal: not a git repository (or any of the parent directories): .git
 ```
 
 **Causes:**
+
 - Running glab outside a Git repository
 - Git repository not initialized
 
 **Solutions:**
+
 1. Navigate to a Git repository:
    ```bash
    cd /path/to/your/repo
@@ -179,6 +197,7 @@ fatal: not a git repository (or any of the parent directories): .git
 **Issue:** glab operating on wrong repository
 
 **Solution:**
+
 1. Check current repository remote:
    ```bash
    git remote -v
@@ -197,17 +216,20 @@ fatal: not a git repository (or any of the parent directories): .git
 ### 404 Project Not Found
 
 **Error:**
+
 ```
 404 Project Not Found
 ```
 
 **Causes:**
+
 - Repository doesn't exist
 - Wrong namespace/project name
 - No access permissions
 - Wrong GitLab instance
 
 **Solutions:**
+
 1. Verify repository name:
    ```bash
    # Check in GitLab web UI
@@ -231,14 +253,17 @@ fatal: not a git repository (or any of the parent directories): .git
 ### Source Branch Already Has MR
 
 **Error:**
+
 ```
 failed to create merge request: source branch already has a merge request
 ```
 
 **Cause:**
+
 - A merge request already exists for this branch
 
 **Solutions:**
+
 1. List existing MRs to find it:
    ```bash
    glab mr list
@@ -258,11 +283,13 @@ failed to create merge request: source branch already has a merge request
 ### Cannot Merge: Conflicts Exist
 
 **Error:**
+
 ```
 Cannot merge: merge conflicts exist
 ```
 
 **Solutions:**
+
 1. Checkout MR locally:
    ```bash
    glab mr checkout <mr-number>
@@ -290,15 +317,18 @@ Cannot merge: merge conflicts exist
 ### Pipeline Must Succeed
 
 **Error:**
+
 ```
 cannot merge: pipeline must succeed
 ```
 
 **Cause:**
+
 - Project requires successful pipeline before merge
 - Pipeline is failing or pending
 
 **Solutions:**
+
 1. Check pipeline status:
    ```bash
    glab ci status
@@ -323,16 +353,19 @@ cannot merge: pipeline must succeed
 ### Cannot Push to Source Branch
 
 **Error:**
+
 ```
 You cannot push commits to this source branch
 ```
 
 **Cause:**
+
 - MR is from a fork
 - No write access to source repository
 
 **Solution:**
 Ask MR author to make changes, or:
+
 1. Checkout MR:
    ```bash
    glab mr checkout <mr-number>
@@ -345,15 +378,18 @@ Ask MR author to make changes, or:
 ### Pipeline Not Found
 
 **Error:**
+
 ```
 pipeline not found
 ```
 
 **Causes:**
+
 - No pipeline exists for current branch
 - Pipeline hasn't started yet
 
 **Solutions:**
+
 1. Trigger a pipeline:
    ```bash
    glab ci run
@@ -369,21 +405,23 @@ pipeline not found
 ### CI Lint Errors
 
 **Error:**
+
 ```
 .gitlab-ci.yml is invalid
 ```
 
 **Solutions:**
+
 1. Lint locally:
    ```bash
    glab ci lint
    ```
 
 2. Common issues:
-   - YAML syntax errors (tabs vs spaces)
-   - Invalid job names
-   - Missing required fields
-   - Incorrect indentation
+    - YAML syntax errors (tabs vs spaces)
+    - Invalid job names
+    - Missing required fields
+    - Incorrect indentation
 
 3. Use GitLab CI/CD config validation in web UI
 
@@ -392,16 +430,19 @@ pipeline not found
 ### Cannot Download Artifacts
 
 **Error:**
+
 ```
 failed to download artifacts
 ```
 
 **Causes:**
+
 - Artifacts expired
 - Job didn't produce artifacts
 - Permission issues
 
 **Solutions:**
+
 1. Check if job has artifacts:
    ```bash
    glab ci view <pipeline-id>
@@ -419,16 +460,19 @@ failed to download artifacts
 ### Connection Timeout
 
 **Error:**
+
 ```
 dial tcp: i/o timeout
 ```
 
 **Causes:**
+
 - Network connectivity issues
 - Firewall blocking connection
 - GitLab instance down
 
 **Solutions:**
+
 1. Check network connection:
    ```bash
    ping gitlab.com
@@ -449,16 +493,19 @@ dial tcp: i/o timeout
 ### SSL Certificate Issues
 
 **Error:**
+
 ```
 x509: certificate signed by unknown authority
 ```
 
 **Causes:**
+
 - Self-signed certificate
 - Corporate proxy
 - Invalid SSL certificate
 
 **Solutions:**
+
 1. For development/testing only (NOT production):
    ```bash
    export GIT_SSL_NO_VERIFY=true
@@ -478,6 +525,7 @@ x509: certificate signed by unknown authority
 **Issue:** Commands still using gitlab.com instead of self-hosted instance
 
 **Solutions:**
+
 1. Export variable in current shell:
    ```bash
    export GITLAB_HOST=gitlab.example.org
@@ -499,6 +547,7 @@ x509: certificate signed by unknown authority
 **Issue:** Token set but authentication still failing
 
 **Solutions:**
+
 1. Verify token is exported:
    ```bash
    echo $GITLAB_TOKEN
@@ -527,6 +576,7 @@ x509: certificate signed by unknown authority
 **Issue:** Terminal output is corrupted or incomplete
 
 **Solutions:**
+
 1. Disable glamour styling:
    ```bash
    export GLAMOUR_STYLE=notty
@@ -549,6 +599,7 @@ x509: certificate signed by unknown authority
 **Issue:** Cannot parse JSON output
 
 **Solutions:**
+
 1. Ensure command supports JSON:
    ```bash
    glab mr list --output=json
@@ -566,11 +617,13 @@ x509: certificate signed by unknown authority
 ### Commands Running Slowly
 
 **Causes:**
+
 - Large repository
 - Many results being fetched
 - Network latency
 
 **Solutions:**
+
 1. Limit results:
    ```bash
    glab mr list --per-page=10 --page=1
@@ -591,11 +644,13 @@ x509: certificate signed by unknown authority
 ### Config File Corruption
 
 **Error:**
+
 ```
 failed to load config
 ```
 
 **Solutions:**
+
 1. Check config file:
    ```bash
    cat ~/.config/glab-cli/config.yml
@@ -662,8 +717,8 @@ If issues persist:
 1. Check glab documentation: https://docs.gitlab.com/editor_extensions/gitlab_cli/
 2. Search glab issues: https://gitlab.com/gitlab-org/cli/-/issues
 3. Create a new issue with:
-   - glab version
-   - Operating system
-   - Full error message
-   - Steps to reproduce
-   - Output with --verbose flag
+    - glab version
+    - Operating system
+    - Full error message
+    - Steps to reproduce
+    - Output with --verbose flag

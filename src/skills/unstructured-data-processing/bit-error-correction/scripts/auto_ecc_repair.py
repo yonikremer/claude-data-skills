@@ -16,7 +16,7 @@ from reedsolo import ReedSolomonError, RSCodec
 
 
 def brute_force_bitflips(
-    data: bytes, max_bytes: int = 1024
+        data: bytes, max_bytes: int = 1024
 ) -> List[Tuple[int, int, str]]:
     """
     Try flipping every single bit in the first max_bytes and check for file type change.

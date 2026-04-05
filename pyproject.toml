@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "claude-data-skills"
-version = "3.2.1"
+version = "3.2.2"
 description = "A comprehensive collection of data science, analysis, and engineering skills and scripts."
 readme = "README.md"
 requires-python = ">=3.9"
@@ -91,7 +91,7 @@ dictionary-scan = "dictionary_agent.run_scanner:main"
 dictionary-lookup = "dictionary_agent.tools:main"
 
 [tool.setuptools]
-package-dir = {"" = "src"}
+package-dir = { "" = "src" }
 
 [tool.setuptools.package-data]
 "*" = ["*.md", "*.json", "*.txt", "*.toml"]

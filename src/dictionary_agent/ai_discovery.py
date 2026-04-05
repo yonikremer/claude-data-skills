@@ -1,6 +1,7 @@
-from typing import List, Dict, Optional
+from typing import List, Dict
+
 from .models import DictionaryEntry, UsageExample, Dictionary
-from datetime import datetime
+
 
 # In a real implementation, this would call an LLM API.
 # Here we provide the logic that an agent (like Gemini) would use.
@@ -34,12 +35,13 @@ Format the response as a JSON list of objects:
 """
     return prompt
 
+
 def process_discovered_terms(discovered_terms: List[Dict], dictionary: Dictionary, source_file: str):
     for item in discovered_terms:
         term = item["term"]
         definition = item["definition"]
         usage_context = item.get("usage_context", "")
-        
+
         if term in dictionary.entries:
             # Enrich existing term
             entry = dictionary.entries[term]

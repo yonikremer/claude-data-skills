@@ -2,11 +2,14 @@
 name: get-available-resources
 description: Use when detecting and reporting available system resources like CPU, GPU, and memory. Ideal for informing computational strategy at the start of intensive tasks. Do NOT use for general system monitoring or for profiling specific code blocks.
 ---
+
 # Get Available Resources
 
 ## Overview
 
-Detect available computational resources and generate strategic recommendations for scientific computing tasks. This skill automatically identifies CPU capabilities, GPU availability (NVIDIA CUDA, AMD ROCm, Apple Silicon Metal), memory constraints, and disk space to help make informed decisions about computational approaches.
+Detect available computational resources and generate strategic recommendations for scientific computing tasks. This
+skill automatically identifies CPU capabilities, GPU availability (NVIDIA CUDA, AMD ROCm, Apple Silicon Metal), memory
+constraints, and disk space to help make informed decisions about computational approaches.
 
 ## When to Use This Skill
 
@@ -19,6 +22,7 @@ Use this skill proactively before any computationally intensive task:
 - **At project initialization**: Understand baseline capabilities for making architectural decisions
 
 **Example scenarios:**
+
 - "Help me analyze this 50GB genomics dataset" → Use this skill first to determine if Polars/Zarr are needed
 - "Train a neural network on this data" → Use this skill to detect available GPUs and backends
 - "Process 10,000 files in parallel" → Use this skill to determine optimal worker count
@@ -31,28 +35,28 @@ Use this skill proactively before any computationally intensive task:
 The skill runs `scripts/detect_resources.py` to automatically detect:
 
 1. **CPU Information**
-   - Physical and logical core counts
-   - Processor architecture and model
-   - CPU frequency information
+    - Physical and logical core counts
+    - Processor architecture and model
+    - CPU frequency information
 
 2. **GPU Information**
-   - NVIDIA GPUs: Detects via nvidia-smi, reports VRAM, driver version, compute capability
-   - AMD GPUs: Detects via rocm-smi
-   - Apple Silicon: Detects M1/M2/M3/M4 chips with Metal support and unified memory
+    - NVIDIA GPUs: Detects via nvidia-smi, reports VRAM, driver version, compute capability
+    - AMD GPUs: Detects via rocm-smi
+    - Apple Silicon: Detects M1/M2/M3/M4 chips with Metal support and unified memory
 
 3. **Memory Information**
-   - Total and available RAM
-   - Current memory usage percentage
-   - Swap space availability
+    - Total and available RAM
+    - Current memory usage percentage
+    - Swap space availability
 
 4. **Disk Space Information**
-   - Total and available disk space for working directory
-   - Current usage percentage
+    - Total and available disk space for working directory
+    - Current usage percentage
 
 5. **Operating System Information**
-   - OS type (macOS, Linux, Windows)
-   - OS version and release
-   - Python version
+    - OS type (macOS, Linux, Windows)
+    - OS version and release
+    - Python version
 
 ### Output Format
 
@@ -122,22 +126,26 @@ The skill generates a `.claude_resources.json` file in the current working direc
 The skill generates context-aware recommendations:
 
 **Parallel Processing Recommendations:**
+
 - **High parallelism (8+ cores)**: Use joblib or multiprocessing with workers = cores - 2
 - **Moderate parallelism (4-7 cores)**: Use joblib or multiprocessing with workers = cores - 1
 - **Sequential (< 4 cores)**: Prefer sequential processing to avoid overhead
 
 **Memory Strategy Recommendations:**
+
 - **Memory constrained (< 4GB available)**: Use Zarr or H5py for out-of-core processing
 - **Moderate memory (4-16GB available)**: Use Polars/Zarr for datasets > 2GB
 - **Memory abundant (> 16GB available)**: Can load most datasets into memory directly
 
 **GPU Acceleration Recommendations:**
+
 - **NVIDIA GPUs detected**: Use PyTorch, TensorFlow, JAX, CuPy, or RAPIDS
 - **AMD GPUs detected**: Use PyTorch-ROCm or TensorFlow-ROCm
 - **Apple Silicon detected**: Use PyTorch with MPS backend, TensorFlow-Metal, or JAX-Metal
 - **No GPU detected**: Use CPU-optimized libraries
 
 **Large Data Handling Recommendations:**
+
 - **Disk constrained (< 10GB)**: Use streaming or compression strategies
 - **Moderate disk (10-100GB)**: Use Zarr, H5py, or Parquet formats
 - **Disk abundant (> 100GB)**: Can create large intermediate files freely
@@ -153,6 +161,7 @@ python scripts/detect_resources.py
 ```
 
 Optional arguments:
+
 - `-o, --output <path>`: Specify custom output path (default: `.claude_resources.json`)
 - `-v, --verbose`: Print full resource information to stdout
 
@@ -188,6 +197,7 @@ if resources['recommendations']['gpu_acceleration']['available']:
 Use the resource information and recommendations to make strategic choices:
 
 **For data loading:**
+
 ```python
 memory_available_gb = resources['memory']['available_gb']
 dataset_size_gb = 10
@@ -203,6 +213,7 @@ else:
 ```
 
 **For parallel processing:**
+
 ```python
 from joblib import Parallel, delayed
 
@@ -214,6 +225,7 @@ results = Parallel(n_jobs=n_jobs)(
 ```
 
 **For GPU acceleration:**
+
 ```python
 import torch
 
@@ -248,22 +260,26 @@ All other functionality uses Python standard library modules (json, os, platform
 1. **Run early**: Execute resource detection at the start of projects or before major computational tasks
 2. **Re-run periodically**: System resources change over time (memory usage, disk space)
 3. **Check before scaling**: Verify resources before scaling up parallel workers or data sizes
-4. **Document decisions**: Keep the `.claude_resources.json` file in project directories to document resource-aware decisions
+4. **Document decisions**: Keep the `.claude_resources.json` file in project directories to document resource-aware
+   decisions
 5. **Use with versioning**: Different machines have different capabilities; resource files help maintain portability
 
 ## Troubleshooting
 
 **GPU not detected:**
+
 - Ensure GPU drivers are installed (nvidia-smi, rocm-smi, or system_profiler for Apple Silicon)
 - Check that GPU utilities are in system PATH
 - Verify GPU is not in use by other processes
 
 **Script execution fails:**
+
 - Ensure psutil is installed: `uv pip install psutil`
 - Check Python version compatibility (Python 3.6+)
 - Verify script has execute permissions: `chmod +x scripts/detect_resources.py`
 
 **Inaccurate memory readings:**
+
 - Memory readings are snapshots; actual available memory changes constantly
 - Close other applications before detection for accurate "available" memory
 - Consider running detection multiple times and averaging results

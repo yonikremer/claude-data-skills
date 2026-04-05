@@ -10,7 +10,8 @@ description: Use when performing planar geometric manipulation and spatial analy
 Complex spatial operations (like unions of many polygons) can be CPU and memory intensive.
 
 1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
-2. **Spatial Indexing**: If performing many point-in-polygon tests, use a spatial index (e.g., `STRtree`) for a 100x speedup.
+2. **Spatial Indexing**: If performing many point-in-polygon tests, use a spatial index (e.g., `STRtree`) for a 100x
+   speedup.
 3. **Geometry Simplification**: For extremely large geometries, consider using `.simplify()` before complex operations.
 
 ## Common Pitfalls (The "Wall of Shame")
@@ -20,18 +21,21 @@ Complex spatial operations (like unions of many polygons) can be CPU and memory 
 3. **Ignoring Units**: Buffer distance units depend on the coordinate system of the data.
 
 ## References (Load on demand)
+
 - `references/api-reference.md` — Formal signatures for Shapely core classes and operations.
 - `references/shapely-common-ops.md` — Comprehensive list of predicates, constructors, and measurements.
 
 ## Core Concepts
 
 - **Geometries**: Point, LineString, Polygon, and their Multi- variants.
-- **Predicates**: Boolean operations that test relationships between geometries (e.g., `intersects`, `contains`, `within`).
+- **Predicates**: Boolean operations that test relationships between geometries (e.g., `intersects`, `contains`,
+  `within`).
 - **Constructors**: Methods that create new geometries from existing ones (e.g., `buffer`, `intersection`, `union`).
 
 ## Quick Start: Common Workflows
 
 ### 1. Geometry Creation
+
 ```python
 from shapely.geometry import Point, LineString, Polygon
 
@@ -42,6 +46,7 @@ poly = Polygon([(0, 0), (1, 1), (1, 0)])
 ```
 
 ### 2. Spatial Relationships (Predicates)
+
 ```python
 # Check if point is within polygon
 if p.within(poly):
@@ -53,6 +58,7 @@ if line.intersects(poly):
 ```
 
 ### 3. Buffering and Unions
+
 ```python
 # Create a buffer around a line
 buffered_line = line.buffer(0.5)
@@ -69,7 +75,8 @@ unified_poly = poly.union(other_poly)
 
 ## Advanced Operations
 
-- **Spatial Analysis Reference**: See [shapely-common-ops.md](references/shapely-common-ops.md) for a comprehensive list of predicates, constructors, and measurements.
+- **Spatial Analysis Reference**: See [shapely-common-ops.md](references/shapely-common-ops.md) for a comprehensive list
+  of predicates, constructors, and measurements.
 
 ## Common Pitfalls
 

@@ -60,6 +60,7 @@ WHERE [TEST_FLAG_COLUMN] = FALSE
 ```
 
 **When to override:**
+
 - [SCENARIO_1]: Include [NORMALLY_EXCLUDED] when [CONDITION]
 
 ---
@@ -67,6 +68,7 @@ WHERE [TEST_FLAG_COLUMN] = FALSE
 ## Key Metrics
 
 ### [METRIC_1_NAME]
+
 - **Definition**: [PLAIN_ENGLISH_EXPLANATION]
 - **Formula**: `[EXACT_CALCULATION]`
 - **Source**: `[TABLE_NAME].[COLUMN_NAME]`
@@ -74,18 +76,20 @@ WHERE [TEST_FLAG_COLUMN] = FALSE
 - **Caveats**: [EDGE_CASES_OR_GOTCHAS]
 
 ### [METRIC_2_NAME]
+
 [REPEAT FORMAT]
 
 ---
 
 ## Data Freshness
 
-| Table | Update Frequency | Typical Lag |
-|-------|------------------|-------------|
-| [TABLE_1] | [FREQUENCY] | [LAG] |
-| [TABLE_2] | [FREQUENCY] | [LAG] |
+| Table     | Update Frequency | Typical Lag |
+|-----------|------------------|-------------|
+| [TABLE_1] | [FREQUENCY]      | [LAG]       |
+| [TABLE_2] | [FREQUENCY]      | [LAG]       |
 
 To check data freshness:
+
 ```sql
 SELECT MAX([DATE_COLUMN]) as latest_data FROM [TABLE]
 ```
@@ -96,23 +100,25 @@ SELECT MAX([DATE_COLUMN]) as latest_data FROM [TABLE]
 
 Use these reference files for detailed table documentation:
 
-| Domain | Reference File | Use For |
-|--------|----------------|---------|
-| [DOMAIN_1] | `references/[domain1].md` | [BRIEF_DESCRIPTION] |
-| [DOMAIN_2] | `references/[domain2].md` | [BRIEF_DESCRIPTION] |
-| Entities | `references/entities.md` | Entity definitions and relationships |
-| Metrics | `references/metrics.md` | KPI calculations and formulas |
+| Domain     | Reference File            | Use For                              |
+|------------|---------------------------|--------------------------------------|
+| [DOMAIN_1] | `references/[domain1].md` | [BRIEF_DESCRIPTION]                  |
+| [DOMAIN_2] | `references/[domain2].md` | [BRIEF_DESCRIPTION]                  |
+| Entities   | `references/entities.md`  | Entity definitions and relationships |
+| Metrics    | `references/metrics.md`   | KPI calculations and formulas        |
 
 ---
 
 ## Common Query Patterns
 
 ### [PATTERN_1_NAME]
+
 ```sql
 [SAMPLE_QUERY]
 ```
 
 ### [PATTERN_2_NAME]
+
 ```sql
 [SAMPLE_QUERY]
 ```
@@ -122,17 +128,21 @@ Use these reference files for detailed table documentation:
 ## Troubleshooting
 
 ### Common Mistakes
+
 - **[MISTAKE_1]**: [EXPLANATION] → [CORRECT_APPROACH]
 - **[MISTAKE_2]**: [EXPLANATION] → [CORRECT_APPROACH]
 
 ### Access Issues
+
 - If you encounter permission errors on `[TABLE]`: [WORKAROUND]
 - For PII-restricted columns: [ALTERNATIVE_APPROACH]
 
 ### Performance Tips
+
 - Filter by `[PARTITION_COLUMN]` first to reduce data scanned
 - For large tables, use `LIMIT` during exploration
 - Prefer `[AGGREGATED_TABLE]` over `[RAW_TABLE]` when possible
+
 ```
 
 ---

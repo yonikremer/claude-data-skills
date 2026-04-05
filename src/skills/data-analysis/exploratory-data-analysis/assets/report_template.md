@@ -6,7 +6,9 @@
 
 ## Executive Summary
 
-This report provides a comprehensive exploratory data analysis of the file `{FILENAME}`. The analysis includes file type identification, format-specific metadata extraction, data quality assessment, and recommendations for downstream analysis.
+This report provides a comprehensive exploratory data analysis of the file `{FILENAME}`. The analysis includes file type
+identification, format-specific metadata extraction, data quality assessment, and recommendations for downstream
+analysis.
 
 ---
 
@@ -24,15 +26,19 @@ This report provides a comprehensive exploratory data analysis of the file `{FIL
 ## File Type Details
 
 ### Format Description
+
 {FORMAT_DESCRIPTION}
 
 ### Typical Data Content
+
 {TYPICAL_DATA}
 
 ### Common Use Cases
+
 {USE_CASES}
 
 ### Python Libraries for Reading
+
 {PYTHON_LIBRARIES}
 
 ---
@@ -40,12 +46,15 @@ This report provides a comprehensive exploratory data analysis of the file `{FIL
 ## Data Structure Analysis
 
 ### Overview
+
 {DATA_STRUCTURE_OVERVIEW}
 
 ### Dimensions
+
 {DIMENSIONS}
 
 ### Data Types
+
 {DATA_TYPES}
 
 ---
@@ -53,15 +62,18 @@ This report provides a comprehensive exploratory data analysis of the file `{FIL
 ## Quality Assessment
 
 ### Completeness
+
 - **Missing Values:** {MISSING_VALUES}
 - **Data Coverage:** {COVERAGE}
 
 ### Validity
+
 - **Range Check:** {RANGE_CHECK}
 - **Format Compliance:** {FORMAT_COMPLIANCE}
 - **Consistency:** {CONSISTENCY}
 
 ### Integrity
+
 - **Checksum/Validation:** {VALIDATION}
 - **File Corruption Check:** {CORRUPTION_CHECK}
 
@@ -70,12 +82,15 @@ This report provides a comprehensive exploratory data analysis of the file `{FIL
 ## Statistical Summary
 
 ### Numerical Variables
+
 {NUMERICAL_STATS}
 
 ### Categorical Variables
+
 {CATEGORICAL_STATS}
 
 ### Distributions
+
 {DISTRIBUTIONS}
 
 ---
@@ -83,16 +98,19 @@ This report provides a comprehensive exploratory data analysis of the file `{FIL
 ## Data Characteristics
 
 ### Temporal Properties (if applicable)
+
 - **Time Range:** {TIME_RANGE}
 - **Sampling Rate:** {SAMPLING_RATE}
 - **Missing Time Points:** {MISSING_TIMEPOINTS}
 
 ### Spatial Properties (if applicable)
+
 - **Dimensions:** {SPATIAL_DIMENSIONS}
 - **Resolution:** {SPATIAL_RESOLUTION}
 - **Coordinate System:** {COORDINATE_SYSTEM}
 
 ### Experimental Metadata (if applicable)
+
 - **Instrument:** {INSTRUMENT}
 - **Method:** {METHOD}
 - **Sample Info:** {SAMPLE_INFO}
@@ -111,12 +129,15 @@ This report provides a comprehensive exploratory data analysis of the file `{FIL
 ## Visualizations
 
 ### Distribution Plots
+
 {DISTRIBUTION_PLOTS}
 
 ### Correlation Analysis
+
 {CORRELATION_PLOTS}
 
 ### Time Series (if applicable)
+
 {TIMESERIES_PLOTS}
 
 ---
@@ -124,19 +145,23 @@ This report provides a comprehensive exploratory data analysis of the file `{FIL
 ## Recommendations for Further Analysis
 
 ### Immediate Actions
+
 1. {RECOMMENDATION_1}
 2. {RECOMMENDATION_2}
 3. {RECOMMENDATION_3}
 
 ### Preprocessing Steps
+
 - {PREPROCESSING_1}
 - {PREPROCESSING_2}
 - {PREPROCESSING_3}
 
 ### Analytical Approaches
+
 {ANALYTICAL_APPROACHES}
 
 ### Tools and Methods
+
 - **Recommended Software:** {RECOMMENDED_SOFTWARE}
 - **Statistical Methods:** {STATISTICAL_METHODS}
 - **Visualization Tools:** {VIZ_TOOLS}
@@ -154,22 +179,25 @@ This report provides a comprehensive exploratory data analysis of the file `{FIL
 ## Potential Challenges
 
 1. **Challenge:** {CHALLENGE_1}
-   - **Mitigation:** {MITIGATION_1}
+    - **Mitigation:** {MITIGATION_1}
 
 2. **Challenge:** {CHALLENGE_2}
-   - **Mitigation:** {MITIGATION_2}
+    - **Mitigation:** {MITIGATION_2}
 
 ---
 
 ## References and Resources
 
 ### Format Specification
+
 - {FORMAT_SPEC_LINK}
 
 ### Python Libraries Documentation
+
 - {LIBRARY_DOCS}
 
 ### Related Analysis Examples
+
 - {EXAMPLE_LINKS}
 
 ---
@@ -177,16 +205,19 @@ This report provides a comprehensive exploratory data analysis of the file `{FIL
 ## Appendix
 
 ### Complete File Metadata
+
 ```json
 {COMPLETE_METADATA}
 ```
 
 ### Analysis Parameters
+
 ```json
 {ANALYSIS_PARAMETERS}
 ```
 
 ### Software Versions
+
 - Python: {PYTHON_VERSION}
 - Key Libraries: {LIBRARY_VERSIONS}
 

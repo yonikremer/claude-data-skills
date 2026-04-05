@@ -38,45 +38,50 @@ WHERE [STANDARD_FILTER_1]
 ## Key Tables
 
 ### [TABLE_1_NAME]
+
 **Location**: `[project.dataset.table]` or `[schema.table]`
 **Description**: [What this table contains, when to use it]
 **Primary Key**: [COLUMN(S)]
 **Update Frequency**: [Daily/Hourly/Real-time] ([LAG] lag)
 **Partitioned By**: [PARTITION_COLUMN] (if applicable)
 
-| Column | Type | Description | Notes |
-|--------|------|-------------|-------|
+| Column         | Type   | Description   | Notes               |
+|----------------|--------|---------------|---------------------|
 | **[column_1]** | [TYPE] | [DESCRIPTION] | [GOTCHA_OR_CONTEXT] |
-| **[column_2]** | [TYPE] | [DESCRIPTION] | |
-| **[column_3]** | [TYPE] | [DESCRIPTION] | Nullable |
+| **[column_2]** | [TYPE] | [DESCRIPTION] |                     |
+| **[column_3]** | [TYPE] | [DESCRIPTION] | Nullable            |
 
 **Relationships**:
+
 - Joins to `[OTHER_TABLE]` on `[JOIN_KEY]`
 - Parent of `[CHILD_TABLE]` via `[FOREIGN_KEY]`
 
 **Nested/Struct Fields** (if applicable):
+
 - `[struct_name].[field_1]`: [DESCRIPTION]
 - `[struct_name].[field_2]`: [DESCRIPTION]
 
 ---
 
 ### [TABLE_2_NAME]
+
 [REPEAT FORMAT]
 
 ---
 
 ## Key Metrics
 
-| Metric | Definition | Table | Formula | Notes |
-|--------|------------|-------|---------|-------|
+| Metric     | Definition   | Table   | Formula     | Notes     |
+|------------|--------------|---------|-------------|-----------|
 | [METRIC_1] | [DEFINITION] | [TABLE] | `[FORMULA]` | [CAVEATS] |
-| [METRIC_2] | [DEFINITION] | [TABLE] | `[FORMULA]` | |
+| [METRIC_2] | [DEFINITION] | [TABLE] | `[FORMULA]` |           |
 
 ---
 
 ## Sample Queries
 
 ### [QUERY_PURPOSE_1]
+
 ```sql
 -- [Brief description of what this query does]
 SELECT
@@ -88,11 +93,13 @@ ORDER BY [ordering]
 ```
 
 ### [QUERY_PURPOSE_2]
+
 ```sql
 [ANOTHER_COMMON_QUERY]
 ```
 
 ### [QUERY_PURPOSE_3]: [More Complex Pattern]
+
 ```sql
 WITH [cte_name] AS (
     [CTE_LOGIC]
@@ -108,8 +115,8 @@ FROM [cte_name]
 ## Common Gotchas
 
 1. **[GOTCHA_1]**: [EXPLANATION]
-   - Wrong: `[INCORRECT_APPROACH]`
-   - Right: `[CORRECT_APPROACH]`
+    - Wrong: `[INCORRECT_APPROACH]`
+    - Right: `[CORRECT_APPROACH]`
 
 2. **[GOTCHA_2]**: [EXPLANATION]
 
@@ -117,10 +124,11 @@ FROM [cte_name]
 
 ## Related Dashboards (if applicable)
 
-| Dashboard | Link | Use For |
-|-----------|------|---------|
+| Dashboard     | Link  | Use For       |
+|---------------|-------|---------------|
 | [DASHBOARD_1] | [URL] | [DESCRIPTION] |
 | [DASHBOARD_2] | [URL] | [DESCRIPTION] |
+
 ```
 
 ---

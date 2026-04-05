@@ -23,10 +23,10 @@ import numpy as np
 
 
 def check_diagnostics(
-    idata: az.InferenceData,
-    var_names: Optional[List[str]] = None,
-    ess_threshold: int = 400,
-    rhat_threshold: float = 1.01,
+        idata: az.InferenceData,
+        var_names: Optional[List[str]] = None,
+        ess_threshold: int = 400,
+        rhat_threshold: float = 1.01,
 ) -> Dict[str, Any]:
     """
     Perform comprehensive diagnostic checks on MCMC samples.
@@ -171,10 +171,10 @@ def check_diagnostics(
 
 
 def create_diagnostic_report(
-    idata: az.InferenceData,
-    var_names: Optional[List[str]] = None,
-    output_dir: str = "diagnostics/",
-    show: bool = False,
+        idata: az.InferenceData,
+        var_names: Optional[List[str]] = None,
+        output_dir: str = "diagnostics/",
+        show: bool = False,
 ) -> Dict[str, Any]:
     """
     Create comprehensive diagnostic report with plots.
@@ -265,10 +265,10 @@ def create_diagnostic_report(
 
 
 def compare_prior_posterior(
-    idata: az.InferenceData,
-    prior_idata: az.InferenceData,
-    var_names: Optional[List[str]] = None,
-    output_path: Optional[Union[str, Path]] = None,
+        idata: az.InferenceData,
+        prior_idata: az.InferenceData,
+        var_names: Optional[List[str]] = None,
+        output_path: Optional[Union[str, Path]] = None,
 ) -> None:
     """
     Compare prior and posterior distributions.

@@ -7,7 +7,7 @@ Common patterns for generating ES|QL queries from natural language requests.
 When translating natural language to ES|QL, identify these key elements:
 
 | User Says                               | ES\|QL Element                            |
-| --------------------------------------- | ----------------------------------------- |
+|-----------------------------------------|-------------------------------------------|
 | "show", "list", "get", "find"           | `FROM` + `KEEP` (select fields)           |
 | "from", "in" (index)                    | `FROM index-pattern`                      |
 | "where", "with", "that have", "filter"  | `WHERE condition`                         |

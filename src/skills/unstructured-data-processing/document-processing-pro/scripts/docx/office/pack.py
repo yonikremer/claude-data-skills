@@ -11,8 +11,8 @@ Examples:
 """
 
 import argparse
-import sys
 import shutil
+import sys
 import tempfile
 import zipfile
 from pathlib import Path
@@ -23,11 +23,11 @@ from validators import DOCXSchemaValidator, PPTXSchemaValidator, RedliningValida
 
 
 def pack(
-    input_directory: str,
-    output_file: str,
-    original_file: str | None = None,
-    validate: bool = True,
-    infer_author_func=None,
+        input_directory: str,
+        output_file: str,
+        original_file: str | None = None,
+        validate: bool = True,
+        infer_author_func=None,
 ) -> tuple[None, str]:
     input_dir = Path(input_directory)
     output_path = Path(output_file)
@@ -68,10 +68,10 @@ def pack(
 
 
 def _run_validation(
-    unpacked_dir: Path,
-    original_file: Path,
-    suffix: str,
-    infer_author_func=None,
+        unpacked_dir: Path,
+        original_file: Path,
+        suffix: str,
+        infer_author_func=None,
 ) -> tuple[bool, str | None]:
     output_lines = []
     validators = []
@@ -117,9 +117,9 @@ def _condense_xml(xml_file: Path) -> None:
 
             for child in list(element.childNodes):
                 if (
-                    child.nodeType == child.TEXT_NODE
-                    and child.nodeValue
-                    and child.nodeValue.strip() == ""
+                        child.nodeType == child.TEXT_NODE
+                        and child.nodeValue
+                        and child.nodeValue.strip() == ""
                 ) or child.nodeType == child.COMMENT_NODE:
                     element.removeChild(child)
 

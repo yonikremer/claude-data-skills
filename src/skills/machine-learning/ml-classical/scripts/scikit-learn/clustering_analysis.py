@@ -25,9 +25,9 @@ warnings.filterwarnings("ignore")
 
 
 def preprocess_for_clustering(
-    x_data: Union[pd.DataFrame, np.ndarray],
-    scale: bool = True,
-    pca_components: Optional[int] = None,
+        x_data: Union[pd.DataFrame, np.ndarray],
+        scale: bool = True,
+        pca_components: Optional[int] = None,
 ) -> np.ndarray:
     """
     Preprocess data for clustering.
@@ -57,7 +57,7 @@ def preprocess_for_clustering(
 
 
 def find_optimal_k_kmeans(
-    x_data: np.ndarray, k_range: range = range(2, 11)
+        x_data: np.ndarray, k_range: range = range(2, 11)
 ) -> Dict[str, Any]:
     """
     Find optimal K for K-Means using elbow method and silhouette score.
@@ -114,7 +114,7 @@ def find_optimal_k_kmeans(
 
 
 def compare_clustering_algorithms(
-    x_data: np.ndarray, n_clusters: int = 3
+        x_data: np.ndarray, n_clusters: int = 3
 ) -> Dict[str, Any]:
     """
     Compare different clustering algorithms.
@@ -200,9 +200,9 @@ def compare_clustering_algorithms(
 
 
 def visualize_clusters(
-    x_data: np.ndarray,
-    results: Dict[str, Any],
-    true_labels: Optional[np.ndarray] = None,
+        x_data: np.ndarray,
+        results: Dict[str, Any],
+        true_labels: Optional[np.ndarray] = None,
 ) -> None:
     """
     Visualize clustering results using PCA for 2D projection.
@@ -287,12 +287,12 @@ def visualize_clusters(
 
 
 def complete_clustering_analysis(
-    x_data: Union[pd.DataFrame, np.ndarray],
-    true_labels: Optional[np.ndarray] = None,
-    scale: bool = True,
-    find_k: bool = True,
-    k_range: range = range(2, 11),
-    n_clusters: int = 3,
+        x_data: Union[pd.DataFrame, np.ndarray],
+        true_labels: Optional[np.ndarray] = None,
+        scale: bool = True,
+        find_k: bool = True,
+        k_range: range = range(2, 11),
+        n_clusters: int = 3,
 ) -> Dict[str, Any]:
     """
     Complete clustering analysis workflow.

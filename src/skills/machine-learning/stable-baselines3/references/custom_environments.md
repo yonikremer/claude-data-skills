@@ -1,6 +1,7 @@
 # Creating Custom Environments for Stable Baselines3
 
-This guide provides comprehensive information for creating custom Gymnasium environments compatible with Stable Baselines3.
+This guide provides comprehensive information for creating custom Gymnasium environments compatible with Stable
+Baselines3.
 
 ## Environment Structure
 
@@ -52,11 +53,13 @@ class CustomEnv(gym.Env):
 **Purpose:** Initialize the environment and define spaces.
 
 **Requirements:**
+
 - Must call `super().__init__()`
 - Must define `self.action_space`
 - Must define `self.observation_space`
 
 **Example:**
+
 ```python
 def __init__(self, grid_size=10, max_steps=100):
     super().__init__()
@@ -76,12 +79,14 @@ def __init__(self, grid_size=10, max_steps=100):
 **Purpose:** Reset the environment to an initial state.
 
 **Requirements:**
+
 - Must call `super().reset(seed=seed)`
 - Must return `(observation, info)` tuple
 - Observation must match `observation_space`
 - Info must be a dictionary (can be empty)
 
 **Example:**
+
 ```python
 def reset(self, seed=None, options=None):
     super().reset(seed=seed)
@@ -102,6 +107,7 @@ def reset(self, seed=None, options=None):
 **Purpose:** Execute one timestep in the environment.
 
 **Requirements:**
+
 - Must return 5-tuple: `(observation, reward, terminated, truncated, info)`
 - Action must be valid according to `action_space`
 - Observation must match `observation_space`
@@ -111,6 +117,7 @@ def reset(self, seed=None, options=None):
 - Info must be a dictionary
 
 **Example:**
+
 ```python
 def step(self, action):
     # Apply action
@@ -169,6 +176,7 @@ self.observation_space = spaces.Box(
 ```
 
 **Important for Images:**
+
 - Must be `dtype=np.uint8` in range [0, 255]
 - Use **channel-first** format: (channels, height, width)
 - SB3 automatically normalizes by dividing by 255
@@ -274,6 +282,7 @@ info = {
 ```
 
 **Special Keys:**
+
 - `"terminal_observation"`: Automatically added by VecEnv when episode ends
 
 ## Advanced Features
@@ -341,20 +350,20 @@ check_env(env, warn=True)
 **Common Validation Errors:**
 
 1. **"Observation is not within bounds"**
-   - Check that observations stay within defined space
-   - Ensure correct dtype (np.float32 for Box spaces)
+    - Check that observations stay within defined space
+    - Ensure correct dtype (np.float32 for Box spaces)
 
 2. **"Reset should return tuple"**
-   - Return `(observation, info)`, not just observation
+    - Return `(observation, info)`, not just observation
 
 3. **"Step should return 5-tuple"**
-   - Return `(obs, reward, terminated, truncated, info)`
+    - Return `(obs, reward, terminated, truncated, info)`
 
 4. **"Action is out of bounds"**
-   - Verify action_space definition matches expected actions
+    - Verify action_space definition matches expected actions
 
 5. **"Observation/Action dtype mismatch"**
-   - Ensure observations match space dtype (usually np.float32)
+    - Ensure observations match space dtype (usually np.float32)
 
 ## Environment Registration
 
@@ -501,20 +510,24 @@ def step(self, action):
 ## Troubleshooting
 
 ### "Observation out of bounds"
+
 - Check that all observations are within defined space
 - Verify correct dtype (np.float32 vs np.float64)
 
 ### "NaN or Inf in observation/reward"
+
 - Add checks: `assert np.isfinite(reward)`
 - Use `VecCheckNan` wrapper to catch issues
 
 ### "Policy doesn't learn"
+
 - Check reward scaling (normalize rewards)
 - Verify observation normalization
 - Ensure reward signal is meaningful
 - Check if exploration is sufficient
 
 ### "Training crashes"
+
 - Validate environment with `check_env()`
 - Check for race conditions in custom env
 - Verify action/observation spaces are consistent

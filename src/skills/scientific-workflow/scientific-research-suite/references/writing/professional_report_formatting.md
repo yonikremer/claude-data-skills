@@ -1,6 +1,7 @@
 # Professional Report Formatting for Scientific Documents
 
-This reference guide covers professional formatting for scientific reports, technical documents, and white papers. Use the `scientific_report.sty` LaTeX style package for consistent, professional output.
+This reference guide covers professional formatting for scientific reports, technical documents, and white papers. Use
+the `scientific_report.sty` LaTeX style package for consistent, professional output.
 
 ---
 
@@ -25,7 +26,8 @@ This reference guide covers professional formatting for scientific reports, tech
 - **Academic theses/dissertations** → Use institutional templates
 - **Peer-reviewed submissions** → Follow journal author guidelines
 
-**Key Distinction**: Professional report formatting prioritizes visual appeal and readability for general audiences, while journal manuscripts must follow strict publisher requirements.
+**Key Distinction**: Professional report formatting prioritizes visual appeal and readability for general audiences,
+while journal manuscripts must follow strict publisher requirements.
 
 ---
 
@@ -33,15 +35,15 @@ This reference guide covers professional formatting for scientific reports, tech
 
 The `scientific_report.sty` package provides:
 
-| Feature | Description |
-|---------|-------------|
-| Typography | Helvetica font family for modern, professional appearance |
-| Color Scheme | Coordinated blues, greens, oranges, and purples |
-| Box Environments | Colored boxes for organizing content types |
-| Tables | Professional styling with alternating rows |
-| Figures | Consistent caption formatting |
-| Headers/Footers | Professional page headers and footers |
-| Scientific Commands | Shortcuts for p-values, effect sizes, statistics |
+| Feature             | Description                                               |
+|---------------------|-----------------------------------------------------------|
+| Typography          | Helvetica font family for modern, professional appearance |
+| Color Scheme        | Coordinated blues, greens, oranges, and purples           |
+| Box Environments    | Colored boxes for organizing content types                |
+| Tables              | Professional styling with alternating rows                |
+| Figures             | Consistent caption formatting                             |
+| Headers/Footers     | Professional page headers and footers                     |
+| Scientific Commands | Shortcuts for p-values, effect sizes, statistics          |
 
 ### Basic Document Setup
 
@@ -55,6 +57,7 @@ The `scientific_report.sty` package provides:
 ```
 
 **Compilation**: Use XeLaTeX or LuaLaTeX for proper Helvetica font rendering:
+
 ```bash
 xelatex document.tex
 ```
@@ -65,21 +68,22 @@ xelatex document.tex
 
 ### Purpose and Usage
 
-Colored boxes help readers quickly identify different types of content. Use them strategically to highlight important information.
+Colored boxes help readers quickly identify different types of content. Use them strategically to highlight important
+information.
 
 ### Available Box Environments
 
-| Environment | Color | Purpose |
-|-------------|-------|---------|
-| `keyfindings` | Blue | Major findings, discoveries, key takeaways |
-| `methodology` | Green | Methods, procedures, study design |
-| `resultsbox` | Blue-green | Statistical results, data highlights |
-| `recommendations` | Purple | Recommendations, action items, implications |
-| `limitations` | Orange | Limitations, cautions, caveats |
-| `criticalnotice` | Red | Critical warnings, safety notices |
-| `definition` | Gray | Definitions, notes, supplementary info |
-| `executivesummary` | Blue (shadow) | Executive summaries |
-| `hypothesis` | Light blue | Research hypotheses |
+| Environment        | Color         | Purpose                                     |
+|--------------------|---------------|---------------------------------------------|
+| `keyfindings`      | Blue          | Major findings, discoveries, key takeaways  |
+| `methodology`      | Green         | Methods, procedures, study design           |
+| `resultsbox`       | Blue-green    | Statistical results, data highlights        |
+| `recommendations`  | Purple        | Recommendations, action items, implications |
+| `limitations`      | Orange        | Limitations, cautions, caveats              |
+| `criticalnotice`   | Red           | Critical warnings, safety notices           |
+| `definition`       | Gray          | Definitions, notes, supplementary info      |
+| `executivesummary` | Blue (shadow) | Executive summaries                         |
+| `hypothesis`       | Light blue    | Research hypotheses                         |
 
 ### Key Findings Box
 
@@ -97,6 +101,7 @@ Our analysis revealed three significant findings:
 ```
 
 **Best Practices:**
+
 - Use sparingly (1-3 per chapter maximum)
 - Reserve for genuinely important findings
 - Include specific numbers and statistics
@@ -116,6 +121,7 @@ conditions: (1) Treatment A, (2) Treatment B, (3) Combined A+B, or
 ```
 
 **Best Practices:**
+
 - Summarize key methodological features
 - Use at the start of methods sections
 - Include sample size and design type
@@ -135,6 +141,7 @@ treatment conditions over the study period.
 ```
 
 **Best Practices:**
+
 - Report complete statistical information
 - Use scientific notation commands
 - Include effect sizes alongside p-values
@@ -158,6 +165,7 @@ Based on our findings, we recommend:
 ```
 
 **Best Practices:**
+
 - Make recommendations specific and actionable
 - Prioritize with clear labels
 - Link to supporting evidence
@@ -181,6 +189,7 @@ Several limitations should be considered:
 ```
 
 **Best Practices:**
+
 - Be honest and thorough
 - Explain implications of each limitation
 - Suggest how future research could address limitations
@@ -199,6 +208,7 @@ immediately if [symptoms] occur. Report serious adverse events to [contact].
 ```
 
 **Best Practices:**
+
 - Reserve for genuinely critical information
 - Be clear and direct
 - Include specific actions to take
@@ -219,6 +229,7 @@ correlations.
 ```
 
 **Best Practices:**
+
 - Define technical terms at first use
 - Keep definitions concise
 - Include practical interpretation guidance
@@ -309,6 +320,7 @@ Chen et al. (2023) & Case-control & 320 & \qualitymedium & \evidencemoderate \\
 ### Caption Formatting
 
 The style package automatically formats captions with:
+
 - Blue, bold figure labels
 - Gray descriptive text
 - Centered alignment with margins
@@ -354,14 +366,14 @@ The style package automatically formats captions with:
 
 ### Color Usage Guidelines
 
-| Color | Use For | Avoid Using For |
-|-------|---------|-----------------|
-| Primary Blue | Headers, important findings | Warnings, cautions |
-| Science Green | Methods, positive results | Negative findings |
-| Orange | Cautions, limitations | Positive findings |
-| Red | Critical warnings | Routine content |
-| Purple | Recommendations | Findings, methods |
-| Gray | Definitions, notes | Key findings |
+| Color         | Use For                     | Avoid Using For    |
+|---------------|-----------------------------|--------------------|
+| Primary Blue  | Headers, important findings | Warnings, cautions |
+| Science Green | Methods, positive results   | Negative findings  |
+| Orange        | Cautions, limitations       | Positive findings  |
+| Red           | Critical warnings           | Routine content    |
+| Purple        | Recommendations             | Findings, methods  |
+| Gray          | Definitions, notes          | Key findings       |
 
 ### Visual Hierarchy
 
@@ -384,13 +396,13 @@ The style package automatically formats captions with:
 
 ### Font Specifications
 
-| Element | Font | Size | Color |
-|---------|------|------|-------|
-| Body text | Helvetica | 11pt | Dark gray (#424242) |
-| Chapter titles | Helvetica Bold | Huge | Primary blue (#003366) |
-| Section headings | Helvetica Bold | Large | Primary blue (#003366) |
-| Subsections | Helvetica Bold | large | Secondary blue (#4A90E2) |
-| Subsubsections | Helvetica Bold | normalsize | Dark gray (#424242) |
+| Element          | Font           | Size       | Color                    |
+|------------------|----------------|------------|--------------------------|
+| Body text        | Helvetica      | 11pt       | Dark gray (#424242)      |
+| Chapter titles   | Helvetica Bold | Huge       | Primary blue (#003366)   |
+| Section headings | Helvetica Bold | Large      | Primary blue (#003366)   |
+| Subsections      | Helvetica Bold | large      | Secondary blue (#4A90E2) |
+| Subsubsections   | Helvetica Bold | normalsize | Dark gray (#424242)      |
 
 ### Spacing
 
@@ -411,43 +423,43 @@ The style package automatically formats captions with:
 
 ### Statistical Reporting
 
-| Command | Output | When to Use |
-|---------|--------|-------------|
-| `\pvalue{0.023}` | *p* = 0.023 | Report p-values |
-| `\psig{< 0.001}` | ***p*** = < 0.001 | Significant p-values (bold) |
-| `\CI{0.45}{0.72}` | 95% CI [0.45, 0.72] | Confidence intervals |
-| `\effectsize{d}{0.75}` | d = 0.75 | Effect sizes |
-| `\samplesize{250}` | *n* = 250 | Sample sizes |
-| `\meansd{42.5}{8.3}` | 42.5 ± 8.3 | Mean with SD |
+| Command                | Output              | When to Use                 |
+|------------------------|---------------------|-----------------------------|
+| `\pvalue{0.023}`       | *p* = 0.023         | Report p-values             |
+| `\psig{< 0.001}`       | ***p*** = < 0.001   | Significant p-values (bold) |
+| `\CI{0.45}{0.72}`      | 95% CI [0.45, 0.72] | Confidence intervals        |
+| `\effectsize{d}{0.75}` | d = 0.75            | Effect sizes                |
+| `\samplesize{250}`     | *n* = 250           | Sample sizes                |
+| `\meansd{42.5}{8.3}`   | 42.5 ± 8.3          | Mean with SD                |
 
 ### Significance Indicators
 
-| Command | Output | Meaning |
-|---------|--------|---------|
-| `\sigone` | * | p < 0.05 |
-| `\sigtwo` | ** | p < 0.01 |
-| `\sigthree` | *** | p < 0.001 |
-| `\signs` | ns | not significant |
+| Command      | Output      | Meaning             |
+|--------------|-------------|---------------------|
+| `\sigone`    | *           | p < 0.05            |
+| `\sigtwo`    | **          | p < 0.01            |
+| `\sigthree`  | ***         | p < 0.001           |
+| `\signs`     | ns          | not significant     |
 | `\siglegend` | Full legend | For table footnotes |
 
 ### Quality and Evidence Ratings
 
-| Command | Output | Meaning |
-|---------|--------|---------|
-| `\qualityhigh` | **HIGH** (green) | High quality |
-| `\qualitymedium` | **MEDIUM** (orange) | Moderate quality |
-| `\qualitylow` | **LOW** (red) | Low quality |
-| `\evidencestrong` | **Strong** (green) | Strong evidence |
+| Command             | Output                | Meaning           |
+|---------------------|-----------------------|-------------------|
+| `\qualityhigh`      | **HIGH** (green)      | High quality      |
+| `\qualitymedium`    | **MEDIUM** (orange)   | Moderate quality  |
+| `\qualitylow`       | **LOW** (red)         | Low quality       |
+| `\evidencestrong`   | **Strong** (green)    | Strong evidence   |
 | `\evidencemoderate` | **Moderate** (orange) | Moderate evidence |
-| `\evidenceweak` | **Weak** (red) | Weak evidence |
+| `\evidenceweak`     | **Weak** (red)        | Weak evidence     |
 
 ### Trend Indicators
 
-| Command | Symbol | Meaning |
-|---------|--------|---------|
-| `\trendup` | ▲ (green) | Increasing trend |
-| `\trenddown` | ▼ (red) | Decreasing trend |
-| `\trendflat` | → (gray) | Stable/no change |
+| Command      | Symbol    | Meaning          |
+|--------------|-----------|------------------|
+| `\trendup`   | ▲ (green) | Increasing trend |
+| `\trenddown` | ▼ (red)   | Decreasing trend |
+| `\trendflat` | → (gray)  | Stable/no change |
 
 ---
 
@@ -603,12 +615,14 @@ Several limitations warrant consideration:
 Before finalizing your report, verify:
 
 ### Formatting
+
 - [ ] Using `scientific_report.sty` package
 - [ ] Compiled with XeLaTeX or LuaLaTeX
 - [ ] Helvetica font rendering correctly
 - [ ] Colors displaying properly
 
 ### Content Organization
+
 - [ ] Executive summary present and complete
 - [ ] Key findings highlighted in boxes
 - [ ] Methods clearly described
@@ -617,24 +631,28 @@ Before finalizing your report, verify:
 - [ ] Recommendations are specific and actionable
 
 ### Tables
+
 - [ ] All tables have captions and labels
 - [ ] Alternating row colors applied
 - [ ] Significance indicators explained
 - [ ] Numbers formatted consistently
 
 ### Figures
+
 - [ ] All figures have captions and labels
 - [ ] Sources attributed where appropriate
 - [ ] Resolution sufficient for printing (300 DPI)
 - [ ] Referenced in text
 
 ### Statistical Reporting
+
 - [ ] P-values reported appropriately
 - [ ] Effect sizes included
 - [ ] Confidence intervals where relevant
 - [ ] Sample sizes stated
 
 ### Professional Appearance
+
 - [ ] Consistent formatting throughout
 - [ ] No orphaned headers or widows
 - [ ] Page breaks at appropriate locations

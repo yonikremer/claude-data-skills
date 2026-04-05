@@ -2,7 +2,8 @@
 
 ## Overview
 
-The transformers library provides flexible model loading with automatic architecture detection, device management, and configuration control.
+The transformers library provides flexible model loading with automatic architecture detection, device management, and
+configuration control.
 
 ## Loading Models
 
@@ -34,6 +35,7 @@ model = AutoModelForSeq2SeqLM.from_pretrained("t5-small")
 ### Common AutoModel Classes
 
 **NLP Tasks:**
+
 - `AutoModelForSequenceClassification`: Text classification, sentiment analysis
 - `AutoModelForTokenClassification`: NER, POS tagging
 - `AutoModelForQuestionAnswering`: Extractive QA
@@ -42,15 +44,18 @@ model = AutoModelForSeq2SeqLM.from_pretrained("t5-small")
 - `AutoModelForSeq2SeqLM`: Translation, summarization (T5, BART)
 
 **Vision Tasks:**
+
 - `AutoModelForImageClassification`: Image classification
 - `AutoModelForObjectDetection`: Object detection
 - `AutoModelForImageSegmentation`: Image segmentation
 
 **Audio Tasks:**
+
 - `AutoModelForAudioClassification`: Audio classification
 - `AutoModelForSpeechSeq2Seq`: Speech recognition
 
 **Multimodal:**
+
 - `AutoModelForVision2Seq`: Image captioning, VQA
 
 ## Loading Parameters
@@ -58,12 +63,14 @@ model = AutoModelForSeq2SeqLM.from_pretrained("t5-small")
 ### Basic Parameters
 
 **pretrained_model_name_or_path**: Model identifier or local path
+
 ```python
 model = AutoModel.from_pretrained("bert-base-uncased")  # From Hub
 model = AutoModel.from_pretrained("./local/model/path")  # From disk
 ```
 
 **num_labels**: Number of output labels for classification
+
 ```python
 model = AutoModelForSequenceClassification.from_pretrained(
     "bert-base-uncased",
@@ -72,6 +79,7 @@ model = AutoModelForSequenceClassification.from_pretrained(
 ```
 
 **cache_dir**: Custom cache location
+
 ```python
 model = AutoModel.from_pretrained("model-id", cache_dir="./my_cache")
 ```
@@ -79,6 +87,7 @@ model = AutoModel.from_pretrained("model-id", cache_dir="./my_cache")
 ### Device Management
 
 **device_map**: Automatic device allocation for large models
+
 ```python
 # Automatically distribute across GPUs and CPU
 model = AutoModelForCausalLM.from_pretrained(
@@ -102,6 +111,7 @@ model = AutoModel.from_pretrained("model-id", device_map=device_map)
 ```
 
 Manual device placement:
+
 ```python
 import torch
 model = AutoModel.from_pretrained("model-id")
@@ -112,6 +122,7 @@ model.to(torch.device("cuda" if torch.cuda.is_available() else "cpu"))
 ### Precision Control
 
 **torch_dtype**: Set model precision
+
 ```python
 import torch
 
@@ -128,6 +139,7 @@ model = AutoModel.from_pretrained("model-id", torch_dtype="auto")
 ### Attention Implementation
 
 **attn_implementation**: Choose attention mechanism
+
 ```python
 # Scaled Dot Product Attention (PyTorch 2.0+, fastest)
 model = AutoModel.from_pretrained("model-id", attn_implementation="sdpa")
@@ -142,6 +154,7 @@ model = AutoModel.from_pretrained("model-id", attn_implementation="eager")
 ### Memory Optimization
 
 **low_cpu_mem_usage**: Reduce CPU memory during loading
+
 ```python
 model = AutoModelForCausalLM.from_pretrained(
     "large-model-id",
@@ -151,6 +164,7 @@ model = AutoModelForCausalLM.from_pretrained(
 ```
 
 **load_in_8bit**: 8-bit quantization (requires bitsandbytes)
+
 ```python
 model = AutoModelForCausalLM.from_pretrained(
     "model-id",
@@ -160,6 +174,7 @@ model = AutoModelForCausalLM.from_pretrained(
 ```
 
 **load_in_4bit**: 4-bit quantization
+
 ```python
 from transformers import BitsAndBytesConfig
 
@@ -226,6 +241,7 @@ model.save_pretrained("./my_model")
 ```
 
 This creates:
+
 - `config.json`: Model configuration
 - `pytorch_model.bin` or `model.safetensors`: Model weights
 
@@ -335,6 +351,7 @@ export(
 ## Common Issues
 
 **CUDA out of memory:**
+
 ```python
 # Use smaller precision
 model = AutoModel.from_pretrained("model-id", torch_dtype=torch.float16)
@@ -347,12 +364,14 @@ model = AutoModel.from_pretrained("model-id", device_map="cpu")
 ```
 
 **Slow loading:**
+
 ```python
 # Enable low CPU memory mode
 model = AutoModel.from_pretrained("model-id", low_cpu_mem_usage=True)
 ```
 
 **Model not found:**
+
 ```python
 # Verify model ID on hub.co
 # Check authentication for private models

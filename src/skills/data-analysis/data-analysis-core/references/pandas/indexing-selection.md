@@ -2,7 +2,8 @@
 
 ## The Index
 
-The Index is a label array attached to rows (and columns). It enables fast label-based lookup and alignment during merge/concat.
+The Index is a label array attached to rows (and columns). It enables fast label-based lookup and alignment during
+merge/concat.
 
 ```python
 df.index           # row index

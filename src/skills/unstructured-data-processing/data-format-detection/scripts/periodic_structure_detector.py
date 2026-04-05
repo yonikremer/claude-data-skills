@@ -14,7 +14,7 @@ import numpy as np
 
 
 def find_bitwise_periodicity(
-    data: bytes, max_bit_period: Optional[int] = None
+        data: bytes, max_bit_period: Optional[int] = None
 ) -> List[Tuple[int, float]]:
     """
     Find the most likely bit-period by calculating average absolute difference between bit-frames.

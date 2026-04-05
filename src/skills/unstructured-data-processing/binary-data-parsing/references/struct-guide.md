@@ -2,7 +2,8 @@
 
 ## Alignment and Padding
 
-By default, `struct` with a native byte-order prefix (`@` or no prefix) adds padding to match C struct alignment rules. Use `<`, `>`, or `=` to get packed (no-padding) layout:
+By default, `struct` with a native byte-order prefix (`@` or no prefix) adds padding to match C struct alignment rules.
+Use `<`, `>`, or `=` to get packed (no-padding) layout:
 
 ```python
 import struct
@@ -65,28 +66,28 @@ ts, ch, val = struct.unpack_from('<IHf', buf, offset=0)
 
 ## Full Type Code Table
 
-| Code | Signed | Unsigned | Size | Notes |
-|------|--------|----------|------|-------|
-| `b` | ✓ | — | 1 | |
-| `B` | — | ✓ | 1 | |
-| `h` | ✓ | — | 2 | |
-| `H` | — | ✓ | 2 | |
-| `i` | ✓ | — | 4 | |
-| `I` | — | ✓ | 4 | |
-| `l` | ✓ | — | 4 | C long (platform-dependent without prefix) |
-| `L` | — | ✓ | 4 | |
-| `q` | ✓ | — | 8 | |
-| `Q` | — | ✓ | 8 | |
-| `e` | — | — | 2 | half-precision float (IEEE 754) |
-| `f` | — | — | 4 | single-precision float |
-| `d` | — | — | 8 | double-precision float |
-| `?` | — | — | 1 | bool |
-| `c` | — | — | 1 | bytes of length 1 |
-| `s` | — | — | n | `'ns'` → bytes of length n |
-| `p` | — | — | n | Pascal string (first byte = length) |
-| `x` | — | — | 1 | pad byte, not returned |
-| `n` / `N` | ✓/— | — | varies | `ssize_t` / `size_t`, native only |
-| `P` | — | — | varies | pointer, native only |
+| Code      | Signed | Unsigned | Size   | Notes                                      |
+|-----------|--------|----------|--------|--------------------------------------------|
+| `b`       | ✓      | —        | 1      |                                            |
+| `B`       | —      | ✓        | 1      |                                            |
+| `h`       | ✓      | —        | 2      |                                            |
+| `H`       | —      | ✓        | 2      |                                            |
+| `i`       | ✓      | —        | 4      |                                            |
+| `I`       | —      | ✓        | 4      |                                            |
+| `l`       | ✓      | —        | 4      | C long (platform-dependent without prefix) |
+| `L`       | —      | ✓        | 4      |                                            |
+| `q`       | ✓      | —        | 8      |                                            |
+| `Q`       | —      | ✓        | 8      |                                            |
+| `e`       | —      | —        | 2      | half-precision float (IEEE 754)            |
+| `f`       | —      | —        | 4      | single-precision float                     |
+| `d`       | —      | —        | 8      | double-precision float                     |
+| `?`       | —      | —        | 1      | bool                                       |
+| `c`       | —      | —        | 1      | bytes of length 1                          |
+| `s`       | —      | —        | n      | `'ns'` → bytes of length n                 |
+| `p`       | —      | —        | n      | Pascal string (first byte = length)        |
+| `x`       | —      | —        | 1      | pad byte, not returned                     |
+| `n` / `N` | ✓/—    | —        | varies | `ssize_t` / `size_t`, native only          |
+| `P`       | —      | —        | varies | pointer, native only                       |
 
 ## Common Pitfalls
 
@@ -112,4 +113,5 @@ if len(raw) < size:
     raise ValueError(f"Need {size} bytes, got {len(raw)}")
 ```
 
-**NaN / Inf in float fields**: Binary floats can hold NaN/Inf — check with `math.isnan()` / `math.isinf()` if the source may produce them.
+**NaN / Inf in float fields**: Binary floats can hold NaN/Inf — check with `math.isnan()` / `math.isinf()` if the source
+may produce them.

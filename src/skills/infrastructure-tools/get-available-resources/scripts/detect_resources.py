@@ -58,12 +58,12 @@ def get_memory_info() -> Dict[str, Any]:
     swap = psutil.swap_memory()
 
     return {
-        "total_gb": round(mem.total / (1024**3), 2),
-        "available_gb": round(mem.available / (1024**3), 2),
-        "used_gb": round(mem.used / (1024**3), 2),
+        "total_gb": round(mem.total / (1024 ** 3), 2),
+        "available_gb": round(mem.available / (1024 ** 3), 2),
+        "used_gb": round(mem.used / (1024 ** 3), 2),
         "percent_used": mem.percent,
-        "swap_total_gb": round(swap.total / (1024**3), 2),
-        "swap_available_gb": round((swap.total - swap.used) / (1024**3), 2),
+        "swap_total_gb": round(swap.total / (1024 ** 3), 2),
+        "swap_available_gb": round((swap.total - swap.used) / (1024 ** 3), 2),
     }
 
 
@@ -86,9 +86,9 @@ def get_disk_info(path: Optional[str] = None) -> Dict[str, Any]:
         disk = psutil.disk_usage(path)
         return {
             "path": path,
-            "total_gb": round(disk.total / (1024**3), 2),
-            "available_gb": round(disk.free / (1024**3), 2),
-            "used_gb": round(disk.used / (1024**3), 2),
+            "total_gb": round(disk.total / (1024 ** 3), 2),
+            "available_gb": round(disk.free / (1024 ** 3), 2),
+            "used_gb": round(disk.used / (1024 ** 3), 2),
             "percent_used": disk.percent,
         }
     except Exception as e:
@@ -207,7 +207,7 @@ def detect_apple_silicon_gpu() -> Optional[Dict[str, Any]]:
 
         # Check for Apple Silicon (M1, M2, M3, etc.)
         if "Apple" in cpu_brand and any(
-            chip in cpu_brand for chip in ["M1", "M2", "M3", "M4"]
+                chip in cpu_brand for chip in ["M1", "M2", "M3", "M4"]
         ):
             # Get GPU core count if possible
             gpu_info: Dict[str, Any] = {

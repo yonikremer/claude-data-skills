@@ -1,15 +1,18 @@
 # Project Status & Roadmap
 
 ## ✅ Completed
+
 - [x] **Core Workflow**: Brainstorming, TDD, Systematic Debugging, Plan Execution.
 - [x] **Data Analysis Pro**: NumPy, Pandas, Polars unification.
 - [x] **Visualization Pro**: Plotly, Dash, Seaborn integration.
 - [x] **Database Pro**: Postgres, SQLAlchemy, Elasticsearch, S3.
 - [x] **Document Processing Pro**: PDF, Word, Excel, PowerPoint.
-- [x] **AI-Ready Dictionary Agent**: Iterative extraction from PDF/PPTX with fuzzy-search lookup tools and `/define` command.
+- [x] **AI-Ready Dictionary Agent**: Iterative extraction from PDF/PPTX with fuzzy-search lookup tools and `/define`
+  command.
 - [x] **Legacy Migration Suite**: C#, MATLAB, Python 2 to 3.
 
 ## 🚀 Upcoming
+
 - [ ] **Confluence Integration**: Direct API-based extraction for the Dictionary Agent.
 - [ ] **Wiki Connector**: Support for MediaWiki/Internal Wiki pages.
 - [ ] **Automated Dashboard Generation**: One-click Dash app creation from `/analyze` reports.

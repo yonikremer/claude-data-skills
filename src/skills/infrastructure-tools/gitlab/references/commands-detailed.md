@@ -1,10 +1,12 @@
 # glab Commands - Detailed Reference
 
-This is a comprehensive reference for all glab commands. This file is loaded when detailed command information is needed.
+This is a comprehensive reference for all glab commands. This file is loaded when detailed command information is
+needed.
 
 ## Merge Requests (MR)
 
 ### Listing Merge Requests
+
 ```bash
 # List MRs assigned to you
 glab mr list --assignee=@me
@@ -22,6 +24,7 @@ glab mr list --state=all
 ```
 
 ### Creating Merge Requests
+
 ```bash
 # Create MR from current branch (interactive)
 glab mr create
@@ -52,6 +55,7 @@ glab mr create --remove-source-branch
 ```
 
 ### Viewing and Interacting with MRs
+
 ```bash
 # View MR details (opens in browser by default)
 glab mr view 123
@@ -108,6 +112,7 @@ glab mr unsubscribe 123
 ## Issues
 
 ### Listing Issues
+
 ```bash
 # List all issues
 glab issue list
@@ -135,6 +140,7 @@ glab issue list --assignee=username
 ```
 
 ### Creating and Managing Issues
+
 ```bash
 # Create issue interactively
 glab issue create
@@ -188,6 +194,7 @@ glab issue unsubscribe 456
 ## CI/CD Pipelines
 
 ### Viewing Pipelines
+
 ```bash
 # Watch pipeline in progress (interactive)
 glab pipeline ci view
@@ -220,6 +227,7 @@ glab ci delete <pipeline-id>
 ```
 
 ### Triggering and Managing Pipelines
+
 ```bash
 # Run/trigger pipeline
 glab ci run
@@ -247,6 +255,7 @@ glab ci cancel <pipeline-id>
 ```
 
 ### CI Configuration
+
 ```bash
 # Lint .gitlab-ci.yml file in current directory
 glab ci lint
@@ -267,6 +276,7 @@ glab ci artifact <job-id> -p path/to/download
 ## Repository Operations
 
 ### Cloning Repositories
+
 ```bash
 # Clone repository
 glab repo clone namespace/project
@@ -286,6 +296,7 @@ glab repo clone namespace/project --protocol=https
 ```
 
 ### Repository Information and Management
+
 ```bash
 # View repository details
 glab repo view
@@ -327,6 +338,7 @@ glab repo mirror source-repo target-repo
 ## API Access
 
 ### Making API Calls
+
 ```bash
 # GET request
 glab api projects/:id/merge_requests
@@ -487,6 +499,7 @@ glab variable import < variables.json
 ## Additional Commands
 
 ### Aliases
+
 ```bash
 # Create alias
 glab alias set co "mr checkout"
@@ -499,6 +512,7 @@ glab alias delete co
 ```
 
 ### SSH Keys
+
 ```bash
 # List SSH keys
 glab ssh-key list
@@ -514,6 +528,7 @@ glab ssh-key delete <key-id>
 ```
 
 ### Deploy Keys
+
 ```bash
 # List deploy keys
 glab deploy-key list
@@ -526,6 +541,7 @@ glab deploy-key delete <key-id>
 ```
 
 ### Schedules (Pipeline Schedules)
+
 ```bash
 # List pipeline schedules
 glab schedule list

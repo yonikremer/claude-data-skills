@@ -257,7 +257,7 @@ def analyze_file(filepath: Union[str, Path]) -> Dict[str, Any]:
 
 
 def analyze_general_scientific(
-    filepath: Union[str, Path], extension: str
+        filepath: Union[str, Path], extension: str
 ) -> Dict[str, Any]:
     """
     Analyze general scientific data formats.
@@ -401,7 +401,7 @@ def analyze_general_scientific(
 
 
 def analyze_bioinformatics(
-    filepath: Union[str, Path], extension: str
+        filepath: Union[str, Path], extension: str
 ) -> Dict[str, Any]:
     """
     Analyze bioinformatics/genomics formats.
@@ -499,7 +499,7 @@ def analyze_imaging(filepath: Union[str, Path], extension: str) -> Dict[str, Any
 
 
 def generate_markdown_report(
-    analysis: Dict[str, Any], output_path: Optional[Union[str, Path]] = None
+        analysis: Dict[str, Any], output_path: Optional[Union[str, Path]] = None
 ) -> str:
     """
     Generate a comprehensive markdown report from analysis results.
@@ -604,7 +604,7 @@ def generate_markdown_report(
 
 
 def update_data_dictionary(
-    analysis: Dict[str, Any], filepath: Union[str, Path]
+        analysis: Dict[str, Any], filepath: Union[str, Path]
 ) -> None:
     """
     Update the Data Discovery Log (Memory) with analysis results.

@@ -132,8 +132,8 @@ fig.write_image("heatmap.pdf")
 
 ## Tips for Publication Quality
 
-1.  **Fonts**: Always use `Arial` or `Helvetica` as requested by most journals.
-2.  **Size**: Set `width` and `height` in pixels (96 px = 1 inch). Nature single column is ~350px.
-3.  **Background**: Use `template="simple_white"` to remove gray backgrounds and gridlines.
-4.  **Lines**: Ensure `tickwidth` and axis `linewidth` are consistent (usually 1).
-5.  **Resolution**: Use `scale=3.125` when calling `write_image` for PNGs to get 300 DPI.
+1. **Fonts**: Always use `Arial` or `Helvetica` as requested by most journals.
+2. **Size**: Set `width` and `height` in pixels (96 px = 1 inch). Nature single column is ~350px.
+3. **Background**: Use `template="simple_white"` to remove gray backgrounds and gridlines.
+4. **Lines**: Ensure `tickwidth` and axis `linewidth` are consistent (usually 1).
+5. **Resolution**: Use `scale=3.125` when calling `write_image` for PNGs to get 300 DPI.

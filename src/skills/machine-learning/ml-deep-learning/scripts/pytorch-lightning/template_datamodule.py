@@ -84,12 +84,12 @@ class TemplateDataModule(L.LightningDataModule):
     """
 
     def __init__(
-        self,
-        data_dir: str = "./data",
-        batch_size: int = 32,
-        num_workers: int = 4,
-        train_val_split: float = 0.8,
-        pin_memory: bool = True,
+            self,
+            data_dir: str = "./data",
+            batch_size: int = 32,
+            num_workers: int = 4,
+            train_val_split: float = 0.8,
+            pin_memory: bool = True,
     ) -> None:
         super().__init__()
 

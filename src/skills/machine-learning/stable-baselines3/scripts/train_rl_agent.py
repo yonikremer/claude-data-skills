@@ -9,29 +9,30 @@ This template demonstrates best practices for:
 - Model saving and loading
 """
 
+import os
+from typing import Type
+
 from stable_baselines3 import PPO
 from stable_baselines3.common.base_class import BaseAlgorithm
-from stable_baselines3.common.env_util import make_vec_env
 from stable_baselines3.common.callbacks import (
     EvalCallback,
     CheckpointCallback,
     CallbackList,
 )
+from stable_baselines3.common.env_util import make_vec_env
 from stable_baselines3.common.vec_env import SubprocVecEnv
-import os
-from typing import Type
 
 
 def train_agent(
-    env_id: str = "CartPole-v1",
-    algorithm: Type[BaseAlgorithm] = PPO,
-    policy: str = "MlpPolicy",
-    n_envs: int = 4,
-    total_timesteps: int = 100000,
-    eval_freq: int = 10000,
-    save_freq: int = 10000,
-    log_dir: str = "./logs/",
-    save_path: str = "./models/",
+        env_id: str = "CartPole-v1",
+        algorithm: Type[BaseAlgorithm] = PPO,
+        policy: str = "MlpPolicy",
+        n_envs: int = 4,
+        total_timesteps: int = 100000,
+        eval_freq: int = 10000,
+        save_freq: int = 10000,
+        log_dir: str = "./logs/",
+        save_path: str = "./models/",
 ) -> BaseAlgorithm:
     """
     Train an RL agent with best practices.

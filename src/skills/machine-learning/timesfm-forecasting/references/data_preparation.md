@@ -149,13 +149,13 @@ inputs = [clean_series(df[col].values) for col in cols]
 
 ## Context Length Considerations
 
-| Context Length | Use Case | Notes |
-| -------------- | -------- | ----- |
-| 64–256 | Quick prototyping | Minimal context, fast |
-| 256–512 | Daily data, ~1 year | Good balance |
-| 512–1024 | Daily data, ~2-3 years | Standard production |
-| 1024–4096 | Hourly data, weekly patterns | More context = better |
-| 4096–16384 | High-frequency, long patterns | TimesFM 2.5 maximum |
+| Context Length | Use Case                      | Notes                 |
+|----------------|-------------------------------|-----------------------|
+| 64–256         | Quick prototyping             | Minimal context, fast |
+| 256–512        | Daily data, ~1 year           | Good balance          |
+| 512–1024       | Daily data, ~2-3 years        | Standard production   |
+| 1024–4096      | Hourly data, weekly patterns  | More context = better |
+| 4096–16384     | High-frequency, long patterns | TimesFM 2.5 maximum   |
 
 **Rule of thumb**: Provide at least 3–5 full cycles of the dominant pattern
 (e.g., for weekly seasonality with daily data, provide at least 21–35 days).
@@ -166,11 +166,11 @@ TimesFM 2.5 supports exogenous variables through the `forecast_with_covariates()
 
 ### Types of Covariates
 
-| Type | Description | Example |
-| ---- | ----------- | ------- |
-| **Dynamic numerical** | Time-varying numeric features | Temperature, price, promotion spend |
-| **Dynamic categorical** | Time-varying categorical features | Day of week, holiday flag |
-| **Static categorical** | Fixed per-series features | Store ID, region, product category |
+| Type                    | Description                       | Example                             |
+|-------------------------|-----------------------------------|-------------------------------------|
+| **Dynamic numerical**   | Time-varying numeric features     | Temperature, price, promotion spend |
+| **Dynamic categorical** | Time-varying categorical features | Day of week, holiday flag           |
+| **Static categorical**  | Fixed per-series features         | Store ID, region, product category  |
 
 ### Preparing Covariates
 
@@ -210,10 +210,10 @@ point, quantiles = model.forecast_with_covariates(
 
 ### XReg Modes
 
-| Mode | Description |
-| ---- | ----------- |
+| Mode               | Description                                                     |
+|--------------------|-----------------------------------------------------------------|
 | `"xreg + timesfm"` | Covariates processed first, then combined with TimesFM forecast |
-| `"timesfm + xreg"` | TimesFM forecast first, then adjusted by covariates |
+| `"timesfm + xreg"` | TimesFM forecast first, then adjusted by covariates             |
 
 ## Common Data Issues
 

@@ -26,10 +26,10 @@ class TemplateLightningModule(L.LightningModule):
     """
 
     def __init__(
-        self,
-        learning_rate: float = 0.001,
-        hidden_dim: int = 256,
-        dropout: float = 0.1,
+            self,
+            learning_rate: float = 0.001,
+            hidden_dim: int = 256,
+            dropout: float = 0.1,
     ) -> None:
         super().__init__()
 
@@ -134,7 +134,7 @@ class TemplateLightningModule(L.LightningModule):
         self.log("test/acc", acc, on_epoch=True)
 
     def predict_step(
-        self, batch: Any, batch_idx: int, dataloader_idx: int = 0
+            self, batch: Any, batch_idx: int, dataloader_idx: int = 0
     ) -> torch.Tensor:
         """
         Prediction step (called for each prediction batch).

@@ -2,19 +2,21 @@
 name: document-processing-pro
 description: Use for creating, reading, and manipulating Office documents (DOCX, XLSX, PPTX) and PDFs. High-fidelity extraction, professional formatting, and automated report generation. CRITICAL: For large files or image-heavy docs, run `get-available-resources` first.
 ---
+
 # Document Processing Pro (Consolidated)
 
 Unified guide for professional document manipulation across PDF and Microsoft Office formats.
 
 ## ⚠️ Mandatory Pre-flight: Resource Check
 
-Large documents (especially PDFs with high-res images or 100+ page Word docs) can consume significant RAM during parsing.
+Large documents (especially PDFs with high-res images or 100+ page Word docs) can consume significant RAM during
+parsing.
 
 1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
 2. **Strategy**:
-   - **Text-only**: Standard libraries (`python-docx`, `pypdf`) are fine.
-   - **Image-heavy/OCR**: Ensure 4GB+ RAM available before running `pytesseract` or `pdf2image`.
-   - **Massive XLSX**: Use `polars` or `openpyxl` with `read_only=True`.
+    - **Text-only**: Standard libraries (`python-docx`, `pypdf`) are fine.
+    - **Image-heavy/OCR**: Ensure 4GB+ RAM available before running `pytesseract` or `pdf2image`.
+    - **Massive XLSX**: Use `polars` or `openpyxl` with `read_only=True`.
 
 ---
 
@@ -23,6 +25,7 @@ Large documents (especially PDFs with high-res images or 100+ page Word docs) ca
 Use for reports, memos, and automated document generation.
 
 ### Core Idioms
+
 - **Creation**: Use `docx-js` (Node.js) for high-fidelity formatting. **Always set page size explicitly.**
 - **Editing**: Follow the 3-step XML workflow: **Unpack → Edit XML → Pack**.
 - **Tracked Changes**: Use `<w:ins>` and `<w:del>` tags in the XML.
@@ -45,6 +48,7 @@ const doc = new Document({
 Use for extraction, merging, and filling forms.
 
 ### Core Tools
+
 - **Extraction**: Use `pdfplumber` for tables and layout-aware text.
 - **Manipulation**: Use `pypdf` for merging, splitting, and rotating.
 - **Creation**: Use `reportlab` for generating PDFs from scratch.
@@ -71,6 +75,7 @@ writer.write("merged.pdf")
 Use for data entry, formatting, and complex workbooks.
 
 ### Core Tools
+
 - **Small/Medium**: Use `pandas` or `openpyxl`.
 - **High Performance**: Use `polars` for CSV/Parquet.
 - **Formatting**: Use `xlsxwriter` for charts and conditional formatting.
@@ -96,6 +101,7 @@ writer.close()
 Use for automated slide generation and template population.
 
 ### Core Tool: `python-pptx`
+
 - **Idiom**: Always work with `SlideLayouts` from your template.
 
 ```python
@@ -117,6 +123,7 @@ prs.save("presentation.pptx")
 4. **General**: Never catch `ImportError` silently. Let the agent see if a library is missing.
 
 ## References
+
 - `skills/unstructured-data-processing/document-processing-pro/scripts/docx/` — XML patterns and docx-js API.
 - `skills/unstructured-data-processing/document-processing-pro/references/pdf.md` — OCR and advanced manipulation.
 - `skills/unstructured-data-processing/document-processing-pro/references/xlsx/` — XlsxWriter and formatting.

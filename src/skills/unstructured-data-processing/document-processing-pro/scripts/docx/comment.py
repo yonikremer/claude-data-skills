@@ -281,12 +281,12 @@ def _ensure_comment_content_types(unpacked_dir: Path) -> None:
 
 
 def add_comment(
-    unpacked_dir: str,
-    comment_id: int,
-    text: str,
-    author: str = "Claude",
-    initials: str = "C",
-    parent_id: int | None = None,
+        unpacked_dir: str,
+        comment_id: int,
+        text: str,
+        author: str = "Claude",
+        initials: str = "C",
+        parent_id: int | None = None,
 ) -> tuple[str, str]:
     """Add a comment or reply to a DOCX document.
 

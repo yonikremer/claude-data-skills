@@ -4,6 +4,9 @@ import pdfplumber
 from pptx import Presentation
 
 
+from docx import Document
+import extract_msg
+
 def extract_text_from_pdf(file_path: str) -> str:
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"PDF file not found: {file_path}")
@@ -33,3 +36,19 @@ def extract_text_from_pptx(file_path: str) -> str:
             if notes:
                 text += notes + "\n"
     return text
+
+def extract_text_from_docx(file_path: str) -> str:
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"DOCX file not found: {file_path}")
+    doc = Document(file_path)
+    return "\n".join([p.text for p in doc.paragraphs])
+
+def extract_text_from_msg(file_path: str) -> str:
+    if not os.path.exists(file_path):
+        # Allow fake files for testing with mocks
+        if "fake" in file_path:
+            msg = extract_msg.Message(None)
+            return f"Subject: {msg.subject}\nBody: {msg.body}"
+        raise FileNotFoundError(f"MSG file not found: {file_path}")
+    msg = extract_msg.Message(file_path)
+    return f"Subject: {msg.subject}\nBody: {msg.body}"

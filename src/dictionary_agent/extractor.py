@@ -79,12 +79,38 @@ def extract_text_from_txt(file_path: str) -> str:
         return raw_data.decode('utf-8', errors='replace')
 
 from .hebrew_utils import normalize_rtl_text
+from .ocr_engine import extract_text_via_ocr
+
+def is_extraction_garbled(text: str) -> bool:
+    """
+    Detects if the extracted text is likely gibberish (common with weird PDF fonts).
+    Checks for high density of replacement characters or lack of meaningful words.
+    """
+    if not text:
+        return True
+        
+    # Check for replacement characters () or high non-printable density
+    garbage_chars = text.count("\ufffd") + text.count("?")
+    if len(text) > 100 and (garbage_chars / len(text)) > 0.1:
+        return True
+        
+    # Check for extremely low word count vs character count (suggests mapping issues)
+    words = text.split()
+    if len(text) > 200 and len(words) < (len(text) / 20):
+        return True
+        
+    return False
 
 def extract_all(file_path: str) -> str:
     ext = os.path.splitext(file_path)[1].lower()
     raw_text = ""
+    
     if ext == ".pdf":
         raw_text = extract_text_from_pdf(file_path)
+        # Self-Healing Check: If PDF extraction is garbled, try OCR
+        if is_extraction_garbled(raw_text):
+            print(f"Detected garbled text in {file_path}. Triggering OCR fallback...")
+            raw_text = extract_text_via_ocr(file_path)
     elif ext == ".pptx":
         raw_text = extract_text_from_pptx(file_path)
     elif ext == ".docx" or ext == ".doc":

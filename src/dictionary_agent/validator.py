@@ -1,29 +1,41 @@
+from typing import Dict, Any
+from .llm_client import get_llm_client
+
+VALIDATOR_SYSTEM_PROMPT = """
+You are a Cynical Peer Reviewer. Your goal is to find reasons why the proposed extraction is WRONG or UNSUPPORTED by the raw context.
+
+### THE ZERO-TRUST PROTOCOL:
+1. LOGICAL ENTAILMENT: Does the Raw Context logically imply the Proposed Definition/Relationship? 
+2. NO EXTERNAL KNOWLEDGE: If the extraction includes facts NOT found in the Raw Context, it is a "Contextual Hallucination."
+3. ANCHOR CHECK: Verify the provided anchor quote actually exists in the raw text and supports the claim.
+
+### EVALUATION CRITERIA:
+- PASS: The extraction is 100% supported.
+- CONFLICT: The extraction contradicts the context.
+- HALLUCINATION: The extraction adds details not in the context.
+
+### OUTPUT FORMAT (JSON ONLY):
+{
+  "is_valid": boolean,
+  "status": "PASS" | "CONFLICT" | "HALLUCINATION",
+  "reasoning": "Explanation of why it passed or failed."
+}
+"""
+
+def validate_with_llm(raw_text: str, extraction: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Validates an extraction using a local LLM.
+    """
+    client = get_llm_client()
+    messages = [
+        {"role": "system", "content": VALIDATOR_SYSTEM_PROMPT},
+        {"role": "user", "content": f"Raw Context:\n{raw_text}\n\nProposed Extraction:\n{extraction}"}
+    ]
+    
+    return client.chat(messages, json_mode=True)
+
+# Backward compatibility wrapper
 def validate_definition(raw_text: str, definition: str) -> bool:
-    """
-    Validates that a definition is logically consistent with the source text.
-    In a production system, this would use a low-temperature LLM call.
-    """
-    # Simple rule-based mock: check if major keywords in definition 
-    # (longer than 4 chars) are present in the raw_text.
-    
-    # Ignore common words
-    ignore = {"project", "internal", "named", "with", "this", "that"}
-    
-    def_words = set(definition.lower().replace(".", "").split())
-    raw_words = set(raw_text.lower().replace(".", "").split())
-    
-    # Significant words in definition
-    sig_def_words = {w for w in def_words if len(w) > 4 and w not in ignore}
-    
-    if not sig_def_words:
-        return True # Can't disprove if no significant words
-        
-    # Check if any significant word in definition is NOT in raw_text
-    # (Mocking 'hallucination' if a new entity like 'coffee' appears)
-    for word in sig_def_words:
-        if word not in raw_words:
-            # Check for partial matches (e.g. 'firewall' in 'firewalls')
-            if not any(word in rw for rw in raw_words):
-                return False
-                
-    return True
+    # Legacy interface only returned bool
+    result = validate_with_llm(raw_text, {"definition": definition})
+    return result.get("is_valid", False)

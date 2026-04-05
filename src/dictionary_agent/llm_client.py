@@ -45,22 +45,46 @@ class LocalLLMClient:
         """
         Provides a fallback mock response for testing.
         """
-        last_msg = messages[-1]["content"].lower()
+        system_msg = ""
+        for msg in messages:
+            if msg["role"] == "system":
+                system_msg = msg["content"].lower()
         
         # Mock Gate 2: Extraction
-        if "extract" in last_msg:
-            return [
-                {
-                    "term": "Prism",
-                    "definition": "A new security project.",
-                    "anchor": "Project Prism uses port 8080.",
-                    "is_new": True,
-                    "entity_type": "PROJECT"
-                }
-            ]
+        if "librarian" in system_msg:
+            last_user_msg = messages[-1]["content"].lower()
+            if "prism" in last_user_msg:
+                return [
+                    {
+                        "term": "Prism",
+                        "definition": "A new security project.",
+                        "anchor": "The project Prism uses port 8080 for secure communication.",
+                        "is_new": True,
+                        "entity_type": "PROJECT"
+                    }
+                ]
+            if "sql" in last_user_msg:
+                return [
+                    {
+                        "term": "SQL",
+                        "definition": "A domain-specific SQL implementation.",
+                        "anchor": "Project SQL is a new database system.",
+                        "is_new": True,
+                        "entity_type": "TECH_STACK"
+                    }
+                ]
+            return []
         
         # Mock Gate 3: Validation
-        if "validate" in last_msg:
+        if "reviewer" in system_msg:
+            last_user_msg = messages[-1]["content"].lower()
+            # Simulate a failure for 'coffee' to test negative cases
+            if "coffee" in last_user_msg:
+                return {
+                    "is_valid": False,
+                    "status": "HALLUCINATION",
+                    "reasoning": "Not supported by context."
+                }
             return {
                 "is_valid": True,
                 "status": "PASS",

@@ -1,33 +1,44 @@
 from typing import List, Dict
-import re
+from .llm_client import get_llm_client
 
+EXTRACTOR_SYSTEM_PROMPT = """
+You are a Senior Technical Librarian. Your task is to extract "Golden Terms" and "Semantic Triplets" from internal documentation. 
+
+### THE RULES:
+1. IDENTIFY: Unique project names (e.g., "Prism"), internal acronyms (e.g., "N-RT-RIC"), and specialized technical terms.
+2. RELATIONSHIPS: Also identify triplets in format [Subject] --[Relationship]--> [Object].
+   - Allowed Relationships: SUB_PROJECT_OF, DEPENDS_ON, USES, MANAGED_BY, REPLACES.
+3. REJECT: Common industry terms (e.g., "SQL", "Docker", "API"). If a student of CS would know it, DROP IT.
+4. ANCHOR: For every term/triplet, you MUST provide a "Source Anchor"—a verbatim, 100% accurate quote from the text.
+5. NOISE: Ignore meeting headers and copyright boilerplate.
+
+### OUTPUT FORMAT (JSON LIST ONLY):
+[
+  {
+    "term": "Term Name",
+    "definition": "Concise definition.",
+    "anchor": "Verbatim quote.",
+    "entity_type": "PROJECT|COMPONENT|TECH_STACK",
+    "relationships": [
+       {"target": "Other Term", "type": "SUB_PROJECT_OF"}
+    ]
+  }
+]
+"""
+
+def extract_with_llm(text: str) -> List[Dict]:
+    """
+    Extracts terms and relationships using a local LLM.
+    """
+    client = get_llm_client()
+    messages = [
+        {"role": "system", "content": EXTRACTOR_SYSTEM_PROMPT},
+        {"role": "user", "content": f"Extract terms and relationships from the following text:\n\n{text}"}
+    ]
+    
+    response = client.chat(messages, json_mode=True)
+    return response
+
+# Keeping legacy name for backward compatibility in tests
 def extract_with_anchors(text: str) -> List[Dict]:
-    """
-    Extracts technical terms from text and provides a direct source anchor for each.
-    In a production system, this would use an LLM with a prompt that mandates anchors.
-    """
-    # Rule-based discovery for testing/mocking
-    # Looks for 'project <Name>' as a pattern
-    results = []
-    
-    # Simple regex to find "project [CapitalizedWord]"
-    project_matches = re.finditer(r"project\s+([A-Z][a-zA-Z0-9_-]*)", text, re.IGNORECASE)
-    
-    for match in project_matches:
-        term = match.group(1)
-        start_idx = match.start()
-        
-        # Get surrounding context as an 'anchor' (approx 100 chars around)
-        window = 100
-        anchor_start = max(0, start_idx - window)
-        anchor_end = min(len(text), start_idx + window)
-        anchor = text[anchor_start:anchor_end].strip()
-        
-        results.append({
-            "term": term,
-            "definition": f"A project named {term}.",
-            "anchor": anchor,
-            "is_new": True
-        })
-        
-    return results
+    return extract_with_llm(text)

@@ -5,7 +5,7 @@ from unittest.mock import MagicMock, patch
 
 def test_extract_docx():
     # sample.docx was created in previous step in worktree
-    path = ".worktrees/feat/selective-knowledge-injection/tests/data/sample.docx"
+    path = ".worktrees/feat/multi-format-graph-rag/tests/data/sample.docx"
     if not os.path.exists(path):
         # Fallback if running inside worktree already
         path = "tests/data/sample.docx"

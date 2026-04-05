@@ -3,5 +3,4 @@ recursive-include src/claude_data_skills/commands *.toml
 include LICENSE
 include README.md
 include SKILLS.md
-include requirements.txt
 include pyproject.toml

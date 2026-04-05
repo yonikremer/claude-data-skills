@@ -57,27 +57,49 @@ def extract_text_from_one(file_path: str) -> str:
     # Based on its source, it's mostly for dumping embedded files.
     return f"[OneNote extraction for {file_path} - text extraction limited in this version]"
 
+import chardet
+
 def extract_text_from_txt(file_path: str) -> str:
-    with open(file_path, "r", encoding="utf-8") as f:
-        return f.read()
+    with open(file_path, "rb") as f:
+        raw_data = f.read()
+        
+    # Try common encodings first
+    for enc in ['utf-8', 'windows-1255', 'iso-8859-8']:
+        try:
+            return raw_data.decode(enc)
+        except UnicodeDecodeError:
+            continue
+            
+    # Fallback to chardet
+    detected = chardet.detect(raw_data)
+    encoding = detected['encoding'] or 'utf-8'
+    try:
+        return raw_data.decode(encoding)
+    except UnicodeDecodeError:
+        return raw_data.decode('utf-8', errors='replace')
+
+from .hebrew_utils import normalize_rtl_text
 
 def extract_all(file_path: str) -> str:
     ext = os.path.splitext(file_path)[1].lower()
+    raw_text = ""
     if ext == ".pdf":
-        return extract_text_from_pdf(file_path)
+        raw_text = extract_text_from_pdf(file_path)
     elif ext == ".pptx":
-        return extract_text_from_pptx(file_path)
+        raw_text = extract_text_from_pptx(file_path)
     elif ext == ".docx" or ext == ".doc":
-        return extract_text_from_docx(file_path)
+        raw_text = extract_text_from_docx(file_path)
     elif ext == ".msg":
-        return extract_text_from_msg(file_path)
+        raw_text = extract_text_from_msg(file_path)
     elif ext == ".one":
-        return extract_text_from_one(file_path)
+        raw_text = extract_text_from_one(file_path)
     elif ext == ".txt" or ext == ".log" or ext == ".md":
-        return extract_text_from_txt(file_path)
+        raw_text = extract_text_from_txt(file_path)
     else:
         # Fallback
         try:
-            return extract_text_from_txt(file_path)
+            raw_text = extract_text_from_txt(file_path)
         except Exception:
             return f"[Error: Unsupported format {ext}]"
+            
+    return normalize_rtl_text(raw_text)

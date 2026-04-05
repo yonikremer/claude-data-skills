@@ -3,8 +3,9 @@ from typing import List, Dict, Literal, Optional
 from pydantic import BaseModel, Field
 
 ENTITY_TYPES = Literal["PROJECT", "COMPONENT", "TECH_STACK", "PERSON", "ORG"]
-RELATION_TYPES = Literal["SUB_PROJECT_OF", "DEPENDS_ON", "USES", "MANAGED_BY", "REPLACES"]
-STATUS_TYPES = Literal["ACTIVE", "LEGACY", "DORMANT", "PROPOSED"]
+RELATION_TYPES = Literal["SUB_PROJECT_OF", "DEPENDS_ON", "USES", "MANAGED_BY", "REPLACES", "ALIAS_OF"]
+STATUS_TYPES = Literal["ACTIVE", "LEGACY", "DORMANT", "PROPOSED", "PENDING_DEFINITION"]
+AUTHORITY_LEVELS = Literal["SEED", "DISCOVERED"]
 
 class UsageExample(BaseModel):
     context: str
@@ -20,7 +21,9 @@ class DictionaryEntry(BaseModel):
     related_terms: List[str] = []
     is_golden: bool = False
     status: STATUS_TYPES = "ACTIVE"
+    authority_level: AUTHORITY_LEVELS = "DISCOVERED"
     last_seen: str = Field(default_factory=lambda: datetime.now().isoformat())
+    document_count: int = 0
 
 class GraphTriplet(BaseModel):
     subject: str

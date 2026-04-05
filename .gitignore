@@ -24,3 +24,5 @@ scan_skills.py
 *.egg-info/
 dist/
 build/
+
+.worktrees/

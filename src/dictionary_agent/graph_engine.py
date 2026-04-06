@@ -66,7 +66,16 @@ class GraphKnowledgeEngine:
             prompt = f"Write a high-level summary report for this project community:\n\nNodes:\n" + "\n".join(context) + "\n\nRelationships:\n" + "\n".join(rels)
             
             messages = [
-                {"role": "system", "content": "You are a Strategic Architect. Summarize the following project cluster into a coherent executive report."},
+                {"role": "system", "content": """You are a Strategic Architect specializing in Complex Knowledge Mapping. 
+Your goal is to summarize a "Project Community" (a cluster of related technical terms and relationships) into a high-level executive report.
+
+Identify:
+1. THE CORE MISSION: What is the primary purpose of this project cluster?
+2. CRITICAL DEPENDENCIES: Key technical or structural links.
+3. SEMANTIC HUB: The most central term(s) in the community.
+4. GAPS: Any logical inconsistencies or missing definitions.
+
+TONE: Objective, concise, and architectural."""},
                 {"role": "user", "content": prompt}
             ]
             

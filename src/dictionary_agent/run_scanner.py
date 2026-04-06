@@ -1,70 +1,62 @@
 import argparse
 import os
-
+import json
 from src.dictionary_agent.agent import DictionaryAgent
-from src.dictionary_agent.ai_discovery import get_extraction_prompt
+from src.dictionary_agent.storage import save_dictionary
 
-
-def scan_network_drive(drive_path: str, dictionary_path: str = "dictionary.json"):
+def run_local_agent(scan_path: str, dictionary_path: str = "GOLDEN_TERMS.json", 
+                    seed_path: str = None, whitelist_path: str = None):
     """
-    Scans a directory for PDF and PPTX files and processes them using the DictionaryAgent.
+    Runs the full Selective Knowledge Pipeline on a local directory.
     """
-    if not os.path.exists(drive_path):
-        print(f"Error: Path '{drive_path}' does not exist.")
+    if not os.path.exists(scan_path):
+        print(f"Error: Scan path '{scan_path}' does not exist.")
         return
 
-    agent = DictionaryAgent(dictionary_path)
+    # Load whitelist if provided
+    whitelist = []
+    if whitelist_path and os.path.exists(whitelist_path):
+        with open(whitelist_path, "r", encoding="utf-8") as f:
+            whitelist = [line.strip() for line in f if line.strip()]
 
-    files_to_process = []
-    for root, _, files in os.walk(drive_path):
-        for file in files:
-            if file.lower().endswith((".pdf", ".pptx")):
-                files_to_process.append(os.path.join(root, file))
+    # Initialize Agent
+    agent = DictionaryAgent(
+        dictionary_path=dictionary_path,
+        whitelist=whitelist,
+        seed_paths=[seed_path] if seed_path else []
+    )
 
-    if not files_to_process:
-        print(f"No PDF or PPTX files found in '{drive_path}'.")
-        return
+    print(f"--- Starting Dictionary Agent ---")
+    print(f"Target: {scan_path}")
+    print(f"Dictionary: {dictionary_path}")
+    if seed_path:
+        print(f"Seeds: {seed_path}")
 
-    print(f"Found {len(files_to_process)} files. Starting extraction...")
+    # Process
+    added_terms = agent.process_directory(scan_path)
 
-    for file_path in files_to_process:
-        print(f"\nProcessing: {os.path.basename(file_path)}")
-        try:
-            # Step 1: Extract Text
-            raw_text = agent.scan_file(file_path)
+    print(f"\n--- Processing Complete ---")
+    print(f"New Terms Added: {len(added_terms)}")
+    if added_terms:
+        print(f"Terms: {', '.join(added_terms[:10])}{'...' if len(added_terms) > 10 else ''}")
 
-            if not raw_text or len(raw_text.strip()) < 10:
-                print(f"Skipping {file_path}: No readable text found.")
-                continue
-
-            # Step 2: Prepare AI Prompt
-            # In a real run, the AI (Gemini) would receive this prompt and return a JSON list of terms.
-            existing_terms = list(agent.dictionary.entries.keys())
-            prompt = get_extraction_prompt(raw_text, existing_terms)
-
-            print("--- EXTRACTION PROMPT GENERATED ---")
-            print("To complete the extraction, provide the text below to the AI:")
-            print(f"(File: {os.path.basename(file_path)})")
-
-            # Note: In an automated agentic flow, we would call the LLM API here.
-            # Since this is a framework for the user, we output the prompt for the AI to handle.
-            # If the user is running this IN this session, I (the AI) will handle the next step.
-
-            # For now, we'll mark this as 'Ready for AI Discovery'.
-            print("Status: Waiting for AI Discovery pass.")
-
-        except Exception as e:
-            print(f"Failed to process {file_path}: {str(e)}")
-
+    # Final summary of dictionary
+    print(f"Total Active Terms: {len([e for e in agent.dictionary.entries.values() if e.status == 'ACTIVE'])}")
+    print(f"Total Pending Terms: {len([e for e in agent.dictionary.entries.values() if e.status == 'PENDING_DEFINITION'])}")
+    
+    # Save one last time to be sure
+    save_dictionary(agent.dictionary, dictionary_path)
+    print(f"Dictionary saved to {dictionary_path}")
 
 def main():
-    parser = argparse.ArgumentParser(description="Scan a network drive for technical terms.")
-    parser.add_argument("path", help="Path to the network drive or local folder to scan.")
-    parser.add_argument("--dict", default="dictionary.json", help="Path to the dictionary JSON file.")
+    parser = argparse.ArgumentParser(description="Run the Selective Knowledge Dictionary Agent locally.")
+    parser.add_argument("path", help="Path to the directory to scan.")
+    parser.add_argument("--dict", default="GOLDEN_TERMS.json", help="Output path for the dictionary JSON.")
+    parser.add_argument("--seed", help="Optional path to 'Seed' documents (high-authority).")
+    parser.add_argument("--whitelist", help="Optional path to a whitelist of terms to always include.")
 
     args = parser.parse_args()
-    scan_network_drive(args.path, args.dict)
-
+    run_local_agent(args.path, args.dict, args.seed, args.whitelist)
 
 if __name__ == "__main__":
     main()

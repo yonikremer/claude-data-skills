@@ -7,9 +7,10 @@ import sys
 SKILL_DEPENDENCIES = {
     "machine-learning": ["torch", "transformers"],
     "visualization": ["matplotlib", "plotly"],
+    "visualization/visualization-pro": ["matplotlib", "plotly"],
     "data-analysis/geopandas": ["geopandas"],
     "data-sources/database-pro": ["sqlalchemy"],
-    "unstructured-data-processing": ["pdfplumber", "docx", "pptx", "extract_msg"],
+    "unstructured-data-processing": ["easyocr", "pdf2image", "pyOneNote", "pdfplumber", "pptx", "docx", "extract_msg"],
 }
 
 

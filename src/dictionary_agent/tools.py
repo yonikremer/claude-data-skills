@@ -62,7 +62,7 @@ def format_entry(term: str, dictionary, graph_engine) -> str:
 def main():
     import sys
     if len(sys.argv) < 2:
-        print("Usage: python -m src.dictionary_agent.tools lookup <term>")
+        print("Usage: python -m dictionary_agent.tools lookup <term>")
         sys.exit(1)
 
     # Allow 'lookup' subcommand or just the term

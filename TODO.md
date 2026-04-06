@@ -10,6 +10,11 @@
 - [x] **AI-Ready Dictionary Agent**: Iterative extraction from PDF/PPTX with fuzzy-search lookup tools and `/define`
   command.
 - [x] **Legacy Migration Suite**: C#, MATLAB, Python 2 to 3.
+- [x] **Modular Dependency Management**
+    - [x] Task 1: Refactor `pyproject.toml` Dependencies
+    - [x] Task 2: Remove Lazy Imports in Dictionary Agent
+    - [x] Task 3: Dependency-Aware Skill Setup
+    - [x] Task 4: Final Verification
 
 ## 🚀 Upcoming
 

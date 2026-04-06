@@ -150,7 +150,7 @@ git commit -m "feat: modularize dependencies in pyproject.toml"
 - Modify: `src/dictionary_agent/extractor.py`
 - Modify: `src/dictionary_agent/ocr_engine.py`
 
-- [ ] **Step 1: Standardize imports in `extractor.py`**
+- [x] **Step 1: Standardize imports in `extractor.py`**
 
 Replace:
 ```python
@@ -164,7 +164,7 @@ With:
 from pyOneNote.Main import OneDocment
 ```
 
-- [ ] **Step 2: Standardize imports in `ocr_engine.py`**
+- [x] **Step 2: Standardize imports in `ocr_engine.py`**
 
 Replace the top-level lazy variables and functions with:
 ```python
@@ -174,7 +174,7 @@ import numpy as np
 ```
 Update `extract_text_via_ocr` to use `easyocr.Reader(['he', 'en'])` and `pdf2image` directly.
 
-- [ ] **Step 3: Commit the changes**
+- [x] **Step 3: Commit the changes**
 
 ```bash
 git add src/dictionary_agent/extractor.py src/dictionary_agent/ocr_engine.py

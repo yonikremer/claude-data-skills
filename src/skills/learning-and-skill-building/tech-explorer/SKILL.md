@@ -17,6 +17,7 @@ the new technology, including hard-won empirical insights.
 
 - **Search**: Use `google_web_search` and `web_fetch` to find official documentation, GitHub repos, and recent
   tutorials.
+- **Domain Exploration**: Research the fundamental concepts of the domain the technology operates in (e.g., Signal Processing, Linear Algebra, Networking). Understand the core terminology, mathematical foundations, and standard problems the domain addresses.
 - **Synthesize**: Create a `references/tech-specs.md` with the base URL, authentication methods, core concepts, and key
   API endpoints/classes.
 - **Scope Definition**: Identify the full extent of the technology (e.g., all major modules, API endpoints, or database
@@ -40,7 +41,8 @@ You MUST NOT document a technology until you have successfully used it and explo
 
 - **Comprehensive Mapping**: Do not stop at "Hello World". You must systematically test all major functional areas for
   an API/library and all tables for a database.
-- **Understanding**: What problems does the technology solve? What are the key use cases? What are its limitations?
+- **Understanding**: What problems does the technology solve? What are the key domain use cases? What are its limitations?
+- **Domain Fundamentals**: For each major module or functional area, document the "Why" and "What" of the underlying domain concepts (e.g., "What is a Butterworth filter?", "What is the physical meaning of a Spectrogram?").
 - **Scaffolding**: Create temporary test scripts (e.g., `test_api_explorer.py`) to exercise the breadth of the
   technology.
 - **Stress Testing**: Try edge cases (e.g., large payloads, invalid inputs, network timeouts, resource limits).
@@ -52,6 +54,7 @@ You MUST NOT document a technology until you have successfully used it and explo
 Once mastery is achieved, translate the knowledge into a permanent skill.
 
 - **Core Guidelines**: Strictly follow the standards in `writing-skills` for the TDD-based documentation process.
+- **Section: Domain Fundamentals**: Every "Gold Standard" skill MUST include a section explaining the basics of the domain (e.g., "What is a filter?", "What is FFT?") and how they relate to the tool's usage.
 - **Specialized Creators**: Delegate to these if appropriate:
     - Use `api-skill-creator` for web/system APIs.
     - Use `database-skill-creator` for SQL/NoSQL databases.

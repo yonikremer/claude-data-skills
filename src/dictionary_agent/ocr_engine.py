@@ -5,7 +5,7 @@ import pdf2image
 import numpy as np
 
 # Initialize OCR reader once at module level
-_reader = easyocr.Reader(['he', 'en'])
+_reader = easyocr.Reader(['en'])
 
 def extract_text_via_ocr(file_path: str) -> str:
     """

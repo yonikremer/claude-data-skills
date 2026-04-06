@@ -144,6 +144,8 @@ setup-data-skills = "claude_data_skills.cli.setup_skills:main"
 dictionary-scan = "dictionary_agent.run_scanner:main"
 dictionary-lookup = "dictionary_agent.tools:main"
 dictionary-mcp = "dictionary_agent.mcp_server:mcp.run"
+dictionary-visualize = "dictionary_agent.visualize:main"
+dictionary-whois = "dictionary_agent.whois:main"
 
 [tool.setuptools]
 package-dir = { "" = "src" }

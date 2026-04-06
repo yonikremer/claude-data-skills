@@ -24,8 +24,28 @@ class GraphKnowledgeEngine:
         self.dictionary.relationships.append(triplet)
 
     def get_neighbors(self, term: str) -> List[GraphTriplet]:
-        return [r for r in self.dictionary.relationships 
-                if r.subject == term or r.object == term]
+        """
+        Returns all relationships for a term, ensuring they are oriented from the term's perspective.
+        """
+        from .models import RELATION_INVERSES
+        results = []
+        for r in self.dictionary.relationships:
+            if r.subject == term:
+                results.append(r)
+            elif r.object == term:
+                # Create an inverse triplet for display/reasoning
+                inverse_rel = RELATION_INVERSES.get(r.relationship, r.relationship)
+                results.append(GraphTriplet(
+                    subject=r.object,
+                    relationship=inverse_rel,
+                    object=r.subject,
+                    anchor=r.anchor,
+                    source_file=r.source_file,
+                    weight=r.weight,
+                    date_added=r.date_added,
+                    status=r.status
+                ))
+        return results
 
     def build_nx_graph(self, prune_threshold: float = 0.0) -> nx.Graph:
         """
@@ -120,3 +140,52 @@ TONE: Objective, concise, and architectural."""},
                 break
                 
         return "\n".join(lines)
+
+    def visualize_graph(self, output_path: str = "graph.html"):
+        """
+        Generates an interactive HTML visualization of the knowledge graph.
+        """
+        from pyvis.network import Network
+        import os
+
+        # Initialize network
+        net = Network(height="750px", width="100%", bgcolor="#222222", font_color="white", directed=True, notebook=False)
+        
+        # Physics configuration for better layout
+        net.force_atlas_2based()
+        
+        # Map entity types to colors
+        type_colors = {
+            "PROJECT": "#ff4b4b",   # Red
+            "COMPONENT": "#4b4bff", # Blue
+            "TECH_STACK": "#4bff4b",# Green
+            "PERSON": "#ffff4b",    # Yellow
+            "ORG": "#ff4bff"        # Purple
+        }
+
+        # Add nodes
+        for term, entry in self.dictionary.entries.items():
+            color = type_colors.get(entry.entity_type, "#97c2fc") # Default blue-ish
+            
+            # Node size based on document count (min 10, max 50)
+            size = min(max(10, entry.document_count * 5), 50)
+            
+            title = f"<b>{term}</b><br>{entry.overview}<br>Docs: {entry.document_count}"
+            net.add_node(term, label=term, title=title, color=color, size=size)
+
+        # Add edges from relationships
+        for rel in self.dictionary.relationships:
+            # Skip if subject or object not in nodes (shouldn't happen with valid data)
+            if rel.subject not in self.dictionary.entries:
+                net.add_node(rel.subject, label=rel.subject, color="#999999")
+            if rel.object not in self.dictionary.entries:
+                net.add_node(rel.object, label=rel.object, color="#999999")
+                
+            # Edge width based on weight
+            width = rel.weight * 5
+            
+            net.add_edge(rel.subject, rel.object, label=rel.relationship, width=width, title=rel.anchor)
+
+        # Save the graph
+        net.save_graph(output_path)
+        print(f"Graph visualization saved to: {os.path.abspath(output_path)}")

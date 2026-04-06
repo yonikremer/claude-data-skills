@@ -1,18 +1,23 @@
 from typing import List, Dict, Any, Optional
 from datetime import datetime
 from .llm_client import get_llm_client
-from .models import Dictionary, DictionaryEntry, UsageExample, GraphTriplet
+from .models import Dictionary, DictionaryEntry, UsageExample, GraphTriplet, RELATION_TYPES
 
-EXTRACTOR_SYSTEM_PROMPT = """
+def get_extractor_system_prompt():
+    # Dynamically fetch allowed relationships from the Literal type
+    allowed_rels = ", ".join(RELATION_TYPES.__args__)
+    
+    # Use double-braces for the JSON template section to escape them in f-string
+    return f"""
 You are a Senior Technical Librarian. Your task is to extract "Golden Terms" and "Semantic Triplets" from internal documentation. 
 
 ### THE RULES:
 1. IDENTIFY: Unique project names, internal acronyms, and specialized technical terms.
 2. RELATIONSHIPS: Also identify triplets in format [Subject] --[Relationship]--> [Object].
-   - Allowed Relationships: SUB_PROJECT_OF, DEPENDS_ON, USES, MANAGED_BY, REPLACES, ALIAS_OF.
+   - Allowed Relationships: {allowed_rels}.
 3. STRUCTURE: For each term, provide:
    - OVERVIEW: A concise, one-sentence "executive summary" for non-technical readers.
-   - DEEP DIVE: All technical details, formulas ($Base * Rate$), threshold limits, and implementation specifics.
+   - DEEP DIVE: All technical details, formulas ($$Base * Rate$$), threshold limits, and implementation specifics.
 4. CONTRASTIVE FILTERING (Pitfall 5 Fix): 
    - REJECT common industry terms (e.g., "SQL", "Docker", "API") IF they refer to the generic tool.
    - ACCEPT common terms ONLY if they have a specific internal project meaning (e.g., "The API" referring to a specific internal service).
@@ -22,16 +27,16 @@ You are a Senior Technical Librarian. Your task is to extract "Golden Terms" and
 
 ### OUTPUT FORMAT (JSON LIST ONLY):
 [
-  {
+  {{
     "term": "Term Name",
     "overview": "One-sentence executive summary.",
     "deep_dive": "Detailed technical explanation.",
     "anchor": "Verbatim quote.",
     "entity_type": "PROJECT|COMPONENT|TECH_STACK",
     "relationships": [
-       {"target": "Other Term", "type": "SUB_PROJECT_OF"}
+       {{"target": "Other Term", "type": "SUB_PROJECT_OF"}}
     ]
-  }
+  }}
 ]
 """
 
@@ -42,7 +47,7 @@ def extract_with_llm(text: str, context_hints: Optional[str] = None) -> List[Dic
     """
     client = get_llm_client()
     
-    system_prompt = EXTRACTOR_SYSTEM_PROMPT
+    system_prompt = get_extractor_system_prompt()
     if context_hints:
         system_prompt += f"\n\n### CONTEXT HINTS (Priority Extraction):\n{context_hints}"
 

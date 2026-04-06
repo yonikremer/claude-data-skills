@@ -138,11 +138,28 @@ Provide a single JSON response with:
                 return False
         return False
 
+    def reconcile_supersedes(self, subject: str, target: str):
+        """
+        Gate 4 Extension: If a new term SUPERSEDES an old one, update statuses.
+        """
+        if target in self.dictionary.entries:
+            old_entry = self.dictionary.entries[target]
+            if old_entry.status != "LEGACY":
+                print(f"Temporal Reconciliation: {subject} SUPERSEDES {target}. Marking {target} as LEGACY.")
+                old_entry.status = "LEGACY"
+                
+        # Also mark related relationships as legacy
+        for rel in self.dictionary.relationships:
+            if rel.subject == target or rel.object == target:
+                if rel.status != "LEGACY":
+                    rel.status = "LEGACY"
+
     def process_document(self, file_path: str, is_seed: bool = False) -> List[str]:
         """
         Runs the 5-gate pipeline on a document by processing it in metadata-aware chunks.
         """
         from .extractor import chunk_text
+        from .discovery import process_discovered_terms
         
         # Gate 2: Extraction
         full_text = extract_all(file_path)
@@ -180,6 +197,11 @@ Provide a single JSON response with:
                 valid_items.append(item)
                 confidence_map[term] = validation.get("confidence_level", "BRONZE")
                     
+                # Temporal Reconciliation: Check for SUPERSEDES
+                for rel in item.get("relationships", []):
+                    if rel.get("type") == "SUPERSEDES":
+                        self.reconcile_supersedes(term, rel.get("target"))
+
             # Gate 4: Temporal Reconciliation
             # Check for conflicts before processing
             for item in valid_items:

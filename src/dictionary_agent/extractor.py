@@ -5,10 +5,7 @@ from docx import Document
 import extract_msg
 from typing import List
 
-try:
-    from pyOneNote.Main import OneDocment
-except ImportError:
-    OneDocment = None
+from pyOneNote.Main import OneDocment
 
 def extract_text_from_pdf(file_path: str) -> str:
     if not os.path.exists(file_path):
@@ -49,8 +46,6 @@ def extract_text_from_msg(file_path: str) -> str:
     return f"Subject: {msg.subject}\nBody: {msg.body}"
 
 def extract_text_from_one(file_path: str) -> str:
-    if not OneDocment:
-        return "[Error: pyOneNote not installed]"
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"OneNote file not found: {file_path}")
     return f"[OneNote extraction for {file_path} - text extraction limited in this version]"

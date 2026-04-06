@@ -3,6 +3,7 @@ import pdfplumber
 from pptx import Presentation
 from docx import Document
 import extract_msg
+from typing import List
 
 try:
     from pyOneNote.Main import OneDocment
@@ -52,9 +53,6 @@ def extract_text_from_one(file_path: str) -> str:
         return "[Error: pyOneNote not installed]"
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"OneNote file not found: {file_path}")
-    # pyOneNote extraction is complex, for now we return a placeholder or 
-    # use its internal structure if possible. 
-    # Based on its source, it's mostly for dumping embedded files.
     return f"[OneNote extraction for {file_path} - text extraction limited in this version]"
 
 import chardet
@@ -63,14 +61,12 @@ def extract_text_from_txt(file_path: str) -> str:
     with open(file_path, "rb") as f:
         raw_data = f.read()
         
-    # Try common encodings first
     for enc in ['utf-8', 'windows-1255', 'iso-8859-8']:
         try:
             return raw_data.decode(enc)
         except UnicodeDecodeError:
             continue
             
-    # Fallback to chardet
     detected = chardet.detect(raw_data)
     encoding = detected['encoding'] or 'utf-8'
     try:
@@ -82,34 +78,66 @@ from .hebrew_utils import normalize_rtl_text
 from .ocr_engine import extract_text_via_ocr
 
 def is_extraction_garbled(text: str) -> bool:
-    """
-    Detects if the extracted text is likely gibberish (common with weird PDF fonts).
-    Checks for high density of replacement characters or lack of meaningful words.
-    """
     if not text:
         return True
-        
-    # Check for replacement characters () or high non-printable density
     garbage_chars = text.count("\ufffd") + text.count("?")
     if len(text) > 100 and (garbage_chars / len(text)) > 0.1:
         return True
-        
-    # Check for extremely low word count vs character count (suggests mapping issues)
     words = text.split()
     if len(text) > 200 and len(words) < (len(text) / 20):
         return True
-        
     return False
 
+def chunk_text(text: str, file_path: str, chunk_size: int = 1200, overlap: int = 200) -> List[str]:
+    """
+    Splits text into chunks optimized for GraphRAG.
+    - Uses larger chunks (1200 chars/tokens approx)
+    - Maintains overlap to preserve relationships across boundaries
+    - Prepends document metadata to every chunk
+    """
+    if not text:
+        return []
+        
+    # Recursive strategy: split by paragraph, then sentence
+    # For a simple local implementation, we'll use character-based sliding window with paragraph awareness
+    filename = os.path.basename(file_path)
+    metadata = f"[Context: Source File: {filename}]\n\n"
+    
+    chunks = []
+    start = 0
+    while start < len(text):
+        end = start + chunk_size
+        
+        # Try to find a natural break point (paragraph or sentence)
+        if end < len(text):
+            # Look for last paragraph break in the window
+            last_break = text.rfind('\n\n', start, end)
+            if last_break != -1 and last_break > start + (chunk_size // 2):
+                end = last_break + 2
+            else:
+                # Look for last sentence break
+                last_sentence = text.rfind('. ', start, end)
+                if last_sentence != -1 and last_sentence > start + (chunk_size // 2):
+                    end = last_sentence + 2
+        
+        chunk_content = text[start:end].strip()
+        if chunk_content:
+            chunks.append(metadata + chunk_content)
+            
+        start = end - overlap
+        if start >= len(text) or end >= len(text):
+            break
+            
+    return chunks
+
 def extract_all(file_path: str) -> str:
+    """Legacy interface returning the full text."""
     ext = os.path.splitext(file_path)[1].lower()
     raw_text = ""
     
     if ext == ".pdf":
         raw_text = extract_text_from_pdf(file_path)
-        # Self-Healing Check: If PDF extraction is garbled, try OCR
         if is_extraction_garbled(raw_text):
-            print(f"Detected garbled text in {file_path}. Triggering OCR fallback...")
             raw_text = extract_text_via_ocr(file_path)
     elif ext == ".pptx":
         raw_text = extract_text_from_pptx(file_path)
@@ -119,10 +147,9 @@ def extract_all(file_path: str) -> str:
         raw_text = extract_text_from_msg(file_path)
     elif ext == ".one":
         raw_text = extract_text_from_one(file_path)
-    elif ext == ".txt" or ext == ".log" or ext == ".md":
+    elif ext in [".txt", ".log", ".md"]:
         raw_text = extract_text_from_txt(file_path)
     else:
-        # Fallback
         try:
             raw_text = extract_text_from_txt(file_path)
         except Exception:

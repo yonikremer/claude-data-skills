@@ -1,27 +1,30 @@
+import pytest
 import os
-
+import json
+from src.dictionary_agent.storage import save_dictionary, load_dictionary
 from src.dictionary_agent.models import Dictionary, DictionaryEntry
-from src.dictionary_agent.storage import load_dictionary, save_dictionary
-
 
 def test_save_and_load_dictionary(tmp_path):
     dict_file = tmp_path / "test_dictionary.json"
     entry = DictionaryEntry(
         term="Test Term",
-        definition="Test Definition",
+        overview="Test Overview",
         source_file="test.pdf"
     )
     dictionary = Dictionary(entries={"Test Term": entry})
-
+    
     save_dictionary(dictionary, str(dict_file))
+    
+    # Check if file exists
     assert os.path.exists(dict_file)
+    
+    # Load and verify
+    loaded = load_dictionary(str(dict_file))
+    assert "Test Term" in loaded.entries
+    assert loaded.entries["Test Term"].overview == "Test Overview"
 
-    loaded_dict = load_dictionary(str(dict_file))
-    assert "Test Term" in loaded_dict.entries
-    assert loaded_dict.entries["Test Term"].definition == "Test Definition"
-
-
-def test_load_non_existent_dictionary():
-    loaded_dict = load_dictionary("non_existent.json")
-    assert isinstance(loaded_dict, Dictionary)
-    assert len(loaded_dict.entries) == 0
+def test_load_nonexistent_file():
+    # Should return a blank dictionary, not crash
+    loaded = load_dictionary("nonexistent.json")
+    assert isinstance(loaded, Dictionary)
+    assert len(loaded.entries) == 0

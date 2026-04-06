@@ -1,3 +1,15 @@
 {
-  "tests/data_priority\\random.txt": "35edc01a12e1f633ae3bb513a97a90c72f31e4a58fabb828cd7b2dad2f64b603"
+  "tests/data_priority\\random.txt": "35edc01a12e1f633ae3bb513a97a90c72f31e4a58fabb828cd7b2dad2f64b603",
+  "tests/data\\notes.txt": "8b248b61fc5494e93812bf51401ce45359d582ff43de86feb023e496c9365e87",
+  "tests/data\\readme.md": "8575673b11c8d815ae8d5296e6d392f5b4f78a62766113d5a00b40e5e3a23246",
+  "tests/data\\onboarding.txt": "68c80d1edcfa0c01db7e3439f909be81e782514166ae05f550e03859a85f3e49",
+  "tests/data\\report.txt": "6e92218ad9b2028ef37ee32c53ec79a400fa3c495e690da61653d01a1dac742b",
+  "tests/data\\doc1.txt": "8aaaa5ac8d768884f5b148b3727f2f9a91b26c9ae5e9d1202a4ef0e2153214c0",
+  "tests/data\\doc2.txt": "60cebb1ec5881b63a2972c47b374a9d5f22f89b2495a94539080bee5f40ba47a",
+  "tests/data\\test_whitelist.txt": "8052e2771440b0b722543d19f808cbf962c7cc406de64e38b57354d0e273d9e4",
+  "tests/data\\test_doc.txt": "7e38f3e79c02d95679a87794267feb8630357b9e39ebff9ac3fac18da26fa1bc",
+  "tests/data\\hebrew_1255.txt": "4dd141f480a7bdb84736851a409ee5b2cc1372c6c33c5e822b7fa50483fb4780",
+  "tests/data\\test.txt": "cd09ddbbfda1c205e08cb1f6cc5b060c425eb04a8b13c65879db74892c8bcbd0",
+  "tests/data\\random.txt": "35edc01a12e1f633ae3bb513a97a90c72f31e4a58fabb828cd7b2dad2f64b603",
+  "tests/data\\sample.docx": "401daf4ce30405e886d7c0b90577e59462d4b6dc890eb694b23310b85e4d7c53"
 }

@@ -35,14 +35,8 @@ def run_local_agent(scan_path: str, dictionary_path: str = "GOLDEN_TERMS.json",
     # Process
     added_terms = agent.process_directory(scan_path)
 
-    print(f"\n--- Processing Complete ---")
-    print(f"New Terms Added: {len(added_terms)}")
-    if added_terms:
-        print(f"Terms: {', '.join(added_terms[:10])}{'...' if len(added_terms) > 10 else ''}")
-
     # Final summary of dictionary
-    print(f"Total Active Terms: {len([e for e in agent.dictionary.entries.values() if e.status == 'ACTIVE'])}")
-    print(f"Total Pending Terms: {len([e for e in agent.dictionary.entries.values() if e.status == 'PENDING_DEFINITION'])}")
+    print(agent.generate_summary())
     
     # Save one last time to be sure
     save_dictionary(agent.dictionary, dictionary_path)

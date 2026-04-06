@@ -1,6 +1,6 @@
 from typing import List, Dict, Any
 import networkx as nx
-from .models import Dictionary, GraphTriplet, DictionaryEntry, UsageExample, CommunityReport
+from .models import Dictionary, GraphTriplet, DictionaryEntry, UsageExample, CommunityReport, RELATION_WEIGHTS
 from .llm_client import get_llm_client
 
 class GraphKnowledgeEngine:
@@ -11,10 +11,15 @@ class GraphKnowledgeEngine:
         self.dictionary = dictionary or Dictionary()
 
     def add_triplet(self, triplet: GraphTriplet):
+        # 1. Assign weight based on relationship type
+        triplet.weight = RELATION_WEIGHTS.get(triplet.relationship, 0.5)
+
         for existing in self.dictionary.relationships:
             if (existing.subject == triplet.subject and 
                 existing.relationship == triplet.relationship and 
                 existing.object == triplet.object):
+                # Update existing triplet if it has a lower weight (e.g. was BRONZE before)
+                existing.weight = max(existing.weight, triplet.weight)
                 return
         self.dictionary.relationships.append(triplet)
 
@@ -22,22 +27,27 @@ class GraphKnowledgeEngine:
         return [r for r in self.dictionary.relationships 
                 if r.subject == term or r.object == term]
 
-    def build_nx_graph(self) -> nx.Graph:
+    def build_nx_graph(self, prune_threshold: float = 0.0) -> nx.Graph:
+        """
+        Builds a NetworkX graph using weighted edges.
+        """
         G = nx.Graph()
         for rel in self.dictionary.relationships:
-            G.add_edge(rel.subject, rel.object, type=rel.relationship)
+            # Pitfall 2 Fix: Pruning weak edges before clustering
+            if rel.weight < prune_threshold:
+                continue
+            G.add_edge(rel.subject, rel.object, type=rel.relationship, weight=rel.weight)
         return G
 
-    def cluster_communities(self) -> List[List[str]]:
+    def cluster_communities(self, prune_threshold: float = 0.4) -> List[List[str]]:
         """
-        Groups nodes into communities using connected components (simple) 
-        or Louvain (advanced).
+        Groups nodes into communities using connected components.
+        Prunes weak edges (e.g. USES, REPLACES) to avoid semantic drift.
         """
-        G = self.build_nx_graph()
+        G = self.build_nx_graph(prune_threshold=prune_threshold)
         if G.number_of_nodes() == 0:
             return []
         
-        # Using connected components for a robust local implementation
         return [list(c) for f in [nx.connected_components(G)] for c in f]
 
     def generate_community_reports(self):
@@ -56,12 +66,15 @@ class GraphKnowledgeEngine:
             for node in nodes:
                 entry = self.dictionary.entries.get(node)
                 if entry:
-                    context.append(f"Term: {node}, Def: {entry.definition}")
+                    info = f"Term: {node}, Overview: {entry.overview}"
+                    if entry.deep_dive:
+                        info += f", Deep Dive: {entry.deep_dive}"
+                    context.append(info)
             
             rels = []
             for rel in self.dictionary.relationships:
                 if rel.subject in nodes and rel.object in nodes:
-                    rels.append(f"{rel.subject} --{rel.relationship}--> {rel.object}")
+                    rels.append(f"{rel.subject} --{rel.relationship} ({rel.weight})--> {rel.object}")
 
             prompt = f"Write a high-level summary report for this project community:\n\nNodes:\n" + "\n".join(context) + "\n\nRelationships:\n" + "\n".join(rels)
             
@@ -95,9 +108,10 @@ TONE: Objective, concise, and architectural."""},
         lines = [f"Knowledge Graph Context for '{term}':"]
         if entry:
             lines.append(f"Ubiquity: Found in {entry.document_count} unique documents.")
+            lines.append(f"Confidence Level: {entry.confidence_level}")
             
         for r in neighbors:
-            lines.append(f"- {r.subject} --[{r.relationship}]--> {r.object}")
+            lines.append(f"- {r.subject} --[{r.relationship} (w:{r.weight})]--> {r.object}")
         
         # Add Community Summary if available
         for report in self.dictionary.community_reports:

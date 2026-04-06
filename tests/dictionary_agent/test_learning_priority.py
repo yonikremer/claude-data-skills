@@ -1,6 +1,6 @@
 import pytest
 import os
-from src.dictionary_agent.pipeline import SelectiveKnowledgePipeline
+from src.dictionary_agent.agent import DictionaryAgent
 from src.dictionary_agent.models import Dictionary
 from unittest.mock import patch
 
@@ -11,53 +11,53 @@ def test_seed_prioritization():
     seed_file = os.path.join(test_dir, "onboarding.txt")
     normal_file = os.path.join(test_dir, "random.txt")
     
-    with open(seed_file, "w") as f: f.write("Project Prism Onboarding")
-    with open(normal_file, "w") as f: f.write("Project Prism Random")
+    with open(seed_file, "w", encoding="utf-8") as f: f.write("Project Prism Onboarding")
+    with open(normal_file, "w", encoding="utf-8") as f: f.write("Project Prism Random")
     
-    # 2. Setup pipeline with seed_paths
-    pipeline = SelectiveKnowledgePipeline(seed_paths=[seed_file])
+    # 2. Setup agent with seed_paths
+    agent = DictionaryAgent(seed_paths=[seed_file])
     
     # 3. Mock extraction
-    with patch("src.dictionary_agent.pipeline.extract_with_llm") as mock_extract, \
-         patch("src.dictionary_agent.pipeline.validate_with_llm") as mock_validate:
+    with patch("src.dictionary_agent.agent.extract_with_llm") as mock_extract, \
+         patch("src.dictionary_agent.agent.validate_with_llm") as mock_validate:
         
         mock_extract.side_effect = [
             # Seed doc extraction
-            [{"term": "Prism", "definition": "High Quality Def", "anchor": "...", "entity_type": "PROJECT"}],
+            [{"term": "Prism", "overview": "High Quality Def", "anchor": "...", "entity_type": "PROJECT"}],
             # Normal doc extraction
-            [{"term": "Prism", "definition": "Lower Quality Def", "anchor": "...", "entity_type": "PROJECT"}]
+            [{"term": "Prism", "overview": "Lower Quality Def", "anchor": "...", "entity_type": "PROJECT"}]
         ]
         mock_validate.return_value = {"is_valid": True, "status": "PASS"}
         
-        pipeline.process_directory(test_dir)
+        agent.process_directory(test_dir)
         
     # 4. Verify Prism has SEED authority
-    assert pipeline.dictionary.entries["Prism"].authority_level == "SEED"
-    assert pipeline.dictionary.entries["Prism"].is_golden is True
+    assert agent.dictionary.entries["Prism"].authority_level == "SEED"
+    assert agent.dictionary.entries["Prism"].is_golden is True
 
 def test_pending_to_active_upgrade():
-    pipeline = SelectiveKnowledgePipeline()
+    agent = DictionaryAgent()
     os.makedirs("tests/data", exist_ok=True)
     doc1 = "tests/data/report.txt"
     doc2 = "tests/data/onboarding.txt"
     
-    with open(doc1, "w") as f: f.write("Project Zephyr Revenue")
-    with open(doc2, "w") as f: f.write("Project Zephyr: A high-speed network.")
+    with open(doc1, "w", encoding="utf-8") as f: f.write("Project Zephyr Revenue")
+    with open(doc2, "w", encoding="utf-8") as f: f.write("Project Zephyr: A high-speed network.")
 
-    with patch("src.dictionary_agent.pipeline.extract_with_llm") as mock_extract, \
-         patch("src.dictionary_agent.pipeline.validate_with_llm") as mock_validate:
+    with patch("src.dictionary_agent.agent.extract_with_llm") as mock_extract, \
+         patch("src.dictionary_agent.agent.validate_with_llm") as mock_validate:
         
         mock_extract.side_effect = [
             # First doc: Pending
-            [{"term": "Zephyr", "definition": "[PENDING]", "anchor": "Zephyr Revenue", "entity_type": "PROJECT"}],
+            [{"term": "Zephyr", "overview": "[PENDING]", "anchor": "Zephyr Revenue", "entity_type": "PROJECT"}],
             # Second doc: Active
-            [{"term": "Zephyr", "definition": "High-speed network", "anchor": "Project Zephyr", "entity_type": "PROJECT"}]
+            [{"term": "Zephyr", "overview": "High-speed network", "anchor": "Project Zephyr", "entity_type": "PROJECT"}]
         ]
         mock_validate.return_value = {"is_valid": True, "status": "PASS"}
         
-        pipeline.process_document(doc1)
-        assert pipeline.dictionary.entries["Zephyr"].status == "PENDING_DEFINITION"
+        agent.process_document(doc1)
+        assert agent.dictionary.entries["Zephyr"].status == "PENDING_DEFINITION"
         
-        pipeline.process_document(doc2)
-        assert pipeline.dictionary.entries["Zephyr"].status == "ACTIVE"
-        assert pipeline.dictionary.entries["Zephyr"].definition == "High-speed network"
+        agent.process_document(doc2)
+        assert agent.dictionary.entries["Zephyr"].status == "ACTIVE"
+        assert agent.dictionary.entries["Zephyr"].overview == "High-speed network"

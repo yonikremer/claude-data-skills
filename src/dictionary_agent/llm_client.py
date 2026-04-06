@@ -18,7 +18,7 @@ class LocalLLMClient:
         """
         # Mock for environments where Ollama is not running
         if os.getenv("MOCK_LLM", "false").lower() == "true":
-            return self._mock_response(messages)
+            return self._mock_response(messages, json_mode)
 
         endpoint = f"{self.base_url}/api/chat"
         payload = {
@@ -39,9 +39,9 @@ class LocalLLMClient:
             return content
         except Exception as e:
             print(f"Error calling local LLM: {e}")
-            return self._mock_response(messages)
+            return self._mock_response(messages, json_mode)
 
-    def _mock_response(self, messages: List[Dict[str, str]]) -> Dict[str, Any]:
+    def _mock_response(self, messages: List[Dict[str, str]], json_mode: bool) -> Any:
         """
         Provides a fallback mock response for testing.
         """
@@ -57,7 +57,8 @@ class LocalLLMClient:
                 return [
                     {
                         "term": "Prism",
-                        "definition": "A new security project.",
+                        "overview": "A new security project.",
+                        "deep_dive": "Uses port 8080 for secure communication and involves advanced encryption.",
                         "anchor": "The project Prism uses port 8080 for secure communication.",
                         "is_new": True,
                         "entity_type": "PROJECT"
@@ -67,7 +68,8 @@ class LocalLLMClient:
                 return [
                     {
                         "term": "SQL",
-                        "definition": "A domain-specific SQL implementation.",
+                        "overview": "A domain-specific SQL implementation.",
+                        "deep_dive": "Custom database system optimized for internal queries.",
                         "anchor": "Project SQL is a new database system.",
                         "is_new": True,
                         "entity_type": "TECH_STACK"
@@ -75,23 +77,33 @@ class LocalLLMClient:
                 ]
             return []
         
-        # Mock Gate 3: Validation
+        # Mock Gate 3/5: Validation
         if "reviewer" in system_msg:
             last_user_msg = messages[-1]["content"].lower()
             # Simulate a failure for 'coffee' to test negative cases
             if "coffee" in last_user_msg:
                 return {
                     "is_valid": False,
+                    "confidence_level": "PENDING",
                     "status": "HALLUCINATION",
                     "reasoning": "Not supported by context."
                 }
             return {
                 "is_valid": True,
+                "confidence_level": "GOLD",
                 "status": "PASS",
                 "reasoning": "Supported by context."
             }
             
-        return {"error": "Mock not implemented for this prompt"}
+        # Mock Community Report
+        if "strategic architect" in system_msg:
+            if json_mode:
+                return {"summary": "This is a mock community summary."}
+            return "This is a mock community summary."
+
+        if json_mode:
+            return {"error": "Mock not implemented for this prompt"}
+        return "Mock not implemented for this prompt"
 
 def get_llm_client():
     return LocalLLMClient(

@@ -29,7 +29,9 @@ def lookup_term(term: str, dictionary_path: str = "GOLDEN_TERMS.json") -> str:
 def format_entry(term: str, dictionary, graph_engine) -> str:
     entry = dictionary.entries[term]
     res = f"Term: {entry.term}\n"
-    res += f"Definition: {entry.definition}\n"
+    res += f"Overview: {entry.overview}\n"
+    if entry.deep_dive:
+        res += f"Deep Dive: {entry.deep_dive}\n"
     res += f"Status: {entry.status}\n"
     res += f"Authority: {entry.authority_level}\n"
     res += f"Ubiquity: Found in {entry.document_count} unique documents.\n"

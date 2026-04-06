@@ -1,6 +1,6 @@
 ---
 name: document-processing-pro
-description: Use for creating, reading, and manipulating Office documents (DOCX, XLSX, PPTX) and PDFs. High-fidelity extraction, professional formatting, and automated report generation. CRITICAL: For large files or image-heavy docs, run `get-available-resources` first.
+description: Use for creating, reading, and manipulating Office documents (DOCX, XLSX, PPTX, MSG, PST, ONE) and PDFs. High-fidelity extraction, professional formatting, and automated report generation. CRITICAL: For large files or image-heavy docs, run `get-available-resources` first.
 ---
 
 # Document Processing Pro (Consolidated)
@@ -115,15 +115,68 @@ prs.save("presentation.pptx")
 
 ---
 
+## 5. Outlook Emails (.msg, .pst)
+
+Use for parsing emails, attachments, and mailbox archives.
+
+### Core Tools
+
+- **Single Emails (.msg)**: Use `extract-msg` for parsing headers, body, and attachments from standalone MSG files.
+- **Mailbox Archives (.pst)**: Use `libpst` (via command line or Python bindings) to extract entire folders of emails and attachments.
+
+```python
+import extract_msg
+
+msg = extract_msg.Message("email.msg")
+msg_sender = msg.sender
+msg_date = msg.date
+msg_subj = msg.subject
+msg_body = msg.body
+
+# Save attachments
+for attachment in msg.attachments:
+    attachment.save(customPath="attachments_dir")
+```
+
+---
+
+## 6. OneNote Notebooks (.one, .onetoc2)
+
+Use for parsing and extracting notes, sections, and attachments from local OneNote files.
+
+### Core Tools
+
+- **Text Extraction**: Use `MarkItDown` (Microsoft's official converter) to convert `.one` files into clean Markdown.
+- **Structured Extraction**: Use `onenote2xml` for detailed XML/JSON representations of notebook hierarchy and page history.
+- **Attachments**: Use `one-extract` for retrieving embedded files and media.
+
+```python
+from markitdown import MarkItDown
+
+# High-fidelity conversion to Markdown
+md = MarkItDown()
+result = md.convert("notebook_section.one")
+print(result.text_content)
+```
+
+---
+
 ## 🛠️ Common Pitfalls (The "Wall of Shame")
 
 1. **DOCX**: Never use `\n` in `docx-js`; use separate `Paragraph` objects.
 2. **PDF**: Never use Unicode subscripts (₀₁₂) in `reportlab`; use `<sub>` tags.
 3. **XLSX**: Don't load 100MB+ Excel files into `pandas` without checking RAM; use `polars`.
-4. **General**: Never catch `ImportError` silently. Let the agent see if a library is missing.
+4. **MSG**: Email bodies can be in RTF, HTML, or plain text. Don't assume plain text exists without falling back.
+5. **ONE**: Local `.one` files are binary OLE containers. Parsing requires specialized tools; never attempt manual regex/string extraction.
+6. **ONE TOC**: `.onetoc2` files contain notebook structure (folders/sections) but no actual page content.
+7. **General**: Never catch `ImportError` silently. Let the agent see if a library is missing.
 
 ## References
 
 - `skills/unstructured-data-processing/document-processing-pro/scripts/docx/` — XML patterns and docx-js API.
 - `skills/unstructured-data-processing/document-processing-pro/references/pdf.md` — OCR and advanced manipulation.
 - `skills/unstructured-data-processing/document-processing-pro/references/xlsx/` — XlsxWriter and formatting.
+- `skills/unstructured-data-processing/document-processing-pro/references/outlook.md` — extract-msg and libpst usage.
+- `skills/unstructured-data-processing/document-processing-pro/references/onenote.md` — MarkItDown and onenote2xml for local parsing.
+- `skills/unstructured-data-processing/document-processing-pro/scripts/outlook/` — Email extraction scripts.
+- `skills/unstructured-data-processing/document-processing-pro/scripts/onenote/` — Local .one parsing examples.

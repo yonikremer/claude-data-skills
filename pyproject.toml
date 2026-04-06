@@ -77,6 +77,7 @@ dict = [
     "pydantic-settings",
     "tqdm",
     "click",
+    "mcp",
 ]
 dev = [
     "pytest",
@@ -133,6 +134,7 @@ all = [
     "pydantic-settings",
     "tqdm",
     "click",
+    "mcp",
 ]
 
 [project.scripts]
@@ -141,6 +143,7 @@ stdlib-demo = "skills.python_dev.python_stdlib_pro.scripts.stdlib_demo:main"
 setup-data-skills = "claude_data_skills.cli.setup_skills:main"
 dictionary-scan = "dictionary_agent.run_scanner:main"
 dictionary-lookup = "dictionary_agent.tools:main"
+dictionary-mcp = "dictionary_agent.mcp_server:mcp.run"
 
 [tool.setuptools]
 package-dir = { "" = "src" }

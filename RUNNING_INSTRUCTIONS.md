@@ -84,6 +84,20 @@ python run_ingestion.py
 
 Once the graph is built, you can use the built-in lookup tools to get context-aware definitions.
 
+### Using the MCP Server (Recommended for Onyx/Danswer)
+The system includes a **Model Context Protocol (MCP)** server that allows external AI tools like **Onyx** to query your knowledge graph in real-time.
+
+1.  **Launch the MCP Server**:
+    ```bash
+    dictionary-mcp
+    ```
+    *Alternatively, run: `python -m src.dictionary_agent.mcp_server`*
+
+2.  **Register in Onyx**:
+    *   Go to **Onyx Admin Dashboard** -> **Settings** -> **Tools** -> **MCP Servers**.
+    *   Add a new server with the command `python` and arguments `["-m", "src.dictionary_agent.mcp_server"]`.
+    *   (Optional) Set `DICTIONARY_PATH` to your `GOLDEN_TERMS.json` absolute path.
+
 ### Using the CLI Tool
 ```bash
 python -m src.dictionary_agent.tools lookup "Project Prism"

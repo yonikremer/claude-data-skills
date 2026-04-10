@@ -1,6 +1,6 @@
 import pytest
 import os
-from src.dictionary_agent.extractor import extract_text_from_docx, extract_text_from_msg
+from graph_sieve.extractor import extract_text_from_docx, extract_text_from_msg
 from unittest.mock import MagicMock, patch
 
 def test_extract_docx():

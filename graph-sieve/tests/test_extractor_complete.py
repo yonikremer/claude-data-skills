@@ -1,6 +1,6 @@
 import pytest
 import os
-from src.dictionary_agent.extractor import extract_all
+from graph_sieve.extractor import extract_all
 from unittest.mock import MagicMock, patch
 
 def test_extract_txt():
@@ -34,7 +34,7 @@ def test_extract_one_unified():
         # Since pyOneNote structure is complex, we mock the high level 
         # or the specific function we use.
         # If we use a simpler mock for now:
-        with patch("src.dictionary_agent.extractor.extract_text_from_one") as mock_extract:
+        with patch("graph_sieve.extractor.extract_text_from_one") as mock_extract:
             mock_extract.return_value = "OneNote content with project Cortex"
             text = extract_all("tests/data/test.one")
             assert "project Cortex" in text

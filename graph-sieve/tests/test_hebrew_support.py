@@ -1,7 +1,7 @@
 import pytest
 import os
-from src.dictionary_agent.extractor import extract_all
-from src.dictionary_agent.hebrew_utils import normalize_rtl_text
+from graph_sieve.extractor import extract_all
+from graph_sieve.hebrew_utils import normalize_rtl_text
 
 def test_extract_windows_1255_hebrew():
     # Create a temporary file with Windows-1255 encoding

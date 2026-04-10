@@ -1,7 +1,7 @@
 import pytest
 import os
-from src.dictionary_agent.agent import DictionaryAgent
-from src.dictionary_agent.models import Dictionary
+from graph_sieve.agent import DictionaryAgent
+from graph_sieve.models import Dictionary
 from unittest.mock import patch
 
 def test_document_counter_increment():
@@ -17,8 +17,8 @@ def test_document_counter_increment():
     agent = DictionaryAgent()
     
     # 2. Mock LLM to return Prism multiple times for doc1, and once for doc2
-    with patch("src.dictionary_agent.agent.extract_with_llm") as mock_extract, \
-         patch("src.dictionary_agent.agent.validate_with_llm") as mock_validate:
+    with patch("graph_sieve.agent.extract_with_llm") as mock_extract, \
+         patch("graph_sieve.agent.validate_with_llm") as mock_validate:
         
         mock_extract.side_effect = [
             # doc1: Prism mentioned twice

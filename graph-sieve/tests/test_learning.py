@@ -1,5 +1,5 @@
-from src.dictionary_agent.discovery import process_discovered_terms
-from src.dictionary_agent.models import Dictionary
+from graph_sieve.discovery import process_discovered_terms
+from graph_sieve.models import Dictionary
 
 def test_new_term_discovery():
     dictionary = Dictionary()

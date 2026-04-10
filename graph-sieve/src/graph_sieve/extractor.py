@@ -50,7 +50,10 @@ def extract_text_from_one(file_path: str) -> str:
         raise FileNotFoundError(f"OneNote file not found: {file_path}")
     return f"[OneNote extraction for {file_path} - text extraction limited in this version]"
 
-import chardet
+try:
+    import chardet
+except (ImportError, Exception):
+    chardet = None
 
 def extract_text_from_txt(file_path: str) -> str:
     with open(file_path, "rb") as f:
@@ -62,12 +65,15 @@ def extract_text_from_txt(file_path: str) -> str:
         except UnicodeDecodeError:
             continue
             
-    detected = chardet.detect(raw_data)
-    encoding = detected['encoding'] or 'utf-8'
-    try:
-        return raw_data.decode(encoding)
-    except UnicodeDecodeError:
-        return raw_data.decode('utf-8', errors='replace')
+    if chardet:
+        try:
+            detected = chardet.detect(raw_data)
+            encoding = detected['encoding'] or 'utf-8'
+            return raw_data.decode(encoding)
+        except Exception:
+            pass
+            
+    return raw_data.decode('utf-8', errors='replace')
 
 from .hebrew_utils import normalize_rtl_text
 from .ocr_engine import extract_text_via_ocr

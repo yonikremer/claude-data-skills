@@ -1,17 +1,17 @@
 import pytest
 import os
 from unittest.mock import patch
-from src.dictionary_agent.agent import DictionaryAgent
-from src.dictionary_agent.models import Dictionary
+from graph_sieve.agent import DictionaryAgent
+from graph_sieve.models import Dictionary
 
 @pytest.fixture
 def mock_llm_discovery():
-    with patch("src.dictionary_agent.agent.extract_with_llm") as mock:
+    with patch("graph_sieve.agent.extract_with_llm") as mock:
         yield mock
 
 @pytest.fixture
 def mock_llm_validator():
-    with patch("src.dictionary_agent.agent.validate_with_llm") as mock:
+    with patch("graph_sieve.agent.validate_with_llm") as mock:
         yield mock
 
 def test_pipeline_full_run(mock_llm_discovery, mock_llm_validator):

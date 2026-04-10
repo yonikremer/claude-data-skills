@@ -1,5 +1,5 @@
 import pytest
-from src.dictionary_agent.strategic_filter import StrategicSieve
+from graph_sieve.strategic_filter import StrategicSieve
 
 def test_decommissioned_path():
     sieve = StrategicSieve(decommissioned_keywords=["Project-Zephyr", "Legacy-Portal"])

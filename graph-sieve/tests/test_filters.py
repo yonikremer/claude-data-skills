@@ -1,4 +1,4 @@
-from src.dictionary_agent.filters import is_domain_specific
+from graph_sieve.filters import is_domain_specific
 
 def test_filter_generic():
     # Standard tech terms should be filtered out

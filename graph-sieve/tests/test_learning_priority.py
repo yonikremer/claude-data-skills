@@ -1,7 +1,7 @@
 import pytest
 import os
-from src.dictionary_agent.agent import DictionaryAgent
-from src.dictionary_agent.models import Dictionary
+from graph_sieve.agent import DictionaryAgent
+from graph_sieve.models import Dictionary
 from unittest.mock import patch
 
 def test_seed_prioritization():
@@ -18,8 +18,8 @@ def test_seed_prioritization():
     agent = DictionaryAgent(seed_paths=[seed_file])
     
     # 3. Mock extraction
-    with patch("src.dictionary_agent.agent.extract_with_llm") as mock_extract, \
-         patch("src.dictionary_agent.agent.validate_with_llm") as mock_validate:
+    with patch("graph_sieve.agent.extract_with_llm") as mock_extract, \
+         patch("graph_sieve.agent.validate_with_llm") as mock_validate:
         
         mock_extract.side_effect = [
             # Seed doc extraction
@@ -44,8 +44,8 @@ def test_pending_to_active_upgrade():
     with open(doc1, "w", encoding="utf-8") as f: f.write("Project Zephyr Revenue")
     with open(doc2, "w", encoding="utf-8") as f: f.write("Project Zephyr: A high-speed network.")
 
-    with patch("src.dictionary_agent.agent.extract_with_llm") as mock_extract, \
-         patch("src.dictionary_agent.agent.validate_with_llm") as mock_validate:
+    with patch("graph_sieve.agent.extract_with_llm") as mock_extract, \
+         patch("graph_sieve.agent.validate_with_llm") as mock_validate:
         
         mock_extract.side_effect = [
             # First doc: Pending

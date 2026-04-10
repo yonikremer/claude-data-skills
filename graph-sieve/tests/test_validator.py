@@ -1,4 +1,4 @@
-from src.dictionary_agent.validator import validate_with_llm
+from graph_sieve.validator import validate_with_llm
 
 def test_valid_overview():
     raw_text = "Project Prism is our new internal firewall."

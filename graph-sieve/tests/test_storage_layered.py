@@ -1,4 +1,4 @@
-from src.dictionary_agent.models import DictionaryEntry, Dictionary
+from graph_sieve.models import DictionaryEntry, Dictionary
 
 def test_layered_lookup_hit():
     # Setup L1 cache

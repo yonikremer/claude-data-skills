@@ -1,5 +1,5 @@
-from src.dictionary_agent.graph_engine import GraphKnowledgeEngine
-from src.dictionary_agent.models import GraphTriplet, DictionaryEntry
+from graph_sieve.graph_engine import GraphKnowledgeEngine
+from graph_sieve.models import GraphTriplet, DictionaryEntry
 
 def test_clustering_logic():
     engine = GraphKnowledgeEngine()

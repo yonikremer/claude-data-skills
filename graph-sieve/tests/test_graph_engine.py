@@ -1,6 +1,6 @@
 import pytest
-from src.dictionary_agent.graph_engine import GraphKnowledgeEngine
-from src.dictionary_agent.models import Dictionary, GraphTriplet
+from graph_sieve.graph_engine import GraphKnowledgeEngine
+from graph_sieve.models import Dictionary, GraphTriplet
 
 def test_add_triplet():
     engine = GraphKnowledgeEngine()

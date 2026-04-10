@@ -1,6 +1,6 @@
 import pytest
 import os
-from src.dictionary_agent.discovery import extract_with_anchors
+from graph_sieve.discovery import extract_with_anchors
 
 def test_anchored_extraction():
     # Sample text with a clear term and context

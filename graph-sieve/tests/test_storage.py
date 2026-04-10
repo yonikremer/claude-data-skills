@@ -1,8 +1,8 @@
 import pytest
 import os
 import json
-from src.dictionary_agent.storage import save_dictionary, load_dictionary
-from src.dictionary_agent.models import Dictionary, DictionaryEntry
+from graph_sieve.storage import save_dictionary, load_dictionary
+from graph_sieve.models import Dictionary, DictionaryEntry
 
 def test_save_and_load_dictionary(tmp_path):
     dict_file = tmp_path / "test_dictionary.json"

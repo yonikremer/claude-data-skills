@@ -1,6 +1,6 @@
 from unittest.mock import MagicMock, patch
 
-from src.dictionary_agent.extractor import extract_text_from_pdf, extract_text_from_pptx
+from graph_sieve.extractor import extract_text_from_pdf, extract_text_from_pptx
 
 
 @patch("pdfplumber.open")
@@ -19,7 +19,7 @@ def test_extract_text_from_pdf(mock_open, tmp_path):
     assert "Extracted Text" in result
 
 
-@patch("src.dictionary_agent.extractor.Presentation")
+@patch("graph_sieve.extractor.Presentation")
 def test_extract_text_from_pptx(mock_presentation, tmp_path):
     # Mock PPTX structure
     mock_prs = mock_presentation.return_value

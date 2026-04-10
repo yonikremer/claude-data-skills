@@ -1,8 +1,8 @@
 import argparse
 import os
 import json
-from dictionary_agent.agent import DictionaryAgent
-from dictionary_agent.storage import save_dictionary
+from graph_sieve.agent import DictionaryAgent
+from graph_sieve.storage import save_dictionary
 
 def run_local_agent(scan_path: str, dictionary_path: str = "GOLDEN_TERMS.json", 
                     seed_path: str = None, whitelist_path: str = None):

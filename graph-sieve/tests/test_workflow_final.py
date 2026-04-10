@@ -1,7 +1,7 @@
 import pytest
 import os
-from src.dictionary_agent.agent import DictionaryAgent
-from src.dictionary_agent.models import Dictionary
+from graph_sieve.agent import DictionaryAgent
+from graph_sieve.models import Dictionary
 from unittest.mock import patch, MagicMock
 
 def test_full_workflow_end_to_end():
@@ -20,8 +20,8 @@ def test_full_workflow_end_to_end():
     agent = DictionaryAgent()
     
     # 3. Process files
-    with patch("src.dictionary_agent.agent.extract_with_llm") as mock_extract, \
-         patch("src.dictionary_agent.agent.validate_with_llm") as mock_validate:
+    with patch("graph_sieve.agent.extract_with_llm") as mock_extract, \
+         patch("graph_sieve.agent.validate_with_llm") as mock_validate:
         
         # readme.md extraction
         mock_extract.side_effect = [

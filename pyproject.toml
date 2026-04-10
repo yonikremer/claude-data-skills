@@ -59,26 +59,6 @@ db = [
     "boto3",
     "s3fs",
 ]
-dict = [
-    "pdfplumber",
-    "python-docx",
-    "python-pptx",
-    "extract-msg",
-    "markitdown",
-    "one-extract",
-    "easyocr",
-    "pdf2image",
-    "pyOneNote",
-    "PyPDF2",
-    "pymupdf",
-    "defusedxml",
-    "openpyxl",
-    "pydantic",
-    "pydantic-settings",
-    "tqdm",
-    "click",
-    "mcp",
-]
 dev = [
     "pytest",
     "ruff",
@@ -117,35 +97,12 @@ all = [
     "alembic",
     "boto3",
     "s3fs",
-    "pdfplumber",
-    "python-docx",
-    "python-pptx",
-    "extract-msg",
-    "markitdown",
-    "one-extract",
-    "easyocr",
-    "pdf2image",
-    "pyOneNote",
-    "PyPDF2",
-    "pymupdf",
-    "defusedxml",
-    "openpyxl",
-    "pydantic",
-    "pydantic-settings",
-    "tqdm",
-    "click",
-    "mcp",
 ]
 
 [project.scripts]
 # Entry point for the stdlib demo script
 stdlib-demo = "skills.python_dev.python_stdlib_pro.scripts.stdlib_demo:main"
 setup-data-skills = "claude_data_skills.cli.setup_skills:main"
-dictionary-scan = "dictionary_agent.run_scanner:main"
-dictionary-lookup = "dictionary_agent.tools:main"
-dictionary-mcp = "dictionary_agent.mcp_server:mcp.run"
-dictionary-visualize = "dictionary_agent.visualize:main"
-dictionary-whois = "dictionary_agent.whois:main"
 
 [tool.setuptools]
 package-dir = { "" = "src" }

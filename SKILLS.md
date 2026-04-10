@@ -101,8 +101,6 @@ All skills in this repository follow a unified architectural standard:
 - **bit-error-correction**: Detects and repairs corrupted data using error-correcting codes (ECC).
 - **data-format-detection**: Identifies the format and encoding of unknown binary files.
 - **document-processing-pro**: Consolidated expert guide for PDF, Word (DOCX), Excel (XLSX), and PowerPoint (PPTX).
-- **dictionary-agent**: Automated extraction of technical terms from PDF/PPTX into a structured knowledge base with
-  fuzzy-search lookup tools.
 - **ffmpeg**: Processes and transforms audio, video, and image files.
 - **shapely**: Planar geometric manipulation and analysis.
 

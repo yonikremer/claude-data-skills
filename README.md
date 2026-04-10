@@ -18,7 +18,7 @@ complex machine learning pipelines and professional development workflows.
 - **🚀 Professional Python Core**: Unified expert guide for PEP-8, Pydantic, Pytest, and high-performance parallelism.
 - **📊 Data Analysis Pro**: Consolidated power-user guide for NumPy, Pandas, and Polars. Unified strategy for scaling
   from KB to 100GB+.
-- **🕸️ Full Spectrum Graph Sieve (GraphRAG)**: Advanced agentic workflow for extracting relationship-aware domain knowledge from internal docs (.docx, .one, .msg, .pdf). Uses a 4-gate verifiable pipeline with local models (Ollama).
+- **🕸️ Full Spectrum Graph Sieve (GraphRAG)**: Advanced agentic workflow for extracting relationship-aware domain knowledge from internal docs (.docx, .one, .msg, .pdf). Now powered by the external [graph-sieve](https://github.com/your-org/graph-sieve) package.
 - **⚡ Superpowers Workflow**: Integrated skills for brainstorming, TDD, systematic debugging, and plan execution.
 - **🛡️ Data Safety First**: Built-in guardrails to prevent accidental data loss or corruption during autonomous
   execution.
@@ -27,8 +27,6 @@ complex machine learning pipelines and professional development workflows.
 - **📁 Document Processing Pro**: Consolidated expert guide for PDF, Word (DOCX), Excel (XLSX), and PowerPoint (PPTX).
 - **🔬 Scientific Research Suite**: Unified guide for the entire scientific lifecycle: brainstorming, writing (IMRAD),
   and peer review.
-- **📚 AI-Ready Dictionary Agent**: Automated extraction of technical terms from PDF/PPTX into a structured knowledge
-  base with fuzzy-search lookup tools.
 - **🔄 Legacy Migration Suite**: Specialized patterns for migrating C#, MATLAB, and Python 2 code to modern Python (
   3.9+).
 

@@ -6,10 +6,7 @@ import sys
 
 SKILL_DEPENDENCIES = {
     "machine-learning": ["torch", "transformers"],
-    "visualization": ["matplotlib", "plotly"],
-    "visualization/visualization-pro": ["matplotlib", "plotly"],
     "data-analysis/geopandas": ["geopandas"],
-    "data-sources/database-pro": ["sqlalchemy"],
     "unstructured-data-processing": ["easyocr", "pdf2image", "pyOneNote", "pdfplumber", "pptx", "docx", "extract_msg"],
 }
 
@@ -141,7 +138,7 @@ def main():
     print("\n--- Gemini CLI Setup ---")
     setup_gemini_commands()
     print(
-        "\nSetup complete! You can now use slash commands (/analyze, /explore, /query, etc.) in both Claude and Gemini.")
+        "\nSetup complete! You can now use slash commands (/analyze, /explore, /forecast, etc.) in both Claude and Gemini.")
 
 
 if __name__ == "__main__":

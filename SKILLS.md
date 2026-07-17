@@ -45,23 +45,14 @@ All skills in this repository follow a unified architectural standard:
 
 ### Data Analysis
 
-- **data-analysis-pro**: Consolidated power-user guide for NumPy, Pandas, and Polars. Unified strategy for scaling from
-  KB to 100GB+.
 - **exploratory-data-analysis**: Performs comprehensive exploratory analysis on scientific and business data.
 - **geopandas**: Analyzes geospatial vector data including shapefiles and GeoJSON.
 - **matlab**: Provides matrix operations, data analysis, and scientific computing using MATLAB/Octave syntax.
-- **statistical-analysis**: Performs statistical testing, trend analysis, and business metric investigation.
 - **statsmodels**: Implements statistical models for rigorous inference and diagnostics.
-
-### Data Sources
-
-- **database-pro**: Consolidated expert guide for SQL (queries/schemas), SQLAlchemy (ORM), PostgreSQL, Elasticsearch (
-  search/indexing), and S3 (object storage).
 
 ### Infrastructure Tools
 
 - **data-context-extractor**: Extracts warehouse schemas and tribal knowledge to generate tailored data skills.
-- **data-validation**: Enforces data quality, schemas, and analytical methodology.
 - **get-available-resources**: Detects and reports available system resources (CPU, GPU, memory).
 - **git**: Manages source code version control and collaborative workflows.
 - **gitlab**: Expert guidance for using the GitLab CLI (glab) to manage issues, MRs, and pipelines.
@@ -70,9 +61,6 @@ All skills in this repository follow a unified architectural standard:
 
 ### Machine Learning
 
-- **ml-classical**: Consolidated expert guide for Scikit-Learn, UMAP (dimensionality reduction), and Anomaly Detection.
-- **ml-deep-learning**: Consolidated expert guide for PyTorch Lightning (scalable training) and Transformers (Hugging
-  Face).
 - **pymc**: Builds and samples Bayesian models using probabilistic programming.
 - **stable-baselines3**: Provides production-ready reinforcement learning algorithms.
 - **timesfm-forecasting**: Performs zero-shot time series forecasting using foundation models.
@@ -101,13 +89,7 @@ All skills in this repository follow a unified architectural standard:
 - **bit-error-correction**: Detects and repairs corrupted data using error-correcting codes (ECC).
 - **data-format-detection**: Identifies the format and encoding of unknown binary files.
 - **document-processing-pro**: Consolidated expert guide for PDF, Word (DOCX), Excel (XLSX), and PowerPoint (PPTX).
-- **ffmpeg**: Processes and transforms audio, video, and image files.
 - **shapely**: Planar geometric manipulation and analysis.
-
-### Visualization
-
-- **visualization-pro**: Consolidated expert guide for Plotly (interactive), Dash (dashboards), and Seaborn (static
-  stats).
 
 ---
 *For details on how to create or extend these skills, see

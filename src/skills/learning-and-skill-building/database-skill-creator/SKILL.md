@@ -22,10 +22,8 @@ future sessions.
 ### Step 1: Discover the Environment
 
 1. **Identify the Dialect**: Determine if it's PostgreSQL, BigQuery, Snowflake, etc.
-2. **Verify Connectivity**: Use the appropriate MCP tools (e.g., `postgres__execute_sql`) to run a simple `SELECT 1` or
-   check for environment variables.
-3. **Mastery Phase**: If the database structure is unknown or complex, you MUST use `tech-explorer` first to map the
-   schemas and identify key tables.
+2. **Ask for credentials**: and save them in a .env file
+3. **Verify Connectivity**: Make a Python script called connect.py to connect tot this db. make sure iot works.
 
 ### Step 2: Initialize the New Skill
 
@@ -37,10 +35,9 @@ future sessions.
 
 ### Step 3: Extract Schemas and Context
 
-1. **Key Tables**: Identify the 3-5 most important tables.
-2. **Schema Documentation**: Save schema details (columns, types, foreign keys) into `references/schemas.md`.
-3. **Business Logic**: Ask the user about key metrics (e.g., ARR calculation) and data hygiene (standard filters). Save
-   this to `references/business-logic.md`.
+1. **Schemas**: Go over each human-generated schema and describe it. Ignore auto-generated tables and schemas that exists in every oracle DB.
+2. **Table Documentation**: Save schema details (columns, types, foreign keys) into `references/schemas.md`.
+3. **Business Logic**: Ask the user about key terms and metrics (e.g., ARR calculation) and data hygiene (standard filters). Save this to `references/business-logic.md`.
 
 ### Step 4: Write the New SKILL.md
 

@@ -13,9 +13,8 @@ comply), then close loopholes (REFACTOR - stay compliant).
 **Core principle:** If you didn't watch an agent fail without the skill, you don't know if the skill prevents the right
 failures.
 
-**REQUIRED BACKGROUND:** You MUST understand superpowers:test-driven-development before using this skill. That skill
-defines the fundamental RED-GREEN-REFACTOR cycle. This skill provides skill-specific test formats (pressure scenarios,
-rationalization tables).
+**REQUIRED BACKGROUND:** This document assumes you understand the basic RED-GREEN-REFACTOR cycle. If not, read any
+short TDD primer first. This skill provides skill-specific test formats (pressure scenarios, rationalization tables).
 
 **Complete worked example:** See examples/CLAUDE_MD_TESTING.md for a full test campaign testing CLAUDE.md documentation
 variants.

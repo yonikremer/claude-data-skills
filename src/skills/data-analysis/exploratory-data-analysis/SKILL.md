@@ -9,7 +9,7 @@ description: Use when performing comprehensive exploratory analysis on scientifi
 
 EDA on large datasets (SQL tables, HDF5, CSV) can crash the session if memory is not managed.
 
-1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
+1. **Run Detection**: Invoke the `get-available-resources` skill (or run `scripts/detect_resources.py` from that skill directory).
 2. **Strategy**:
     - **Data < 50% RAM**: Perform full in-memory analysis using `pandas`, `polars`, or `numpy`.
     - **Data 50-90% RAM**: Use `polars` lazy mode.

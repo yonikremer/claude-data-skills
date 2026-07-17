@@ -9,7 +9,7 @@ description: Use when performing planar geometric manipulation and spatial analy
 
 Complex spatial operations (like unions of many polygons) can be CPU and memory intensive.
 
-1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
+1. **Run Detection**: Invoke the `get-available-resources` skill (or run `scripts/detect_resources.py` from that skill directory).
 2. **Spatial Indexing**: If performing many point-in-polygon tests, use a spatial index (e.g., `STRtree`) for a 100x
    speedup.
 3. **Geometry Simplification**: For extremely large geometries, consider using `.simplify()` before complex operations.

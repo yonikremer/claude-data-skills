@@ -8,7 +8,7 @@ description: Use when performing end-to-end network security analysis, moving fr
 ## Overview
 
 This skill provides the "Glue Logic" for the networking security toolset. It explains how to transition between
-specialized tools (`wireshark-pro`, `networkx`, `scapy`, `log-parsing`, `wireshark-extensions`) to conduct a
+specialized tools (`wireshark-pro`, `networkx`, `scapy`, `wireshark-extensions`) to conduct a
 comprehensive security investigation.
 
 ## Workflow: The Analysis Pipeline
@@ -17,17 +17,15 @@ comprehensive security investigation.
 digraph investigation_pipeline {
     rankdir=LR;
     node [shape=box, style=filled, fillcolor=lightblue];
-    
+
     "Triage" [label="1. Triage & Filter\n(wireshark-pro)"];
     "Topology" [label="2. Topology Mapping\n(networkx)"];
     "DPI" [label="3. Deep Inspection\n(scapy)"];
-    "Correlation" [label="4. Log Correlation\n(log-parsing)"];
-    "Reverse" [label="5. Protocol Reverse\n(extensions)"];
-    
+    "Reverse" [label="4. Protocol Reverse\n(extensions)"];
+
     "Triage" -> "Topology" [label="Cleaned IPs/Edges"];
     "Topology" -> "DPI" [label="Suspicious Nodes"];
-    "DPI" -> "Correlation" [label="Timestamps/Alerts"];
-    "Correlation" -> "Reverse" [label="Proprietary Triggers"];
+    "DPI" -> "Reverse" [label="Timestamps/Alerts"];
     "Reverse" -> "Triage" [label="New Dissectors"];
 }
 ```
@@ -55,18 +53,7 @@ tshark -r filtered.pcap -T fields -e ip.src -e ip.dst > edges.csv
 sniff(filter="host 10.0.0.5", prn=process_packet)
 ```
 
-### 3. From `scapy`/`wireshark-pro` to `log-parsing`
-
-**Trigger:** You found a packet spike at `2024-04-05 10:23:45`.
-**Action:** Parse server logs at that exact timestamp to see which process or user account was active.
-
-```python
-# Correlate with logs
-df = parse_syslog('auth.log')
-potential_culprits = df[df['timestamp'].between('10:23:00', '10:24:00')]
-```
-
-### 4. From any tool to `wireshark-extensions`
+### 3. From any tool to `wireshark-extensions`
 
 **Trigger:** You see "Data" or "Malformed" packets that don't match any known protocol.
 **Action:** Write a Lua dissector to label the bytes.
@@ -77,13 +64,10 @@ potential_culprits = df[df['timestamp'].between('10:23:00', '10:24:00')]
 |:------------------------|:----------------------------|:-----------------------------------------|
 | **DDoS Detection**      | `wireshark-pro` (pps count) | `networkx` (victim-to-attacker ratio)    |
 | **Beaconing Detection** | `tshark` (time delta)       | `scapy` (entropy analysis of payloads)   |
-| **Insider Threat**      | `log-parsing` (login times) | `networkx` (unusual node connections)    |
 | **Exploit Research**    | `scapy` (packet crafting)   | `wireshark-pro` (validation of response) |
 
 ## Red Flags - STOP and Redirect
 
 - **"I'm manually counting IPs in a text file."** -> STOP. Use `networkx` for automated relationship analysis.
 - **"I'm guessing what these bytes mean."** -> STOP. Use `wireshark-extensions` to build a dissector.
-- **"I'm trying to find a user ID in a PCAP."** -> STOP. PCAPs rarely have IDs; use `log-parsing` on the application
-  logs.
 - **"The script is hanging on a 2GB file."** -> STOP. Use `wireshark-pro` (`editcap`) to chunk the file first.

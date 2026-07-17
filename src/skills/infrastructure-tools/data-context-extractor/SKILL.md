@@ -1,6 +1,6 @@
 ---
 name: data-context-extractor
-description: Use when extracting warehouse schemas and tribal knowledge to generate tailored data skills. Ideal for setting up a new data context or updating metric definitions. Do NOT use for general data exploration (use explore-data) or for writing SQL (use write-query).
+description: Use when extracting warehouse schemas and tribal knowledge to generate tailored data skills. Ideal for setting up a new data context or updating metric definitions.
 ---
 
 # Data Context Extractor
@@ -33,12 +33,12 @@ Common options:
 - **PostgreSQL/Redshift**
 - **Databricks**
 
-Use `~~data warehouse` tools (query and schema) to connect. If unclear, check available MCP tools in the current
-session.
+Use the user's preferred database connector or query tool to connect (e.g., `psycopg2`, `sqlalchemy`, BigQuery
+client, Snowflake connector, or an available MCP database tool).
 
 **Step 2: Explore the schema**
 
-Use `~~data warehouse` schema tools to:
+Use the database connector to:
 
 1. List available datasets/schemas
 2. Identify the most important tables (ask user: "Which 3-5 tables do analysts query most often?")
@@ -116,7 +116,6 @@ Create a skill with this structure:
 
 ```
 [company]-data-analyst/
-`[company]-data-analyst/
 ├── SKILL.md
 └── references/
     ├── entities.md          # Entity definitions and relationships
@@ -124,7 +123,8 @@ Create a skill with this structure:
     ├── tables/              # One file per domain
     │   ├── [domain1].md
     │   └── [domain2].md
-    └── dashboards.json      # Optional: existing dashboards catalog`
+    └── dashboards.json      # Optional: existing dashboards catalog
+```
 
 **SKILL.md Template**: See `references/skill-template.md`
 
@@ -163,7 +163,7 @@ Common gaps:
 
 For the identified domain:
 
-1. **Explore relevant tables**: Use `~~data warehouse` schema tools to find tables in that domain
+1. **Explore relevant tables**: Use the database connector to find tables in that domain
 2. **Ask domain-specific questions**:
    - "What tables are used for [domain] analysis?"
    - "What are the key metrics for [domain]?"

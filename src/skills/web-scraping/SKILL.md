@@ -91,7 +91,5 @@ For high-value, high-complexity targets (e.g., Coursera):
 ## References
 - [Official Scrapling Documentation](https://scrapling.readthedocs.io/)
 - [Playwright Python API](https://playwright.dev/python/docs/intro)
-- [Official Kaggle API](https://github.com/Kaggle/kaggle-api)
-- `src/skills/web-scraping/references/scrapling-specs.md` — Deep dive into Scrapling's adaptive internals.
-- `src/skills/web-scraping/references/interactive.md` — Advanced Playwright patterns for heavy interactivity.
-- `src/skills/web-scraping/scripts/templates/` — Scrapling and Playwright boilerplates.
+- `references/scrapling-specs.md` — Deep dive into Scrapling's adaptive internals (if present in this skill directory).
+- `references/interactive.md` — Advanced Playwright patterns for heavy interactivity (if present in this skill directory).

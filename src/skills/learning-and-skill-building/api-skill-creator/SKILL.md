@@ -28,9 +28,10 @@ interact with the specified internal or external API in future sessions.
 ### Step 2: Initialize the New Skill
 
 1. Use the standards from `writing-skills` (TDD-based process).
-2. Run the skill initialization script:
+2. Create the skill directory and `SKILL.md`:
    ```bash
-   node <path-to-skill-creator>/scripts/init_skill.cjs <skill-name> --path <destination-folder>
+   mkdir -p <destination-folder>/<skill-name>/scripts
+   touch <destination-folder>/<skill-name>/SKILL.md
    ```
 
 ### Step 3: Extract and Synthesize
@@ -49,9 +50,8 @@ Follow the "Gold Standard" in `writing-skills`:
 
 ### Step 5: Package and Install
 
-1. Package: `node <path-to-skill-creator>/scripts/package_skill.cjs <path/to/skill-folder>`
-2. Install: `gemini skills install <path/to/skill-name.skill> --scope workspace`
-3. Inform the user to run `/skills reload`.
+1. Run `setup-data-skills` from this package to copy the new skill into `~/.claude/skills` and `.gemini/commands`.
+2. In Claude Code, restart or run `/skills reload` if supported by your client.
 
 ## Interoperability
 

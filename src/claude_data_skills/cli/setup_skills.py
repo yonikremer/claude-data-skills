@@ -5,9 +5,8 @@ import sys
 
 
 SKILL_DEPENDENCIES = {
-    "machine-learning": ["torch", "transformers"],
+    "machine-learning/timesfm-forecasting": ["torch", "transformers"],
     "data-analysis/geopandas": ["geopandas"],
-    "unstructured-data-processing": ["easyocr", "pdf2image", "pyOneNote", "pdfplumber", "pptx", "docx", "extract_msg"],
 }
 
 
@@ -40,7 +39,7 @@ def copy_skills_to_claude_home():
             if os.path.exists(potential_path):
                 source_path = potential_path
             else:
-                print(f"Error: Could not find installed 'skills' package. Please ensure it's installed correctly.",
+                print("Error: Could not find installed 'skills' package. Please ensure it's installed correctly.",
                       file=sys.stderr)
                 sys.exit(1)
         else:
@@ -83,7 +82,7 @@ def copy_skills_to_claude_home():
             return ignored
 
         shutil.copytree(source_path, destination_path, ignore=ignore_func)
-        print(f"Successfully copied skills and command wrappers.")
+        print("Successfully copied skills and command wrappers.")
 
     except Exception as e:
         print(f"Error during Claude skills setup: {e}", file=sys.stderr)
@@ -138,7 +137,7 @@ def main():
     print("\n--- Gemini CLI Setup ---")
     setup_gemini_commands()
     print(
-        "\nSetup complete! You can now use slash commands (/analyze, /explore, /forecast, etc.) in both Claude and Gemini.")
+        "\nSetup complete! You can now use slash commands (/analyze, /explore, /forecast) in both Claude and Gemini.")
 
 
 if __name__ == "__main__":

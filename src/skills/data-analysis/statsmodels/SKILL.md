@@ -10,7 +10,7 @@ description: Use when implementing statistical models for rigorous inference, hy
 Large-scale statistical modeling (especially with many exogenous variables or large time series) can be
 memory-intensive.
 
-1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
+1. **Run Detection**: Invoke the `get-available-resources` skill (or run `scripts/detect_resources.py` from that skill directory).
 2. **Matrix Operations**: Ensure your RAM can handle the design matrix ($N \times K$). For very large $N$, consider
    sub-sampling.
 3. **Convergence**: High-dimensional models may fail to converge. Check for optimization warnings in the results.

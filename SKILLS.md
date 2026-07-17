@@ -1,7 +1,7 @@
 # Skills Documentation
 
-This repository contains a comprehensive set of "skills"—structured documentation, scripts, and references that guide an
-AI agent in specialized domains like data analysis, machine learning, and scientific writing.
+This repository contains a curated set of "skills"—structured documentation, scripts, and references that guide an
+AI agent in specialized domains like data analysis, machine learning, and scientific computing.
 
 ## Standardized Gold Standard
 
@@ -9,88 +9,68 @@ All skills in this repository follow a unified architectural standard:
 
 1. **Discovery-Optimized Frontmatter**: Descriptions start with "Use when..." to trigger correct loading by AI agents.
 2. **Mandatory Pre-flight Checks**: Resource detection logic to prevent OOM and system freezes.
-3. **API References**: Detailed `references/api-reference.md` files with formal signatures and docstrings extracted
-   directly from the libraries.
+3. **API References**: Detailed `references/` files with formal signatures, docstrings, and domain context.
 4. **Wall of Shame**: Common pitfalls and anti-patterns to avoid.
 
 ## Available Skills
 
-### Core Workflow
-
-#### Planning
-
-- **brainstorming**: Turns ideas into fully formed designs and specs through collaborative dialogue.
-- **writing-plans**: Generates bite-sized, TDD-ready implementation plans from specifications.
-
-#### Execution & Testing
-
-- **executing-plans**: Structured execution of implementation plans with review checkpoints.
-- **systematic-debugging**: Root-cause focused debugging process for resolving technical issues reliably.
-- **test-driven-development**: Strict Red-Green-Refactor workflow for robust code implementation.
-- **verification-before-completion**: Mandatory evidence-based verification before claiming task completion.
-
-#### Meta & Discovery
-
-- **using-superpowers**: Fundamental rules and priorities for skill discovery and application.
-
-### Learning and Skill Building
-
-- **tech-explorer**: Researches, tests, and masters unfamiliar technologies (libraries, APIs, databases) to create
-  comprehensive, "Gold Standard" skills.
-- **writing-skills**: TDD-based process for creating and refining persistent agent skills.
-- **api-skill-creator**: Transforms API documentation (Swagger, Wiki, etc.) into reusable skills for internal or
-  external services.
-- **database-skill-creator**: Transforms database structures (schemas, relationships) into reusable skills for specific
-  data sources.
-
 ### Data Analysis
 
-- **exploratory-data-analysis**: Performs comprehensive exploratory analysis on scientific and business data.
-- **geopandas**: Analyzes geospatial vector data including shapefiles and GeoJSON.
-- **matlab**: Provides matrix operations, data analysis, and scientific computing using MATLAB/Octave syntax.
-- **statsmodels**: Implements statistical models for rigorous inference and diagnostics.
+- **cupy-signal**: GPU-accelerated signal processing using `cupyx.scipy.signal`. A high-performance drop-in replacement
+  for `scipy.signal` on NVIDIA (CUDA) and AMD (ROCm) GPUs.
+- **exploratory-data-analysis**: Comprehensive exploratory analysis on scientific and business data, including structural
+  analysis, data quality checks, profiling, and categorical hierarchies.
+- **geopandas**: Analysis of geospatial vector data (Shapefiles, GeoJSON, GeoPackage), including spatial joins,
+  coordinate transformations, and choropleth mapping.
+- **matlab**: Matrix operations, data analysis, and scientific computing using MATLAB/Octave syntax. Useful for writing
+  scientific scripts or converting between MATLAB and Python.
+- **statsmodels**: Statistical models for rigorous inference, hypothesis testing, and diagnostics. Covers econometrics,
+  time series (ARIMA), and detailed coefficient tables.
 
 ### Infrastructure Tools
 
 - **data-context-extractor**: Extracts warehouse schemas and tribal knowledge to generate tailored data skills.
-- **get-available-resources**: Detects and reports available system resources (CPU, GPU, memory).
-- **git**: Manages source code version control and collaborative workflows.
-- **gitlab**: Expert guidance for using the GitLab CLI (glab) to manage issues, MRs, and pipelines.
-- **jupyter**: Manages interactive development within Jupyter notebooks.
-- **windows-cli**: Executes file and system operations using Windows cmd and PowerShell.
+- **get-available-resources**: Detects and reports available system resources (CPU, GPU, memory) to inform computational
+  strategy before intensive tasks.
+
+### Learning and Skill Building
+
+- **api-skill-creator**: Transforms API documentation (Swagger, Wiki, Confluence, etc.) into reusable skills for
+  internal or external services.
+- **database-skill-creator**: Transforms database structures (schemas, relationships) into reusable skills for specific
+  data sources.
+- **tech-explorer**: Researches, tests, and masters unfamiliar technologies (libraries, APIs, databases) to create
+  comprehensive, empirical skills.
+- **writing-skills**: TDD-based process for creating, editing, and verifying persistent agent skills.
 
 ### Machine Learning
 
 - **pymc**: Builds and samples Bayesian models using probabilistic programming.
 - **stable-baselines3**: Provides production-ready reinforcement learning algorithms.
-- **timesfm-forecasting**: Performs zero-shot time series forecasting using foundation models.
+- **timesfm-forecasting**: Zero-shot time series forecasting using Google's TimesFM foundation models.
 
 ### Networking & Security
 
-- **log-parsing**: Parses structured and unstructured log files into DataFrames for analysis.
+- **networking-security-suite**: Glue logic for end-to-end network security analysis, from PCAP triage to topology
+  mapping and deep packet inspection.
 - **networkx**: Creates, analyzes, and visualizes complex networks and graphs.
-- **scapy**: Interactive packet manipulation, sniffing, and crafting.
-- **wireshark-extensions**: Develop custom Wireshark protocol dissectors using Lua.
-
-### Python Development
-
-- **python-core-pro**: Consolidated expert guide for Best Practices (PEP-8), Pydantic (Type Safety), Pytest (Testing),
-  and Parallel Processing.
-- **legacy-migration-suite**: Consolidated guide for migrating from Python 2, C#, or MATLAB to modern Python (3.9+).
-
-### Scientific Workflow
-
-- **scientific-research-suite**: Consolidated expert guide for the complete scientific lifecycle: brainstorming,
-  research design, critical thinking, writing (IMRAD), and peer review.
+- **scapy**: Interactive packet manipulation, sniffing, and crafting for network discovery and protocol research.
+- **wireshark-extensions**: Develops custom Wireshark protocol dissectors using Lua.
+- **wireshark-pro**: Analyzes network traffic, handles large PCAP files, and extracts packet data programmatically.
 
 ### Unstructured Data Processing
 
 - **binary-data-parsing**: Parses and manipulates raw binary data and custom file formats.
 - **bit-error-correction**: Detects and repairs corrupted data using error-correcting codes (ECC).
-- **data-format-detection**: Identifies the format and encoding of unknown binary files.
-- **document-processing-pro**: Consolidated expert guide for PDF, Word (DOCX), Excel (XLSX), and PowerPoint (PPTX).
-- **shapely**: Planar geometric manipulation and analysis.
+- **data-format-detection**: Identifies the format and encoding of unknown binary files or raw bytes.
+- **shapely**: Planar geometric manipulation and spatial analysis (buffering, intersections, spatial predicates).
+
+### Web Scraping
+
+- **pro-web-scraping**: Industrial-grade scrapers for complex sites with aggressive anti-bot protection, dynamic JS
+  rendering, infinite scroll, login/session management, or brittle HTML.
 
 ---
+
 *For details on how to create or extend these skills, see
-the [writing-skills](src/skills/learning-and-skill-building/writing-skills/SKILL.md) documentation.*
+`src/skills/learning-and-skill-building/writing-skills/SKILL.md`.*

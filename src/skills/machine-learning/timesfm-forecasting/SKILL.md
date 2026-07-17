@@ -11,7 +11,7 @@ Professional workflow for generating high-accuracy time series forecasts without
 
 TimesFM 2.5 is a 200M parameter foundation model and requires significant resources.
 
-1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
+1. **Run Detection**: Invoke the `get-available-resources` skill (or run `scripts/detect_resources.py` from that skill directory).
 2. **Strategy**:
     - **GPU Available (>=4GB VRAM)**: Use `torch` backend with CUDA.
     - **CPU Only (>=8GB RAM)**: Use `torch` or `transformers` backend. Expect ~1-5s per forecast.
@@ -69,6 +69,5 @@ point_forecast, quantile_forecast = model.forecast(horizon=24, inputs=my_data_li
 
 ## References
 
-- `skills/machine-learning/timesfm-forecasting/references/api_reference.md` — Full parameter list and output shapes.
-- `skills/machine-learning/timesfm-forecasting/references/data_preparation.md` — Handling NaNs, frequency detection, and
-  scaling.
+- `references/api_reference.md` — Full parameter list and output shapes.
+- `references/data_preparation.md` — Handling NaNs, frequency detection, and scaling.

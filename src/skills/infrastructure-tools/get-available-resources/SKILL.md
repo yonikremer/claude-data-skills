@@ -275,7 +275,7 @@ All other functionality uses Python standard library modules (json, os, platform
 **Script execution fails:**
 
 - Ensure psutil is installed: `uv pip install psutil`
-- Check Python version compatibility (Python 3.6+)
+- Check Python version compatibility (Python 3.9+)
 - Verify script has execute permissions: `chmod +x scripts/detect_resources.py`
 
 **Inaccurate memory readings:**

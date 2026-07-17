@@ -31,8 +31,8 @@ A solid foundation is required before exploration.
   tools).
 - **Dependency Verification**: Rigorously check for version mismatches or missing components.
 - **Automated Fixes**: Attempt to resolve installation issues using available tools (e.g., `pip`, `winget`, `npm`).
-- **Sub-Agent Debugging**: If installation fails or becomes complex, **you MUST use a specialized debugging sub-agent
-  ** (e.g., `systematic-debugging`) to identify and resolve root causes.
+- **Sub-Agent Debugging**: If installation fails or becomes complex, spawn a focused sub-agent to isolate the root cause
+  (environment, dependency version, missing system library) before proceeding.
 - **Verification**: Run a minimal "version check" or "smoke test" to confirm the environment is ready.
 
 ### 3. Empirical Testing (The Mastery Phase)
@@ -65,7 +65,7 @@ Once mastery is achieved, translate the knowledge into a permanent skill.
 - **Writing Skills**: Provides the "Gold Standard" for skill structure and the Red/Green/Refactor writing process.
 - **API Skill Creator**: Specialized path for mapping API documentation to skills.
 - **Database Skill Creator**: Specialized path for mapping database structures to skills.
-- **Systematic Debugging**: Use for troubleshooting installation and setup failures.
+- **Debugging**: Use a focused sub-agent or your standard debugging workflow for installation and setup failures.
 
 ## Iteration
 

@@ -15,7 +15,7 @@ agent equipped with procedural knowledge.
 **Core principle:** If you didn't watch an agent fail without the skill, you don't know if the skill teaches the right
 thing.
 
-**REQUIRED BACKGROUND:** You MUST understand `superpowers:test-driven-development` before using this skill.
+**REQUIRED BACKGROUND:** Read `testing-skills-with-subagents.md` in this directory first. It covers the RED-GREEN-REFACTOR cycle for skills.
 
 ## About Skills
 
@@ -74,8 +74,11 @@ Follow these steps in order:
 - **Specialized Creators**: For specific domains, use specialized workflows:
     - **APIs**: Use `api-skill-creator`.
     - **Databases**: Use `database-skill-creator`.
-- **Initialize**: Use the `init_skill.cjs` script:
-  `node <path-to-skill-creator>/scripts/init_skill.cjs <skill-name> --path <output-directory>`
+- **Initialize**: Create the skill directory and `SKILL.md`:
+  ```bash
+  mkdir -p <output-directory>/<skill-name>/scripts
+  touch <output-directory>/<skill-name>/SKILL.md
+  ```
 - **Write Minimal Skill**: Write the `SKILL.md` and resources addressing specific baseline failures.
 - **Watch it pass**: Run scenario WITH skill. Agent should now comply.
 
@@ -85,9 +88,8 @@ Follow these steps in order:
 
 ### 4. Packaging & Deployment
 
-- **Package**: `node <path-to-skill-creator>/scripts/package_skill.cjs <path/to/skill-folder>`
-- **Install**: Offer to install locally (`--scope workspace`) or at user level (`--scope user`).
-- **Reload**: Notify user they MUST manually execute `/skills reload`.
+- **Install**: Run `setup-data-skills` from this package to copy skills into `~/.claude/skills` and `.gemini/commands`.
+- **Reload**: In Claude Code, restart or run `/skills reload` if supported by your client.
 
 ## Interoperability
 
@@ -119,9 +121,9 @@ This applies to NEW skills AND EDITS to existing skills. Delete untested changes
 
 - [ ] Create pressure scenarios.
 - [ ] Run WITHOUT skill - document behavior.
-- [ ] Initialize with `init_skill.cjs`.
+- [ ] Create skill directory and `SKILL.md`.
 - [ ] YAML frontmatter correct (single-line description).
 - [ ] Description starts with "Use when...".
 - [ ] Run WITH skill - verify compliance.
-- [ ] Package with `package_skill.cjs`.
+- [ ] Run `setup-data-skills` to install locally.
 - [ ] Commit to git.

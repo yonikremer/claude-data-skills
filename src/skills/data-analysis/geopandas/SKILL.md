@@ -9,7 +9,7 @@ description: Use when analyzing geospatial vector data (Shapefiles, GeoJSON, Geo
 
 Geospatial operations (especially joins and overlays) are CPU and memory intensive.
 
-1. **Run Detection**: Execute `python skills/get-available-resources/scripts/detect_resources.py`.
+1. **Run Detection**: Invoke the `get-available-resources` skill (or run `scripts/detect_resources.py` from that skill directory).
 2. **Spatial Indexing**: Always ensure `rtree` or `pygeos`/`shapely` 2.0+ is installed for fast spatial queries.
 3. **Memory Management**: For very large datasets, read only a bounding box (`bbox`) or a subset of columns.
 

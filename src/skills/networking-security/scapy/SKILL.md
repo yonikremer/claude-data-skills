@@ -12,7 +12,7 @@ a wide number of protocols, send them on the wire, capture them, match requests 
 
 Packet sniffing and processing can be CPU and RAM intensive, especially on high-speed interfaces.
 
-1. **Check Resources**: Run `python skills/get-available-resources/scripts/detect_resources.py`.
+1. **Check Resources**: Invoke the `get-available-resources` skill (or run `scripts/detect_resources.py` from that skill directory).
 2. **Buffering Strategy**: For sustained capture (>1 min), use `sniff(..., prn=callback, store=0)` to avoid filling RAM
    with packet history.
 

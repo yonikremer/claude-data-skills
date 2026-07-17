@@ -67,9 +67,9 @@ If the corruption type is unknown, use the automated discovery script. It will s
 matches, single-bit flip brute forcing (looking for valid headers), and Reed-Solomon correction with variable ECC
 lengths.
 
-```python
+```bash
 # Run automated forensic repair:
-# python skills/bit-error-correction/scripts/auto_ecc_repair.py <corrupted_file>
+python scripts/auto_ecc_repair.py <corrupted_file>
 ```
 
 ### Discovery Logic:

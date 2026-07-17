@@ -69,9 +69,9 @@ For raw telemetry, sensor data, or unaligned binary streams, use bit-level self-
 **Logic**: Convert the file to a bitstream and search for the bit-period (1 to file size) where adjacent bit-frames are
 most similar (lowest XOR difference).
 
-```python
+```bash
 # Use the optimized bitwise detector:
-# python skills/data-format-detection/scripts/periodic_structure_detector.py <file>
+python scripts/periodic_structure_detector.py <file>
 ```
 
 ## 5. Entropy & Forensic Analysis

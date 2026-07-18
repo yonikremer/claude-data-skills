@@ -85,6 +85,8 @@ Follow these steps in order:
 ### 3. Refactor Phase (Close Loopholes)
 
 - **Plug Holes**: Find new rationalizations → plug them in `SKILL.md` → re-verify until bulletproof.
+- **Knowledge-Skill Fact-Check**: If the skill teaches a real API, database, library, or dataset, run the harness in
+  `testing-knowledge-skills.md` (glossary audit, endpoint/table verification, hallucination check, smoke test).
 
 ### 4. Packaging & Deployment
 
@@ -96,6 +98,7 @@ Follow these steps in order:
 - **Tech Explorer**: Used for discovering and mastering unfamiliar technologies before they are documented.
 - **API Skill Creator**: Specialized workflow for mapping API documentation to skills.
 - **Database Skill Creator**: Specialized workflow for mapping database structures to skills.
+- **Testing Knowledge Skills**: Fact-check harness and rubric for verifying skills that teach real technologies.
 
 ## The Iron Law
 
@@ -125,5 +128,6 @@ This applies to NEW skills AND EDITS to existing skills. Delete untested changes
 - [ ] YAML frontmatter correct (single-line description).
 - [ ] Description starts with "Use when...".
 - [ ] Run WITH skill - verify compliance.
+- [ ] For knowledge skills, run the fact-check harness in `testing-knowledge-skills.md` and score at least 8/10.
 - [ ] Run `setup-data-skills` to install locally.
 - [ ] Commit to git.

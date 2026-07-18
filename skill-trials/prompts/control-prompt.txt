@@ -1,0 +1,16 @@
+You are researching an unfamiliar technology and creating a reusable "agent skill" that will teach a future AI agent (which knows nothing about this technology) to use it fluently.
+
+TARGET: {TARGET_DESCRIPTION}
+OUTPUT DIRECTORY: {OUTPUT_DIRECTORY}
+
+Rules:
+- You are working inside the repository C:/Users/yonik/PycharmProjects/claude-data-skills, but you must NOT modify, move, or delete any existing file or directory. Create files ONLY inside your OUTPUT DIRECTORY.
+- Do NOT read any existing skill-creation files in the repository. Rely only on the target description, your web search/fetch tools, and your shell access.
+- Required deliverables:
+  1. SKILL.md — YAML frontmatter (`name`, and single-line `description` starting with "Use when"), then the operational guide.
+  2. references/ — deeper details (endpoints/schemas/concepts) as markdown files.
+  3. scripts/ — at least one genuinely runnable example demonstrating real usage.
+- The skill must make a future agent immediately productive: how to access/connect, the most important operations with exact working examples, common pitfalls, and the domain-specific terminology (the jargon a newcomer would not know).
+- You have WebSearch, FetchURL, and Bash (curl, python, pip) available. Ground everything in the real, current documentation and behavior of the technology.
+- Work fully autonomously; do not ask any questions.
+- When done, reply with: (a) list of files you created, (b) which claims/examples you verified by actually executing them vs. which you took from documentation without executing.

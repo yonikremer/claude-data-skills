@@ -27,6 +27,12 @@ All skills in this repository follow a unified architectural standard:
 - **statsmodels**: Statistical models for rigorous inference, hypothesis testing, and diagnostics. Covers econometrics,
   time series (ARIMA), and detailed coefficient tables.
 
+### Data Sources
+
+- **elasticsearch-query-optimization**: Strategies for profiling, analyzing, and optimizing search queries in Elasticsearch using filter context, search_after, and static mappings.
+- **oracle-query-optimization**: Evaluating and tuning SQL queries in Oracle Database using DBMS_XPLAN, DBMS_STATS, and indexes.
+- **postgres-query-optimization**: Execution plan analysis and optimization in PostgreSQL using EXPLAIN (ANALYZE, BUFFERS), partial indexes, and work_mem.
+
 ### Infrastructure Tools
 
 - **data-context-extractor**: Extracts warehouse schemas and tribal knowledge to generate tailored data skills.

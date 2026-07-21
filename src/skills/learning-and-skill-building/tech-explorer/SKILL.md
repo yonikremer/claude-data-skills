@@ -35,8 +35,9 @@ Transform "unknowns" into mastery by combining research, real usage artifacts, s
 
 ### Step 2: Harvest Existing Usage Artifacts
 
-Existing code, configs, logs, and notebooks encode real usage patterns, edge cases, and domain language that official docs often omit. Ask the user for artifacts that match the technology type:
+Existing code, configs, logs, and notebooks encode real usage patterns, edge cases, and domain language that official docs often omit. Ask the user for or search the repository for:
 
+- **Repository source code**: Search the codebase for imports, dependencies, custom wrappers, configurations, or unit tests — reveals existing integrations, helper functions, and local project conventions.
 - **API / web service**: client SDK code, Postman collections, API logs/traces, integration tests, frontend callers — reveals idiomatic usage, auth patterns, real headers, and error patterns.
 - **Library / package**: example code, test suites, GitHub issues, tutorials, Stack Overflow threads — reveals idiomatic calls, edge cases, common pitfalls, and version quirks.
 - **Database**: saved queries, dbt models, stored procedures, BI reports, query logs, notebooks — reveals business logic, join paths, performance gotchas, and domain terminology.
@@ -109,6 +110,7 @@ If a user reports a bug or a missing feature in a skill you created, re-enter th
 ## Anti-Patterns
 
 - **Do NOT** ignore existing usage artifacts; they often reveal the real patterns and pitfalls official docs omit.
+- **Do NOT** ignore the repository's own source code; it often contains wrapper classes, database models, or utility functions that show how the technology is already used.
 - **Do NOT** document a technology you haven't successfully exercised.
 - **Do NOT** present unverified claims as fact in `SKILL.md`.
 - **Do NOT** dump raw artifacts or full response bodies into `SKILL.md`; keep them in `references/`.

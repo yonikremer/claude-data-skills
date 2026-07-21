@@ -20,6 +20,7 @@ Transform "unknowns" into mastery by combining research, real usage artifacts, s
 ### Step 1: Research & Blueprinting
 
 - **Find the source of truth**: official docs, canonical GitHub repo, package index (PyPI/npm/crates), and recent release notes / changelog. Prefer `https://` endpoints from the project itself.
+- **Inspect library source code**: Since you always have access to the target library's installed codebase (e.g., in `site-packages` or local copy), check internal class/function definitions, inline comments, and docstrings directly when official docs are sparse or ambiguous.
 - **Harvest domain terminology**: technologies that look simple often hide a vocabulary problem. Create `references/glossary.md` with the columns:
   - **Term**
   - **Definition**
@@ -66,6 +67,7 @@ You MUST NOT document a technology until you have successfully used it and explo
 
 - **Comprehensive Mapping**: Do not stop at "Hello World". Systematically test all public endpoints/functional areas for an API/library and all user-facing tables for a database.
 - **Understanding**: What problems does the technology solve? What are the key domain use cases? What are its limitations?
+- **Code Inspection**: Read implementation code of library modules to trace private helpers, default arguments, exception triggers, and undocumented options.
 - **Domain Fundamentals**: For each major module or functional area, document the "Why" and "What" of the underlying domain concepts (e.g., "What is a Butterworth filter?", "What is the physical meaning of a Spectrogram?").
 - **Scaffolding**: Create temporary test scripts (e.g., `test_api_explorer.py`) to exercise the breadth of the technology. Keep raw responses/query results in `references/`, not in `SKILL.md`.
 - **Stress Testing**: Try edge cases (e.g., large payloads, invalid inputs, network timeouts, resource limits).
@@ -111,6 +113,7 @@ If a user reports a bug or a missing feature in a skill you created, re-enter th
 
 - **Do NOT** ignore existing usage artifacts; they often reveal the real patterns and pitfalls official docs omit.
 - **Do NOT** ignore the repository's own source code; it often contains wrapper classes, database models, or utility functions that show how the technology is already used.
+- **Do NOT** treat the library as a black box; inspect its source code, internal docstrings, and module structures directly.
 - **Do NOT** document a technology you haven't successfully exercised.
 - **Do NOT** present unverified claims as fact in `SKILL.md`.
 - **Do NOT** dump raw artifacts or full response bodies into `SKILL.md`; keep them in `references/`.

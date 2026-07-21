@@ -1,38 +1,37 @@
 ---
 name: database-skill-creator
-description: Use when the user wants to create a new skill to interact with a specific database (PostgreSQL, BigQuery, Snowflake, etc.) by extracting schemas and documenting business logic.
+description: Use when the user wants to create a new skill to interact with Oracle, Elasticsearch, or PostgreSQL databases by extracting schemas and documenting business logic.
 ---
 
 # Database Skill Creator
 
 ## Overview
 
-This skill guides you through transforming a database's structure (schemas, tables, relationships) into a dedicated,
-reusable Claude/Gemini skill. This allows the AI agent to fluently query and analyze data in that specific database in
-future sessions.
+Build reusable skills for Oracle, Elasticsearch, or PostgreSQL.
 
 ## When to Use
 
 - A user says "I have a new database I want to analyze."
-- You need to build a specialized skill for a company-specific data warehouse.
+- You need a specialized skill for a company-specific Oracle, Elasticsearch, or PostgreSQL data store.
 - The user provides connection details and asks for a skill that "knows my data."
 
 ## Workflow
 
 ### Step 1: Discover the Environment
 
-1. **Identify the Dialect and Version**: Determine if it's PostgreSQL, BigQuery, Snowflake, SQLite, DuckDB, an embedded
-   graph DB, etc. Record the exact version string.
-2. **Handle Credentials Safely**:
-   - Ask the user for connection details and credentials.
-   - If you must store them locally, use a `.env` file and ensure `.gitignore` excludes it.
-   - Prefer environment variables in scripts: `os.environ["DB_PASSWORD"]`.
-3. **Verify Connectivity**: Create a Python script called `scripts/connect.py` to connect to this database and verify it works.
-   For embedded databases (e.g., DuckDB, Kùzu), this script should also confirm the package is installed/importable.
+1. **Identify the dialect and version**:
+   - PostgreSQL: `SELECT version();`
+   - Oracle: `SELECT * FROM v$version;`
+   - Elasticsearch: `GET /`
+2. **Handle credentials safely**: ask for connection details; store in `.env` if needed and gitignore it. Prefer `os.environ[...]`.
+3. **Verify connectivity** with `scripts/connect.py`:
+   - PostgreSQL: `psycopg` / `psycopg2`
+   - Oracle: `oracledb` (preferred) or `cx_Oracle`
+   - Elasticsearch: `elasticsearch` Python client
 
 ### Step 2: Initialize the New Skill
 
-1. Use the `writing-skills` standards for the overall process.
+1. Use the `writing-skills` standards.
 2. Create the skill directory and `SKILL.md`:
    ```bash
    mkdir -p <destination-folder>/<skill-name>/scripts
@@ -41,63 +40,79 @@ future sessions.
 
 ### Step 3: Extract Schemas, Context, and Domain Terms
 
-1. **Introspect the catalog**: Run read-only queries appropriate to the dialect:
-   - PostgreSQL / most SQL databases: `information_schema.tables`, `information_schema.columns`, `pg_catalog`.
-   - SQLite: `PRAGMA table_info(...)`, `sqlite_master`.
-   - BigQuery: `INFORMATION_SCHEMA.TABLES`, `INFORMATION_SCHEMA.COLUMNS`.
-   - Embedded graph / NoSQL DBs: use the native catalog API.
-   Save the results in `references/schemas.md`.
-2. **Sample real rows**: For each user-facing table, run a `SELECT * LIMIT 5` (or dialect equivalent) and capture output in
-   `references/schemas.md`. Real values reveal domain terminology and data-quality surprises. If the database has many
-   tables, sample at least the ones that are not clearly system catalogs; document any groups you intentionally skip.
-3. **Harvest domain terminology**: Create `references/glossary.md` with columns:
-   - **Term** (column name, type, metric, acronym)
-   - **Definition**
-   - **Source** (schema query, doc URL, or sampled value)
-   - **Real example** from the sample rows.
-4. **Business Logic**: Ask the user about key terms and metrics (e.g., ARR calculation) and data hygiene (standard filters).
-   Save this to `references/business-logic.md`. If no user is available, derive candidates from constraints, defaults,
-   and column names, marking them as inferred.
+1. **Introspect the catalog** (read-only):
+   - **PostgreSQL**: `information_schema.tables`, `information_schema.columns`, `pg_catalog`.
+   - **Oracle**: `ALL_TABLES`, `ALL_TAB_COLUMNS`, `ALL_CONSTRAINTS`, `ALL_INDEXES`.
+   - **Elasticsearch**: `GET /_cat/indices`, `GET /<index>/_mapping`, `GET /<index>/_settings`.
+   Save results in `references/schemas.md`.
+2. **Sample real rows**:
+   - PostgreSQL: `SELECT * FROM <table> LIMIT 5`
+   - Oracle 12c+: `SELECT * FROM <table> FETCH FIRST 5 ROWS ONLY`; legacy: `WHERE ROWNUM <= 5`
+   - Elasticsearch: `GET /<index>/_search { "size": 5 }`
+   Capture output in `references/schemas.md`.
+3. **Document domain terms and business logic** in `references/glossary.md` and `references/business-logic.md`. Mark inferred items as inferred.
 
-### Step 4: Write the New SKILL.md
+### Step 4: Harvest Existing Queries and Reports
 
-Follow the "Gold Standard" from `writing-skills`:
+Existing queries encode business logic, relationships, and domain language that schemas alone do not reveal. Ask the user for saved reports, BI queries, dbt models, stored procedures, notebooks, or query logs.
 
-- **Frontmatter**: Clear "Use when..." description.
-- **Mandatory Pre-flight**: Check for database connection and required environment variables.
-- **Dialect Notes**: Document version-specific quirks (string concatenation, booleans, date functions, limits).
-- **Query Idioms**: Provide optimized, dialect-specific query examples.
-- **Domain Fundamentals**: Briefly explain the domain the database models and define the jargon.
-- **Reference Pointers**: Point to `references/schemas.md`, `references/business-logic.md`, and `references/glossary.md`.
+For each source, extract:
 
-### Step 5: Smoke Test the Skill
+- **Saved reports / BI queries**: common filters, date ranges, status logic, KPI calculations.
+- **dbt models / stored procedures**: reusable transformations, derived tables, business definitions.
+- **Query logs / slow-query log**: hot paths, expensive joins, performance gotchas.
+- **Notebooks / ad-hoc SQL**: domain acronyms, aliases, recurring metrics.
+
+Capture valuable queries in `references/queries.md` with attribution and purpose. Then feed them into the skill:
+
+- **Business logic** → `references/business-logic.md` (rules, standard filters, calculations).
+- **Domain terms** → `references/glossary.md` (acronyms, aliases, status codes, real examples).
+- **Query idioms** → `SKILL.md` (canonical joins, standard filters, common aggregations).
+- **Smoke tests** → `scripts/connect_and_sample.py` (verified working queries).
+- **Anti-patterns** → `SKILL.md` (slow, fragile, or deprecated patterns to avoid).
+
+### Step 5: Write the New SKILL.md
+
+Follow the `writing-skills` Gold Standard:
+
+- **Frontmatter**: clear "Use when..." description.
+- **Mandatory Pre-flight**: check connection and required environment variables.
+- **Dialect Notes**:
+  - **PostgreSQL**: `||` concatenation, `LIMIT`.
+  - **Oracle**: uppercase identifiers unless quoted; `FETCH FIRST` (12c+) or `ROWNUM`; `NVL`/`COALESCE`; no `LIMIT`.
+  - **Elasticsearch**: no joins; query DSL (`bool`, `match`, `term`); aggregations replace `GROUP BY`; mappings set analyzers and types.
+- **Query Idioms**: dialect-specific, optimized examples.
+- **Domain Fundamentals**: briefly explain the modeled domain and jargon.
+- **Reference Pointers**: point to `references/schemas.md`, `references/business-logic.md`, `references/glossary.md`, and `references/queries.md`.
+
+### Step 6: Smoke Test the Skill
 
 Create `scripts/connect_and_sample.py` that:
 
 1. Connects using the same pattern as `SKILL.md`.
-2. Runs at least one introspection query and one sample query per user-facing table.
-3. Prints row counts and a few sample values.
+2. Runs introspection and sample queries for each user-facing table/index.
+3. Prints counts and a few sample values.
 4. Runs without errors in the current environment.
 
 The skill is **not finished** until `python scripts/connect_and_sample.py` passes.
 
-### Step 6: Package and Install
+### Step 7: Package and Install
 
-1. Run `setup-data-skills` from this package to copy the new skill into `~/.claude/skills` and `.gemini/commands`.
-2. In Claude Code, restart or run `/skills reload` if supported by your client.
+1. Run `setup-data-skills` to copy the new skill into `~/.claude/skills` and `.gemini/commands`.
+2. Restart Claude Code or run `/skills reload`.
 
 ## Interoperability
 
 - **Tech Explorer**: Use `tech-explorer` to master the database structure before writing the skill.
 - **Writing Skills**: Use for the TDD-based documentation process.
-- **Testing Knowledge Skills**: Use `writing-skills/testing-knowledge-skills.md` for the fact-check harness and rubric.
 
 ## Anti-Patterns
 
-- **Do NOT** include sensitive data or credentials.
-- **Do NOT** skip tables just because they look obscure or low-value. Document the full user-facing surface unless the user
-  explicitly asked for a subset.
-- **Do NOT** forget to specify the SQL dialect and version.
-- **Do NOT** rely on memory for dialect syntax; run the query and confirm it works.
-- **Do NOT** mutate data during exploration. All exploration queries should be read-only unless the user explicitly
-  requests a change.
+- Do NOT include sensitive data or credentials.
+- Do NOT skip user-facing tables/indexes. Document the full surface unless the user asks for a subset.
+- Do NOT assume Elasticsearch behaves like SQL (no joins, no ad-hoc schema changes).
+- Do NOT quote PostgreSQL identifiers incorrectly: unquoted names are lowercased, so `MyTable` and `mytable` are different objects.
+- Do NOT assume Oracle `ALL_*` views are scoped to the current user; use `USER_*` views when you only want the current schema.
+- Do NOT ignore existing queries; they often contain the real business logic and domain language.
+- Do NOT rely on memory for dialect syntax; run the query and confirm it works.
+- Do NOT mutate data during exploration unless explicitly requested.
